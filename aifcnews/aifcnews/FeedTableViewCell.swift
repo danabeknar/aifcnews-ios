@@ -27,7 +27,7 @@ class FeedTableViewCell: UITableViewCell {
     
     lazy var timeImageView: UIImageView = {
         return UIImageView().then {
-            $0.image = UIImage(named: "time")?.original
+            $0.image = UIImage(named: "Time")?.original
         }
     }()
     

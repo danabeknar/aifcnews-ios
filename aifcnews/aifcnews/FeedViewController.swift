@@ -24,7 +24,7 @@ class FeedViewController: UIViewController {
 
     lazy var arrowButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "arrow")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(UIImage(named: "Arrow")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.imageEdgeInsets = UIEdgeInsetsMake(7, 7, 7, 7)
         button.backgroundColor = .white
         button.layer.cornerRadius = Helper.shared.constrain(with: .height, num: Int(16))
@@ -34,7 +34,7 @@ class FeedViewController: UIViewController {
     
     lazy var menuButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "menu")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(UIImage(named: "Menu")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.imageEdgeInsets = UIEdgeInsetsMake(11, 8, 11, 8)
         button.backgroundColor = .mainBlue
         button.layer.cornerRadius = Helper.shared.constrain(with: .height, num: Int(16))
