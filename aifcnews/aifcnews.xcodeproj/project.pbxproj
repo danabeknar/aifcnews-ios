@@ -7,19 +7,35 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D0ECBA11F18A220005699FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0ECBA01F18A220005699FC /* Constants.swift */; };
+		0D0ECBA31F18A2ED005699FC /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0ECBA21F18A2ED005699FC /* Helper.swift */; };
+		0D0ECBA51F18B099005699FC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0ECBA41F18B099005699FC /* Extensions.swift */; };
+		0D0ECBAB1F18B338005699FC /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAA1F18B338005699FC /* FeedTableViewCell.swift */; };
+		0D0ECBB01F18B664005699FC /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAC1F18B664005699FC /* OpenSans-Bold.ttf */; };
+		0D0ECBB11F18B664005699FC /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAD1F18B664005699FC /* OpenSans-Light.ttf */; };
+		0D0ECBB21F18B664005699FC /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAE1F18B664005699FC /* OpenSans-Regular.ttf */; };
+		0D0ECBB31F18B664005699FC /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAF1F18B664005699FC /* OpenSans-SemiBold.ttf */; };
+		0DBEB4661F1CC8F100A03809 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4651F1CC8F100A03809 /* News.swift */; };
 		0DC71A501F1795D200225263 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC71A4F1F1795D200225263 /* AppDelegate.swift */; };
-		0DC71A521F1795D200225263 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC71A511F1795D200225263 /* ViewController.swift */; };
-		0DC71A551F1795D200225263 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DC71A531F1795D200225263 /* Main.storyboard */; };
+		0DC71A521F1795D200225263 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC71A511F1795D200225263 /* FeedViewController.swift */; };
 		0DC71A571F1795D200225263 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DC71A561F1795D200225263 /* Assets.xcassets */; };
 		0DC71A5A1F1795D200225263 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DC71A581F1795D200225263 /* LaunchScreen.storyboard */; };
 		3B1ECEEC2DB552BE5CA9A14E /* Pods_aifcnews.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80CE2DEE37C1380422B5EC38 /* Pods_aifcnews.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D0ECBA01F18A220005699FC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		0D0ECBA21F18A2ED005699FC /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
+		0D0ECBA41F18B099005699FC /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		0D0ECBAA1F18B338005699FC /* FeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
+		0D0ECBAC1F18B664005699FC /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		0D0ECBAD1F18B664005699FC /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
+		0D0ECBAE1F18B664005699FC /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		0D0ECBAF1F18B664005699FC /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		0DBEB4651F1CC8F100A03809 /* News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		0DC71A4C1F1795D200225263 /* aifcnews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aifcnews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DC71A4F1F1795D200225263 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0DC71A511F1795D200225263 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		0DC71A541F1795D200225263 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		0DC71A511F1795D200225263 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		0DC71A561F1795D200225263 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0DC71A591F1795D200225263 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0DC71A5B1F1795D200225263 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -40,6 +56,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D0ECBA61F18B2E4005699FC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0DBEB4651F1CC8F100A03809 /* News.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		0D0ECBA71F18B2E9005699FC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0D0ECBAA1F18B338005699FC /* FeedTableViewCell.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		0D0ECBA81F18B2F4005699FC /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0DC71A511F1795D200225263 /* FeedViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		0D0ECBA91F18B301005699FC /* Supporting FIles */ = {
+			isa = PBXGroup;
+			children = (
+				0D0ECBB41F18B66B005699FC /* Fonts */,
+				0D0ECBA21F18A2ED005699FC /* Helper.swift */,
+				0D0ECBA01F18A220005699FC /* Constants.swift */,
+				0D0ECBA41F18B099005699FC /* Extensions.swift */,
+				0DC71A5B1F1795D200225263 /* Info.plist */,
+				0DC71A561F1795D200225263 /* Assets.xcassets */,
+				0DC71A581F1795D200225263 /* LaunchScreen.storyboard */,
+			);
+			name = "Supporting FIles";
+			sourceTree = "<group>";
+		};
+		0D0ECBB41F18B66B005699FC /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				0D0ECBAC1F18B664005699FC /* OpenSans-Bold.ttf */,
+				0D0ECBAD1F18B664005699FC /* OpenSans-Light.ttf */,
+				0D0ECBAE1F18B664005699FC /* OpenSans-Regular.ttf */,
+				0D0ECBAF1F18B664005699FC /* OpenSans-SemiBold.ttf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
 		0DC71A431F1795D100225263 = {
 			isa = PBXGroup;
 			children = (
@@ -62,11 +127,10 @@
 			isa = PBXGroup;
 			children = (
 				0DC71A4F1F1795D200225263 /* AppDelegate.swift */,
-				0DC71A511F1795D200225263 /* ViewController.swift */,
-				0DC71A531F1795D200225263 /* Main.storyboard */,
-				0DC71A561F1795D200225263 /* Assets.xcassets */,
-				0DC71A581F1795D200225263 /* LaunchScreen.storyboard */,
-				0DC71A5B1F1795D200225263 /* Info.plist */,
+				0D0ECBA81F18B2F4005699FC /* Controllers */,
+				0D0ECBA71F18B2E9005699FC /* Views */,
+				0D0ECBA61F18B2E4005699FC /* Models */,
+				0D0ECBA91F18B301005699FC /* Supporting FIles */,
 			);
 			path = aifcnews;
 			sourceTree = "<group>";
@@ -123,8 +187,7 @@
 				TargetAttributes = {
 					0DC71A4B1F1795D200225263 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = AB65P3C5XF;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -151,9 +214,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0D0ECBB21F18B664005699FC /* OpenSans-Regular.ttf in Resources */,
 				0DC71A5A1F1795D200225263 /* LaunchScreen.storyboard in Resources */,
 				0DC71A571F1795D200225263 /* Assets.xcassets in Resources */,
-				0DC71A551F1795D200225263 /* Main.storyboard in Resources */,
+				0D0ECBB11F18B664005699FC /* OpenSans-Light.ttf in Resources */,
+				0D0ECBB31F18B664005699FC /* OpenSans-SemiBold.ttf in Resources */,
+				0D0ECBB01F18B664005699FC /* OpenSans-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,22 +278,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0DC71A521F1795D200225263 /* ViewController.swift in Sources */,
+				0D0ECBA51F18B099005699FC /* Extensions.swift in Sources */,
+				0D0ECBAB1F18B338005699FC /* FeedTableViewCell.swift in Sources */,
+				0DC71A521F1795D200225263 /* FeedViewController.swift in Sources */,
 				0DC71A501F1795D200225263 /* AppDelegate.swift in Sources */,
+				0D0ECBA11F18A220005699FC /* Constants.swift in Sources */,
+				0D0ECBA31F18A2ED005699FC /* Helper.swift in Sources */,
+				0DBEB4661F1CC8F100A03809 /* News.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		0DC71A531F1795D200225263 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0DC71A541F1795D200225263 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		0DC71A581F1795D200225263 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -337,11 +400,13 @@
 			baseConfigurationReference = 4B384094FD3412237F1E25E5 /* Pods-aifcnews.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = AB65P3C5XF;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = aifcnews/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = n17r.aifcnews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -351,11 +416,13 @@
 			baseConfigurationReference = B04F2EF97E932B17E14F3ABB /* Pods-aifcnews.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = AB65P3C5XF;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = aifcnews/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = n17r.aifcnews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

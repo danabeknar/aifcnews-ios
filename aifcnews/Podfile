@@ -7,5 +7,7 @@ target 'aifcnews' do
 
   # Pods for aifcnews
   pod 'ExpandingMenu', '~> 0.3'
-  pod 'TabPageViewController'
+  pod 'TabPageViewController', :git =>'https://github.com/danabeknar/TabPageViewController.git'
+  pod 'EasyPeasy'
+  pod 'Sugar'
 end

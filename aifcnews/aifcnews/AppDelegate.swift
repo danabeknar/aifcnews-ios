@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TabPageViewController
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,8 +16,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        UIApplication.shared.isStatusBarHidden = true
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.rootViewController = configureTabBarVC()
+        window?.makeKeyAndVisible()
         return true
+    }
+    
+    func configureTabBarVC() -> TabPageViewController {
+        let tabPageViewController = TabPageViewController.create()
+        tabPageViewController.option.fontSize = 10
+        tabPageViewController.option.hidesTopViewOnSwipeType = .tabBar
+        tabPageViewController.option.isTranslucent = false
+        tabPageViewController.option.currentColor = .white
+        tabPageViewController.option.defaultColor = .textGrey
+        tabPageViewController.option.tabHeight = 40
+        tabPageViewController.option.tabBackgroundColor = .mainBlue
+        tabPageViewController.option.highlightFontName = "OpenSans-Semibold"
+        tabPageViewController.option.unHighlightFontName = "OpenSans-Semibold"
+        tabPageViewController.tabItems = [(FeedViewController(), "ECONOMY"), (FeedViewController(), "KAZAKHSTAN"), (FeedViewController(), "BITCOIN")]
+        return tabPageViewController
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
