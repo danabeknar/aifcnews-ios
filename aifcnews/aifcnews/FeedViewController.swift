@@ -42,7 +42,6 @@ class FeedViewController: UIViewController {
         return button
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .backgroundGrey
@@ -87,7 +86,7 @@ class FeedViewController: UIViewController {
     }
     
     func menuPressed() {
-        
+        self.present(DetailedNewsViewController(), animated: true, completion: nil)
     }
 
 }

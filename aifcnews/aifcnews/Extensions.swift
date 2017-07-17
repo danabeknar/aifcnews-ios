@@ -34,6 +34,10 @@ extension UIColor {
     static let mainBlue = "2E4057".hexColor
     static let backgroundGrey = "EEF0F3".hexColor
     static let textGrey = "D3D3D3".hexColor
+    static let textAqua = "64CCD8".hexColor
+    static let textBlack = "4A4A4A".hexColor
+    static let barGrey = "FAFAFA".hexColor
+    static let lineGrey = "C8C7CC".hexColor
 }
 
 

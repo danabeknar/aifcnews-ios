@@ -16,6 +16,8 @@
 		0D0ECBB21F18B664005699FC /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAE1F18B664005699FC /* OpenSans-Regular.ttf */; };
 		0D0ECBB31F18B664005699FC /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAF1F18B664005699FC /* OpenSans-SemiBold.ttf */; };
 		0DBEB4661F1CC8F100A03809 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4651F1CC8F100A03809 /* News.swift */; };
+		0DBEB4681F1CFCD200A03809 /* DetailedNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */; };
+		0DBEB46D1F1D082C00A03809 /* STHeiti Light.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 0DBEB46C1F1D082C00A03809 /* STHeiti Light.ttc */; };
 		0DC71A501F1795D200225263 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC71A4F1F1795D200225263 /* AppDelegate.swift */; };
 		0DC71A521F1795D200225263 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC71A511F1795D200225263 /* FeedViewController.swift */; };
 		0DC71A571F1795D200225263 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DC71A561F1795D200225263 /* Assets.xcassets */; };
@@ -33,6 +35,8 @@
 		0D0ECBAE1F18B664005699FC /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		0D0ECBAF1F18B664005699FC /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		0DBEB4651F1CC8F100A03809 /* News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
+		0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedNewsViewController.swift; sourceTree = "<group>"; };
+		0DBEB46C1F1D082C00A03809 /* STHeiti Light.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "STHeiti Light.ttc"; sourceTree = "<group>"; };
 		0DC71A4C1F1795D200225263 /* aifcnews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aifcnews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DC71A4F1F1795D200225263 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DC71A511F1795D200225263 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
@@ -76,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				0DC71A511F1795D200225263 /* FeedViewController.swift */,
+				0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -97,6 +102,7 @@
 		0D0ECBB41F18B66B005699FC /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				0DBEB46C1F1D082C00A03809 /* STHeiti Light.ttc */,
 				0D0ECBAC1F18B664005699FC /* OpenSans-Bold.ttf */,
 				0D0ECBAD1F18B664005699FC /* OpenSans-Light.ttf */,
 				0D0ECBAE1F18B664005699FC /* OpenSans-Regular.ttf */,
@@ -217,6 +223,7 @@
 				0D0ECBB21F18B664005699FC /* OpenSans-Regular.ttf in Resources */,
 				0DC71A5A1F1795D200225263 /* LaunchScreen.storyboard in Resources */,
 				0DC71A571F1795D200225263 /* Assets.xcassets in Resources */,
+				0DBEB46D1F1D082C00A03809 /* STHeiti Light.ttc in Resources */,
 				0D0ECBB11F18B664005699FC /* OpenSans-Light.ttf in Resources */,
 				0D0ECBB31F18B664005699FC /* OpenSans-SemiBold.ttf in Resources */,
 				0D0ECBB01F18B664005699FC /* OpenSans-Bold.ttf in Resources */,
@@ -284,6 +291,7 @@
 				0DC71A501F1795D200225263 /* AppDelegate.swift in Sources */,
 				0D0ECBA11F18A220005699FC /* Constants.swift in Sources */,
 				0D0ECBA31F18A2ED005699FC /* Helper.swift in Sources */,
+				0DBEB4681F1CFCD200A03809 /* DetailedNewsViewController.swift in Sources */,
 				0DBEB4661F1CC8F100A03809 /* News.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

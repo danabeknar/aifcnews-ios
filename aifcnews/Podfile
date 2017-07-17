@@ -10,4 +10,5 @@ target 'aifcnews' do
   pod 'TabPageViewController', :git =>'https://github.com/danabeknar/TabPageViewController.git'
   pod 'EasyPeasy'
   pod 'Sugar'
+  pod 'ParallaxHeader', :git => 'https://github.com/romansorochak/ParallaxHeader.git'
 end
