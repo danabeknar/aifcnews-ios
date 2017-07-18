@@ -9,10 +9,16 @@
 import UIKit
 import Sugar
 import EasyPeasy
-import ParallaxHeader
+import LMArticleViewController
 
 class DetailedNewsViewController: UIViewController {
-
+    
+    lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 1000)
+        return scrollView
+    }()
+    
     lazy var newsImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "bg")?.original
@@ -21,7 +27,7 @@ class DetailedNewsViewController: UIViewController {
     }()
     
     lazy var sourceLabel: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.text = "BLOOMBERG"
         label.font = UIFont(name: "STHeitiTC-Light", size: 11)
         label.backgroundColor = .textAqua
@@ -48,14 +54,14 @@ class DetailedNewsViewController: UIViewController {
         return label
     }()
     
-    lazy var textView: UITextView = {
-        let textView = UITextView()
-        textView.text = "TAJIKISTAN has the vainest ruler in Central Asia. Emomali Rahmon flies what may be the world’s largest flag atop what used to be the world’s tallest flagpole. His capital boasts that it will soon host the region’s biggest mosque, mainly paid for by Qatar. \n \n It already has the world’s largest teahouse, mainly Chinese-financed and mostly emptyand an immense national library—sadly devoid of books, according to whispering sceptics. It already has the world’s largest teahouse."
-        textView.font = UIFont(name: "OpenSans-Regular", size: 15)
-        textView.textColor = .textBlack
-        textView.textAlignment = .center
-        textView.isUserInteractionEnabled = false
-        return textView
+    lazy var textLabel: UILabel = {
+        let textLabel = UILabel()
+        textLabel.text = "TAJIKISTAN has the vainest ruler in Central Asia. Emomali Rahmon flies what may be the world’s largest flag atop what used to be the world’s tallest flagpole. His capital boasts that it will soon host the region’s biggest mosque, mainly paid for by Qatar. \n \n It already has the world’s largest teahouse, mainly Chinese-financed and mostly emptyand an immense national library—sadly devoid of books, according to whispering sceptics. It already has the world’s largest teahouse.TAJIKISTAN has the vainest ruler in Central Asia. Emomali Rahmon flies what may be the world’s largest flag atop what used to be the world’s tallest flagpole. His capital boasts that it will soon host the region’s biggest mosque, mainly paid for by Qatar. \n \n It already has the world’s largest teahouse, mainly Chinese-financed and mostly emptyand an immense national library—sadly devoid of books, according to whispering sceptics. It already has the world’s largest teahouse."
+        textLabel.font = UIFont(name: "OpenSans-Regular", size: 15)
+        textLabel.textColor = .textBlack
+        textLabel.textAlignment = .center
+        textLabel.numberOfLines = 0
+        return textLabel
     }()
     
     lazy var circleView: UIView = {
@@ -104,9 +110,13 @@ class DetailedNewsViewController: UIViewController {
         setupViews()
         setupConstraints()
     }
-
+    
     func setupViews(){
-        [newsImageView, sourceLabel, circleView, dateLabel, titleLabel, textView, lowerBar, line].forEach {
+        [newsImageView, sourceLabel, circleView, dateLabel, titleLabel, textLabel].forEach {
+            scrollView.addSubview($0)
+        }
+        
+        [scrollView, lowerBar, line].forEach {
             view.addSubview($0)
         }
         [backButton, bookmarkButton, shareButton].forEach{
@@ -115,6 +125,9 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func setupConstraints() {
+        
+        scrollView <- Edges(0)
+        
         newsImageView <- [
             Width(ScreenSize.width),
             Height(Helper.shared.constrain(with: .height, num: 280)),
@@ -129,10 +142,10 @@ class DetailedNewsViewController: UIViewController {
         ]
         
         circleView <- [
-         Width(Helper.shared.constrain(with: .width, num: 3)),
-         Height(Helper.shared.constrain(with: .height, num: 3)),
-         Left(Helper.shared.constrain(with: .width, num: 10)).to(sourceLabel),
-         Top(Helper.shared.constrain(with: .height, num: 16)).to(newsImageView)
+            Width(Helper.shared.constrain(with: .width, num: 3)),
+            Height(Helper.shared.constrain(with: .height, num: 3)),
+            Left(Helper.shared.constrain(with: .width, num: 10)).to(sourceLabel),
+            Top(Helper.shared.constrain(with: .height, num: 16)).to(newsImageView)
         ]
         
         dateLabel <- [
@@ -149,8 +162,9 @@ class DetailedNewsViewController: UIViewController {
             Height(Helper.shared.constrain(with: .height, num: 20))
         ]
         
-        textView <- [
+        textLabel <- [
             Top(Helper.shared.constrain(with: .height, num: 10)).to(titleLabel),
+            Width(ScreenSize.width - Helper.shared.constrain(with: .width, num: 40)),
             Left(Helper.shared.constrain(with: .width, num: 20)),
             Right(Helper.shared.constrain(with: .width, num: 20)),
             Bottom(0).to(lowerBar)

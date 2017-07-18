@@ -14,6 +14,8 @@ import Sugar
 
 class FeedViewController: UIViewController {
 
+
+    
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
@@ -47,11 +49,9 @@ class FeedViewController: UIViewController {
         view.backgroundColor = .backgroundGrey
         setupViews()
         setupConstraints()
+        
     }
-    
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
+
     
     func setupViews(){
         [tableView, arrowButton, menuButton].forEach {
@@ -86,7 +86,7 @@ class FeedViewController: UIViewController {
     }
     
     func menuPressed() {
-        self.present(DetailedNewsViewController(), animated: true, completion: nil)
+  
     }
 
 }
@@ -105,6 +105,13 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return tableView.height / 3
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let objVC: DetailedNewsViewController2 = DetailedNewsViewController2()
+        let aObjNavi = UINavigationController(rootViewController: objVC)
+        self.present(aObjNavi, animated: true, completion: nil)
     }
     
 }
