@@ -15,18 +15,25 @@ class TagsTableViewCell: UITableViewCell {
     
     // MARK: Properties
     
+    var subtag: Subtag? {
+        didSet {
+            self.configureView()
+        }
+    }
+
+    
     lazy var circleView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 8.5
+        view.layer.cornerRadius = 6
         view.backgroundColor = .mainBlue
         return view
     }()
     
-    lazy var tagLabel: UILabel = {
+    lazy var subtagLabel: UILabel = {
         return UILabel().then {
             $0.textColor = .textCellBlack
             $0.textAlignment = .left
-            $0.font = UIFont(name: "OpenSans-Regular", size: Helper.shared.constrain(with: .height, num: 20))
+            $0.font = UIFont(name: "OpenSans-Light", size: Helper.shared.constrain(with: .height, num: 15))
         }
     }()
     
@@ -50,7 +57,7 @@ class TagsTableViewCell: UITableViewCell {
     }
     
     func setupViews() {
-        [circleView, tagLabel, checkmarkView].forEach{
+        [circleView, subtagLabel, checkmarkView].forEach{
             contentView.addSubview($0)
         }
     }
@@ -60,16 +67,16 @@ class TagsTableViewCell: UITableViewCell {
     func setupConstraints() {
   
         circleView <- [
-            Left(Helper.shared.constrain(with: .width, num: 30)),
-            Height(Helper.shared.constrain(with: .height, num: 17)),
-            Width(Helper.shared.constrain(with: .width, num: 17)),
+            Left(Helper.shared.constrain(with: .width, num: 60)),
+            Height(Helper.shared.constrain(with: .height, num: 12)),
+            Width(Helper.shared.constrain(with: .width, num: 12)),
             CenterY()
         ]
         
-        tagLabel <- [
-            Left(Helper.shared.constrain(with: .width, num: 35)).to(circleView),
+        subtagLabel <- [
+            Left(Helper.shared.constrain(with: .width, num: 20)).to(circleView),
             Height(Helper.shared.constrain(with: .height, num: 27)),
-            Width(Helper.shared.constrain(with: .width, num: 150)),
+            Right(Helper.shared.constrain(with: .width, num: 30)),
             CenterY()
         ]
         
@@ -80,6 +87,13 @@ class TagsTableViewCell: UITableViewCell {
             CenterY()
         ]
     }
+    
+    func configureView() {
+        if let subtag = subtag?.subtag {
+            subtagLabel.text = subtag
+        }
+    }
+
     
     func isSelected(_ bool: Bool) { 
         checkmarkView.alpha = bool ? 1 : 0

@@ -12,15 +12,17 @@ import EasyPeasy
 class TagsViewController: UIViewController {
 
     var selectedCells = [UITableViewCell]()
+    var tags = [Tag]()
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.isScrollEnabled = false
+        tableView.isScrollEnabled = true
         tableView.backgroundColor = .clear
         tableView.allowsMultipleSelection = true
-        tableView.rowHeight = Helper.shared.constrain(with: .height, num: 45)
+        tableView.estimatedRowHeight = Helper.shared.constrain(with: .height, num: 44)
+        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(TagsTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
@@ -50,6 +52,7 @@ class TagsViewController: UIViewController {
         view.backgroundColor = .white
         setupViews()
         setupConstraints()
+        fetchTags()
         // Do any additional setup after loading the view.
     }
     
@@ -87,6 +90,11 @@ class TagsViewController: UIViewController {
             CenterX()
         ]
     }
+    
+    func fetchTags() {
+        tags = Tag.fetchTags()
+        tableView.reloadData()
+    }
 
     
     func dismissButtonPressed() {
@@ -98,15 +106,32 @@ class TagsViewController: UIViewController {
 
 
 extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return 5
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return tags.count
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        return tags[section].collapsed ? 0 : tags[section].subtags.count
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CollapsibleTableViewHeader ?? CollapsibleTableViewHeader(reuseIdentifier: "header")
+        
+        header.tagObject = tags[section]
+        header.setCollapsed(tags[section].collapsed)
+        
+        header.section = section
+        header.delegate = self
+        return header
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TagsTableViewCell
-        cell.tagLabel.text = "Namibia"
         cell.selectionStyle = .none
+        cell.subtag = tags[indexPath.section].subtags[indexPath.row]
+        cell.circleView.backgroundColor = tags[indexPath.section].color
+        
         if cell.isSelected{
             cell.isSelected(true)
         } else {
@@ -115,6 +140,18 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+      func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return tags[(indexPath as NSIndexPath).section].collapsed ? 0 : UITableViewAutomaticDimension
+    }
+    
+     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 45.0
+    }
+    
+     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1.0
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! TagsTableViewCell
         cell.isSelected(true)
@@ -123,5 +160,18 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! TagsTableViewCell
          cell.isSelected(false)
+    }
+}
+
+extension TagsViewController: CollapsibleTableViewHeaderDelegate {
+    func toggleSection(_ header: CollapsibleTableViewHeader, section: Int) {
+        let collapsed = !tags[section].collapsed
+        
+        // Toggle collapse
+        tags[section].collapsed = collapsed
+        header.setCollapsed(collapsed)
+        
+        // Reload the whole section
+        tableView.reloadSections(NSIndexSet(index: section) as IndexSet, with: .automatic)
     }
 }
