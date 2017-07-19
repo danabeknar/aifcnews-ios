@@ -47,11 +47,17 @@ class DetailedNewsViewController2: LMArticleViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.isNavigationBarHidden = true
         configureView()
         setupViews()
         setupConstraints()
+        
+        self.automaticallyAdjustsScrollViewInsets = false
     }
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.scrollView.scrollRectToVisible(.zero, animated: true)
+    }
     func configureView() {
         self.headlineFont = UIFont(name: "OpenSans-Semibold", size: 22)
         self.headlineColor = .textBlack
@@ -94,10 +100,10 @@ class DetailedNewsViewController2: LMArticleViewController {
         ]
         
         backButton <- [
-            Left(Helper.shared.constrain(with: .height, num: 10)),
-            Top(Helper.shared.constrain(with: .height, num: 14)),
-            Bottom(Helper.shared.constrain(with: .height, num: 14)),
-            Width(Helper.shared.constrain(with: .width, num: 25))
+            Left(Helper.shared.constrain(with: .height, num: 15)),
+            CenterY(),
+            Height(Helper.shared.constrain(with: .width, num: 24)),
+            Width(Helper.shared.constrain(with: .width, num: 13))
         ]
         
         shareButton <- [

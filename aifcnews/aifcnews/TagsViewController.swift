@@ -41,7 +41,7 @@ class TagsViewController: UIViewController {
     
     lazy var dismissButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Letter-x")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(UIImage(named: "Cross")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(dismissButtonPressed), for: .touchUpInside)
         return button
     }()
