@@ -19,10 +19,14 @@
 		0DBEB4681F1CFCD200A03809 /* DetailedNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */; };
 		0DBEB46D1F1D082C00A03809 /* STHeiti Light.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 0DBEB46C1F1D082C00A03809 /* STHeiti Light.ttc */; };
 		0DBEB4711F1DE7FB00A03809 /* DetailedNewsViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4701F1DE7FB00A03809 /* DetailedNewsViewController2.swift */; };
+		0DBEB4731F1E1CB200A03809 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4721F1E1CB200A03809 /* SettingsViewController.swift */; };
+		0DBEB4751F1E1FC800A03809 /* TagsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4741F1E1FC800A03809 /* TagsTableViewCell.swift */; };
+		0DBEB4771F1E2A2600A03809 /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4761F1E2A2600A03809 /* TagsViewController.swift */; };
 		0DC71A501F1795D200225263 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC71A4F1F1795D200225263 /* AppDelegate.swift */; };
 		0DC71A521F1795D200225263 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DC71A511F1795D200225263 /* FeedViewController.swift */; };
 		0DC71A571F1795D200225263 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0DC71A561F1795D200225263 /* Assets.xcassets */; };
 		0DC71A5A1F1795D200225263 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DC71A581F1795D200225263 /* LaunchScreen.storyboard */; };
+		0DE5C5A41F1F1943001A47E4 /* Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE5C5A31F1F1943001A47E4 /* Tags.swift */; };
 		3B1ECEEC2DB552BE5CA9A14E /* Pods_aifcnews.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80CE2DEE37C1380422B5EC38 /* Pods_aifcnews.framework */; };
 /* End PBXBuildFile section */
 
@@ -39,12 +43,16 @@
 		0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedNewsViewController.swift; sourceTree = "<group>"; };
 		0DBEB46C1F1D082C00A03809 /* STHeiti Light.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "STHeiti Light.ttc"; sourceTree = "<group>"; };
 		0DBEB4701F1DE7FB00A03809 /* DetailedNewsViewController2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedNewsViewController2.swift; sourceTree = "<group>"; };
+		0DBEB4721F1E1CB200A03809 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		0DBEB4741F1E1FC800A03809 /* TagsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewCell.swift; sourceTree = "<group>"; };
+		0DBEB4761F1E2A2600A03809 /* TagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
 		0DC71A4C1F1795D200225263 /* aifcnews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = aifcnews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DC71A4F1F1795D200225263 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DC71A511F1795D200225263 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		0DC71A561F1795D200225263 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0DC71A591F1795D200225263 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0DC71A5B1F1795D200225263 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0DE5C5A31F1F1943001A47E4 /* Tags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tags.swift; sourceTree = "<group>"; };
 		4B384094FD3412237F1E25E5 /* Pods-aifcnews.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aifcnews.debug.xcconfig"; path = "Pods/Target Support Files/Pods-aifcnews/Pods-aifcnews.debug.xcconfig"; sourceTree = "<group>"; };
 		80CE2DEE37C1380422B5EC38 /* Pods_aifcnews.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_aifcnews.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B04F2EF97E932B17E14F3ABB /* Pods-aifcnews.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-aifcnews.release.xcconfig"; path = "Pods/Target Support Files/Pods-aifcnews/Pods-aifcnews.release.xcconfig"; sourceTree = "<group>"; };
@@ -74,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				0D0ECBAA1F18B338005699FC /* FeedTableViewCell.swift */,
+				0DBEB4741F1E1FC800A03809 /* TagsTableViewCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -81,9 +90,11 @@
 		0D0ECBA81F18B2F4005699FC /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				0DC71A511F1795D200225263 /* FeedViewController.swift */,
 				0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */,
 				0DBEB4701F1DE7FB00A03809 /* DetailedNewsViewController2.swift */,
+				0DC71A511F1795D200225263 /* FeedViewController.swift */,
+				0DBEB4721F1E1CB200A03809 /* SettingsViewController.swift */,
+				0DBEB4761F1E2A2600A03809 /* TagsViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -140,6 +151,7 @@
 				0D0ECBA71F18B2E9005699FC /* Views */,
 				0D0ECBA61F18B2E4005699FC /* Models */,
 				0D0ECBA91F18B301005699FC /* Supporting FIles */,
+				0DE5C5A31F1F1943001A47E4 /* Tags.swift */,
 			);
 			path = aifcnews;
 			sourceTree = "<group>";
@@ -291,7 +303,11 @@
 			files = (
 				0D0ECBA51F18B099005699FC /* Extensions.swift in Sources */,
 				0D0ECBAB1F18B338005699FC /* FeedTableViewCell.swift in Sources */,
+				0DBEB4751F1E1FC800A03809 /* TagsTableViewCell.swift in Sources */,
 				0DC71A521F1795D200225263 /* FeedViewController.swift in Sources */,
+				0DBEB4731F1E1CB200A03809 /* SettingsViewController.swift in Sources */,
+				0DE5C5A41F1F1943001A47E4 /* Tags.swift in Sources */,
+				0DBEB4771F1E2A2600A03809 /* TagsViewController.swift in Sources */,
 				0DC71A501F1795D200225263 /* AppDelegate.swift in Sources */,
 				0D0ECBA11F18A220005699FC /* Constants.swift in Sources */,
 				0D0ECBA31F18A2ED005699FC /* Helper.swift in Sources */,

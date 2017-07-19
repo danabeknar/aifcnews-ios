@@ -38,6 +38,7 @@ extension UIColor {
     static let textBlack = "4A4A4A".hexColor
     static let barGrey = "FAFAFA".hexColor
     static let lineGrey = "C8C7CC".hexColor
+    static let textCellBlack = "343434".hexColor
 }
 
 

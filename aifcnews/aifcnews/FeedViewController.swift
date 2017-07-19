@@ -86,7 +86,9 @@ class FeedViewController: UIViewController {
     }
     
     func menuPressed() {
-  
+        
+//        vc.tabItems = [(SettingsViewController(), "Tags"), (SettingsViewController(), "Settings")]
+        self.present(TagsViewController(), animated: true, completion: nil)
     }
 
 }
@@ -109,9 +111,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let objVC: DetailedNewsViewController2 = DetailedNewsViewController2()
-        let aObjNavi = UINavigationController(rootViewController: objVC)
-        self.present(aObjNavi, animated: true, completion: nil)
+        
     }
     
 }
