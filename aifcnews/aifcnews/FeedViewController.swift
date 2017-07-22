@@ -13,23 +13,21 @@ import TabPageViewController
 import Sugar
 
 class FeedViewController: UIViewController {
-
-
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.backgroundColor = .clear
         tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
+    
+
 
     lazy var arrowButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Arrow")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.imageEdgeInsets = UIEdgeInsetsMake(7, 7, 7, 7)
-        button.backgroundColor = .white
-        button.layer.cornerRadius = Helper.shared.constrain(with: .height, num: Int(16))
+        button.setImage(UIImage(named: "UpArrow")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(arrowButtonPressed), for: .touchUpInside)
         return button
     }()
@@ -37,10 +35,8 @@ class FeedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .backgroundGrey
         setupViews()
         setupConstraints()
-        
     }
 
     
@@ -51,20 +47,26 @@ class FeedViewController: UIViewController {
         
         let menuButtonSize: CGSize = CGSize(width: 64.0, height: 64.0)
         let menuButton = ExpandingMenuButton(frame: CGRect(origin: CGPoint.zero, size: menuButtonSize), centerImage: UIImage(named: "Menu")!, centerHighlightedImage: UIImage(named: "Menu")!)
-        menuButton.center = CGPoint(x: self.view.bounds.width - 32.0, y: self.view.bounds.height - 72.0)
+        menuButton.center = CGPoint(x: self.view.bounds.width - Helper.shared.constrain(with: .width, num: 50), y: self.view.bounds.height - Helper.shared.constrain(with: .height, num: 50))
         view.addSubview(menuButton)
         
-        let item1 = ExpandingMenuItem(size: menuButtonSize, title: "Settings", image: UIImage(named: "Settings")!, highlightedImage: UIImage(named: "Settings")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
+        let item1 = ExpandingMenuItem(size: menuButtonSize, title: "Settings", image: UIImage(named: "SettingsMenu")!, highlightedImage: UIImage(named: "SettingsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
             self.present(SettingsViewController(), animated: true, completion: nil)
         }
         
-        let item2 = ExpandingMenuItem(size: menuButtonSize, title: "Bookmarks", image: UIImage(named: "BookmarkMenu")!, highlightedImage: UIImage(named: "Bookmark")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
+        let item2 = ExpandingMenuItem(size: menuButtonSize, title: "Tags", image: UIImage(named: "TagsMenu")!, highlightedImage: UIImage(named: "TagsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
             self.present(TagsViewController(), animated: true, completion: nil)
         }
         
-        menuButton.enabledFoldingAnimations  = [.MenuItemBound]
+        let item3 = ExpandingMenuItem(size: menuButtonSize, title: "Bookmarks", image: UIImage(named: "BookmarkMenu")!, highlightedImage: UIImage(named: "BookmarkMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
+            self.present(TagsViewController(), animated: true, completion: nil)
+        }
+        
+        menuButton.enabledFoldingAnimations  = [.MenuItemFade, .MenuItemMoving]
         menuButton.allowSounds = false
-        menuButton.addMenuItems([item1, item2])
+        menuButton.menuItemMargin = 15
+        menuButton.bottomViewAlpha = 0.7
+        menuButton.addMenuItems([item1, item2, item3])
     }
     
     func setupConstraints() {        
@@ -77,8 +79,8 @@ class FeedViewController: UIViewController {
         arrowButton <- [
             Bottom(Helper.shared.constrain(with: .height, num: 20)),
             Left(Helper.shared.constrain(with: .width, num: 15)),
-            Width(Helper.shared.constrain(with: .width, num: 32)),
-            Height(Helper.shared.constrain(with: .height, num: 32))
+            Width(Helper.shared.constrain(with: .width, num: 60)),
+            Height(Helper.shared.constrain(with: .height, num: 60))
         ]
 
     }
@@ -108,13 +110,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc: DetailedNewsViewController2 = DetailedNewsViewController2()
-        let navigationVC = UINavigationController(rootViewController: vc)
-        navigationVC.isNavigationBarHidden = true
-        navigationVC.isToolbarHidden = true
-        navigationVC.setToolbarHidden(true, animated: true)
-        navigationVC.setNavigationBarHidden(true, animated: false)
-        self.present(navigationVC, animated: true, completion: nil)
+        self.present(DetailedNewsViewController(), animated: true, completion: nil)
     }
     
 }

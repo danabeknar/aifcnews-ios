@@ -74,16 +74,16 @@ class TagsTableViewCell: UITableViewCell {
         ]
         
         subtagLabel <- [
-            Left(Helper.shared.constrain(with: .width, num: 20)).to(circleView),
+            Left(Helper.shared.constrain(with: .width, num: 15)).to(circleView),
             Height(Helper.shared.constrain(with: .height, num: 27)),
-            Right(Helper.shared.constrain(with: .width, num: 30)),
+            Right(Helper.shared.constrain(with: .width, num: 40)),
             CenterY()
         ]
         
         checkmarkView <- [
             Right(Helper.shared.constrain(with: .width, num: 20)),
-            Height(Helper.shared.constrain(with: .height, num: 20)),
-            Width(Helper.shared.constrain(with: .width, num: 20)),
+            Height(Helper.shared.constrain(with: .height, num: 15)),
+            Width(Helper.shared.constrain(with: .width, num: 15)),
             CenterY()
         ]
     }

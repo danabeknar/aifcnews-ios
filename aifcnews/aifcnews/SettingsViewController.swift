@@ -72,6 +72,17 @@ class SettingsViewController: UIViewController {
         view.backgroundColor = .white
         setupViews()
         setupConstraints()
+        setNavigationBar()
+    }
+    
+    func setNavigationBar() {
+        let screenSize: CGRect = UIScreen.main.bounds
+        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 45))
+        navBar.barTintColor = "2E4057".hexColor
+        let navItem = UINavigationItem(title: "Settings");
+        navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        navBar.setItems([navItem], animated: true);
+        self.view.addSubview(navBar)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -95,7 +106,7 @@ class SettingsViewController: UIViewController {
     
     func setupConstraints() {
         tableView <- [
-            Top(Helper.shared.constrain(with: .height, num: 65)),
+            Top(Helper.shared.constrain(with: .height, num: 50)),
             Width(ScreenSize.width),
             Bottom(0).to(line)
         ]

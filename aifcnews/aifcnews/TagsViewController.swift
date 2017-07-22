@@ -20,8 +20,6 @@ class TagsViewController: UIViewController {
         tableView.dataSource = self
         tableView.isScrollEnabled = true
         tableView.backgroundColor = .clear
-        tableView.allowsMultipleSelection = true
-        tableView.estimatedRowHeight = Helper.shared.constrain(with: .height, num: 44)
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.register(TagsTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
@@ -50,12 +48,23 @@ class TagsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        setupNavigationBar()
         setupViews()
         setupConstraints()
         fetchTags()
         // Do any additional setup after loading the view.
     }
     
+    func setupNavigationBar() {
+        let screenSize: CGRect = UIScreen.main.bounds
+        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 45))
+        navBar.barTintColor = "2E4057".hexColor
+        let navItem = UINavigationItem(title: "Tags");
+        navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        navBar.setItems([navItem], animated: true);
+        self.view.addSubview(navBar)
+    }
+
     func setupViews(){
         [tableView, lowerBar, line].forEach {
             view.addSubview($0)

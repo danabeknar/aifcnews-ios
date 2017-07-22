@@ -9,15 +9,9 @@
 import UIKit
 import Sugar
 import EasyPeasy
-import LMArticleViewController
+import MXParallaxHeader
 
 class DetailedNewsViewController: UIViewController {
-    
-    lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: 1000)
-        return scrollView
-    }()
     
     lazy var newsImageView: UIImageView = {
         let imageView = UIImageView()
@@ -26,50 +20,19 @@ class DetailedNewsViewController: UIViewController {
         return imageView
     }()
     
-    lazy var sourceLabel: UILabel = {
-        let label = UILabel()
-        label.text = "BLOOMBERG"
-        label.font = UIFont(name: "STHeitiTC-Light", size: 11)
-        label.backgroundColor = .textAqua
-        label.textColor = .white
-        label.textAlignment = .center
-        return label
+    lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.backgroundColor = .white
+        tableView.allowsSelection = false
+        tableView.register(DetailedNewsTableViewCell.self, forCellReuseIdentifier: "Cell")
+        tableView.parallaxHeader.height = Helper.shared.constrain(with: .height, num: 280)
+        tableView.parallaxHeader.mode = .fill
+        tableView.separatorStyle = .none
+        return tableView
     }()
     
-    lazy var dateLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Today, 12:21"
-        label.font = UIFont(name: "OpenSans-Light", size: 13)
-        label.textColor = .textBlack
-        label.textAlignment = .left
-        return label
-    }()
-    
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont(name: "OpenSans-Semibold", size: 22)
-        label.text = "Central Asia: Stans undelivered"
-        label.textColor = .textBlack
-        label.textAlignment = .left
-        return label
-    }()
-    
-    lazy var textLabel: UILabel = {
-        let textLabel = UILabel()
-        textLabel.text = "TAJIKISTAN has the vainest ruler in Central Asia. Emomali Rahmon flies what may be the world’s largest flag atop what used to be the world’s tallest flagpole. His capital boasts that it will soon host the region’s biggest mosque, mainly paid for by Qatar. \n \n It already has the world’s largest teahouse, mainly Chinese-financed and mostly emptyand an immense national library—sadly devoid of books, according to whispering sceptics. It already has the world’s largest teahouse.TAJIKISTAN has the vainest ruler in Central Asia. Emomali Rahmon flies what may be the world’s largest flag atop what used to be the world’s tallest flagpole. His capital boasts that it will soon host the region’s biggest mosque, mainly paid for by Qatar. \n \n It already has the world’s largest teahouse, mainly Chinese-financed and mostly emptyand an immense national library—sadly devoid of books, according to whispering sceptics. It already has the world’s largest teahouse."
-        textLabel.font = UIFont(name: "OpenSans-Regular", size: 15)
-        textLabel.textColor = .textBlack
-        textLabel.textAlignment = .center
-        textLabel.numberOfLines = 0
-        return textLabel
-    }()
-    
-    lazy var circleView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        view.layer.cornerRadius = 2
-        return view
-    }()
     
     lazy var lowerBar: UIView = {
         let view = UIView()
@@ -112,11 +75,8 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func setupViews(){
-        [newsImageView, sourceLabel, circleView, dateLabel, titleLabel, textLabel].forEach {
-            scrollView.addSubview($0)
-        }
-        
-        [scrollView, lowerBar, line].forEach {
+        tableView.parallaxHeader.view = newsImageView
+        [tableView, lowerBar, line].forEach {
             view.addSubview($0)
         }
         [backButton, bookmarkButton, shareButton].forEach{
@@ -126,48 +86,10 @@ class DetailedNewsViewController: UIViewController {
     
     func setupConstraints() {
         
-        scrollView <- Edges(0)
-        
-        newsImageView <- [
+        tableView <- [
             Width(ScreenSize.width),
-            Height(Helper.shared.constrain(with: .height, num: 280)),
-            Top(0)
-        ]
-        
-        sourceLabel <- [
-            Width(Helper.shared.constrain(with: .width, num: 100)),
-            Height(Helper.shared.constrain(with: .height, num: 15)),
-            Left(Helper.shared.constrain(with: .width, num: 10)),
-            Top(Helper.shared.constrain(with: .height, num: 10)).to(newsImageView)
-        ]
-        
-        circleView <- [
-            Width(Helper.shared.constrain(with: .width, num: 3)),
-            Height(Helper.shared.constrain(with: .height, num: 3)),
-            Left(Helper.shared.constrain(with: .width, num: 10)).to(sourceLabel),
-            Top(Helper.shared.constrain(with: .height, num: 16)).to(newsImageView)
-        ]
-        
-        dateLabel <- [
-            Width(Helper.shared.constrain(with: .width, num: 120)),
-            Height(Helper.shared.constrain(with: .height, num: 15)),
-            Left(Helper.shared.constrain(with: .width, num: 10)).to(circleView),
-            Top(Helper.shared.constrain(with: .height, num: 10)).to(newsImageView)
-        ]
-        
-        titleLabel <- [
-            Top(Helper.shared.constrain(with: .height, num: 10)).to(sourceLabel),
-            Left(Helper.shared.constrain(with: .width, num: 20)),
-            Right(Helper.shared.constrain(with: .width, num: 20)),
-            Height(Helper.shared.constrain(with: .height, num: 20))
-        ]
-        
-        textLabel <- [
-            Top(Helper.shared.constrain(with: .height, num: 10)).to(titleLabel),
-            Width(ScreenSize.width - Helper.shared.constrain(with: .width, num: 40)),
-            Left(Helper.shared.constrain(with: .width, num: 20)),
-            Right(Helper.shared.constrain(with: .width, num: 20)),
-            Bottom(0).to(lowerBar)
+            Top(0),
+            Bottom(0)
         ]
         
         line <- [
@@ -183,10 +105,10 @@ class DetailedNewsViewController: UIViewController {
         ]
         
         backButton <- [
-            Left(Helper.shared.constrain(with: .height, num: 10)),
-            Top(Helper.shared.constrain(with: .height, num: 14)),
-            Bottom(Helper.shared.constrain(with: .height, num: 14)),
-            Width(Helper.shared.constrain(with: .width, num: 25))
+            Left(Helper.shared.constrain(with: .height, num: 15)),
+            CenterY(),
+            Height(Helper.shared.constrain(with: .width, num: 24)),
+            Width(Helper.shared.constrain(with: .width, num: 13))
         ]
         
         shareButton <- [
@@ -206,16 +128,58 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func backPressed() {
-        
+        dismiss(animated: true, completion: nil)
     }
     
     func bookmarkPressed() {
-        
+        print("pressed")
+        bookmarkButton.tintColor = .mainBlue
     }
     
     func sharePressed() {
-        
+        print("pressed")
     }
     
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
+//            line.alpha = 0
+//            lowerBar.alpha = 0
+//        }
+//        else{
+//            line.alpha = 1
+//            lowerBar.alpha = 1
+//        }
+//    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
+            UIView.animate(withDuration: 0.5, animations: { 
+                self.line.alpha = 0
+                self.lowerBar.alpha = 0
+            })
+        }
+        else{
+            UIView.animate(withDuration: 0.5, animations: {
+                self.line.alpha = 1
+                self.lowerBar.alpha = 1
+            })
+        }
+    }
+}
+
+extension DetailedNewsViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! DetailedNewsTableViewCell
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return ScreenSize.height
+    }
     
 }

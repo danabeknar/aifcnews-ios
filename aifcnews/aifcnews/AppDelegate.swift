@@ -24,16 +24,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func configureTabBarVC() -> TabPageViewController {
         let tabPageViewController = TabPageViewController.create()
-        tabPageViewController.option.fontSize = 10
+        tabPageViewController.option.fontSize = 11
         tabPageViewController.option.hidesTopViewOnSwipeType = .tabBar
         tabPageViewController.option.isTranslucent = false
         tabPageViewController.option.currentColor = .white
-        tabPageViewController.option.defaultColor = .textGrey
+        tabPageViewController.option.defaultColor = .lightGray
         tabPageViewController.option.tabHeight = 40
+        tabPageViewController.option.hidesTopViewOnSwipeType = .navigationBar
+        tabPageViewController.option.hidesTopViewOnSwipeType = .tabBar
+        tabPageViewController.hidesBottomBarWhenPushed = true
+        tabPageViewController.isInfinity = true
         tabPageViewController.option.tabBackgroundColor = .mainBlue
         tabPageViewController.option.highlightFontName = "OpenSans-Semibold"
         tabPageViewController.option.unHighlightFontName = "OpenSans-Semibold"
-        tabPageViewController.tabItems = [(FeedViewController(), "ECONOMY"), (FeedViewController(), "KAZAKHSTAN"), (FeedViewController(), "BITCOIN")]
+        tabPageViewController.tabItems = [(FeedViewController(), "ECONOMY"), (FeedViewController(), "KAZAKHSTAN"), (FeedViewController(), "AIFC"), (FeedViewController(), "BITCOIN")]
         return tabPageViewController
     }
 
