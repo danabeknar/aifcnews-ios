@@ -21,6 +21,7 @@ class TagsViewController: UIViewController {
         tableView.isScrollEnabled = true
         tableView.backgroundColor = .clear
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.allowsMultipleSelection = true
         tableView.register(TagsTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()

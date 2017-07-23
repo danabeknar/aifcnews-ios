@@ -59,7 +59,7 @@ class FeedViewController: UIViewController {
         }
         
         let item3 = ExpandingMenuItem(size: menuButtonSize, title: "Bookmarks", image: UIImage(named: "BookmarkMenu")!, highlightedImage: UIImage(named: "BookmarkMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
-            self.present(TagsViewController(), animated: true, completion: nil)
+            self.present(BookmarkViewController(), animated: true, completion: nil)
         }
         
         menuButton.enabledFoldingAnimations  = [.MenuItemFade, .MenuItemMoving]
