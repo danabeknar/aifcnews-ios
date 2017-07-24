@@ -55,7 +55,8 @@ class DetailedNewsViewController: UIViewController {
     
     lazy var bookmarkButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Bookmark")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.setImage(UIImage(named: "Bookmark")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.imageView?.tintColor = .mainBlue
         button.addTarget(self, action: #selector(bookmarkPressed), for: .touchUpInside)
         return button
     }()
@@ -132,25 +133,13 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func bookmarkPressed() {
-        print("pressed")
-        bookmarkButton.tintColor = .mainBlue
+        bookmarkButton.imageView?.image = bookmarkButton.imageView?.image?.maskWithColor(color: .mainBlue)
     }
     
     func sharePressed() {
         print("pressed")
     }
-    
-//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
-//            line.alpha = 0
-//            lowerBar.alpha = 0
-//        }
-//        else{
-//            line.alpha = 1
-//            lowerBar.alpha = 1
-//        }
-//    }
-    
+        
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
             UIView.animate(withDuration: 0.5, animations: { 
@@ -165,6 +154,7 @@ class DetailedNewsViewController: UIViewController {
             })
         }
     }
+
 }
 
 extension DetailedNewsViewController: UITableViewDelegate, UITableViewDataSource {

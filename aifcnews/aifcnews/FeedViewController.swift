@@ -38,7 +38,10 @@ class FeedViewController: UIViewController {
         setupViews()
         setupConstraints()
     }
-
+    
+    override var prefersStatusBarHidden: Bool{
+        return true
+    }
     
     func setupViews(){
         [tableView, arrowButton].forEach {

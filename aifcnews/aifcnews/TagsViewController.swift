@@ -56,13 +56,17 @@ class TagsViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    override var prefersStatusBarHidden: Bool{
+        return false
+    }
+    
     func setupNavigationBar() {
         let screenSize: CGRect = UIScreen.main.bounds
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 45))
-        navBar.barTintColor = "2E4057".hexColor
+        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 65))
         let navItem = UINavigationItem(title: "Tags");
-        navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-        navBar.setItems([navItem], animated: true);
+        navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.mainBlue]
+        navBar.setItems([navItem], animated: true)
+        navBar.barStyle = .default
         self.view.addSubview(navBar)
     }
 
@@ -76,7 +80,7 @@ class TagsViewController: UIViewController {
     func setupConstraints() {
         
         tableView <- [
-            Top(Helper.shared.constrain(with: .height, num: 40)),
+            Top(Helper.shared.constrain(with: .height, num: 66)),
             Bottom(Helper.shared.constrain(with: .height, num: 50)),
             Width(ScreenSize.width)
         ]

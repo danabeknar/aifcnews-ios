@@ -18,6 +18,11 @@ struct SettingsItem {
 
 class SettingsViewController: UIViewController {
 
+    
+    override var prefersStatusBarHidden: Bool {
+        return false
+    }
+    
     var sectionItems = [
         [SettingsItem(image: UIImage(named: "Star")!, title: "Rate Us", color: "007AFF".hexColor),
          SettingsItem(image: UIImage(named: "Share")!, title: "Share With Friends", color: "FF9500".hexColor),
@@ -77,11 +82,11 @@ class SettingsViewController: UIViewController {
     
     func setNavigationBar() {
         let screenSize: CGRect = UIScreen.main.bounds
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 45))
-        navBar.barTintColor = "2E4057".hexColor
+        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 65))
         let navItem = UINavigationItem(title: "Settings");
-        navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-        navBar.setItems([navItem], animated: true);
+        navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.mainBlue]
+        navBar.setItems([navItem], animated: true)
+        navBar.barStyle = .default
         self.view.addSubview(navBar)
     }
 
