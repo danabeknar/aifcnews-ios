@@ -154,6 +154,20 @@ class DetailedNewsViewController: UIViewController {
             })
         }
     }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UIApplication.shared.isStatusBarHidden = true
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.isStatusBarHidden = false
+    }
 
 }
 

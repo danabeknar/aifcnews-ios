@@ -14,6 +14,8 @@ import Sugar
 
 class FeedViewController: UIViewController {
     
+    
+    
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
@@ -37,11 +39,9 @@ class FeedViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         setupConstraints()
+        self.modalPresentationCapturesStatusBarAppearance = true
     }
     
-    override var prefersStatusBarHidden: Bool{
-        return true
-    }
     
     func setupViews(){
         [tableView, arrowButton].forEach {
@@ -91,8 +91,21 @@ class FeedViewController: UIViewController {
     func arrowButtonPressed() {
         tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: UITableViewScrollPosition.top)
     }
+    
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
 
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UIApplication.shared.isStatusBarHidden = true
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.isStatusBarHidden = false
+        setNeedsStatusBarAppearanceUpdate()
+    }
 }
 
 // MARK: UITableViewDataSource, UITableViewDelegate

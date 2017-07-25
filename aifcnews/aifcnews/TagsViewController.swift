@@ -81,7 +81,7 @@ class TagsViewController: UIViewController {
         
         tableView <- [
             Top(Helper.shared.constrain(with: .height, num: 66)),
-            Bottom(Helper.shared.constrain(with: .height, num: 50)),
+            Bottom(0),
             Width(ScreenSize.width)
         ]
         
@@ -113,6 +113,21 @@ class TagsViewController: UIViewController {
     
     func dismissButtonPressed() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
+            UIView.animate(withDuration: 0.3, animations: {
+                self.line.alpha = 0
+                self.lowerBar.alpha = 0
+            })
+        }
+        else{
+            UIView.animate(withDuration: 0.3, animations: {
+                self.line.alpha = 1
+                self.lowerBar.alpha = 1
+            })
+        }
     }
 
 }

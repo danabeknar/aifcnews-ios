@@ -17,6 +17,7 @@
 		0D0ECBB31F18B664005699FC /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAF1F18B664005699FC /* OpenSans-SemiBold.ttf */; };
 		0D30DCD31F220E4100FBDE99 /* DetailedNewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D30DCD21F220E4100FBDE99 /* DetailedNewsTableViewCell.swift */; };
 		0D47D7721F248B1F00092C0D /* BookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D47D7711F248B1F00092C0D /* BookmarkViewController.swift */; };
+		0D4B86FE1F271E5D00313D5D /* ShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4B86FD1F271E5C00313D5D /* ShareManager.swift */; };
 		0DBEB4661F1CC8F100A03809 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4651F1CC8F100A03809 /* News.swift */; };
 		0DBEB4681F1CFCD200A03809 /* DetailedNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */; };
 		0DBEB46D1F1D082C00A03809 /* STHeiti Light.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 0DBEB46C1F1D082C00A03809 /* STHeiti Light.ttc */; };
@@ -44,6 +45,7 @@
 		0D0ECBAF1F18B664005699FC /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		0D30DCD21F220E4100FBDE99 /* DetailedNewsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedNewsTableViewCell.swift; sourceTree = "<group>"; };
 		0D47D7711F248B1F00092C0D /* BookmarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkViewController.swift; sourceTree = "<group>"; };
+		0D4B86FD1F271E5C00313D5D /* ShareManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareManager.swift; sourceTree = "<group>"; };
 		0DBEB4651F1CC8F100A03809 /* News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedNewsViewController.swift; sourceTree = "<group>"; };
 		0DBEB46C1F1D082C00A03809 /* STHeiti Light.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "STHeiti Light.ttc"; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 			children = (
 				0DE5C5A31F1F1943001A47E4 /* Tags.swift */,
 				0DBEB4651F1CC8F100A03809 /* News.swift */,
+				0D4B86FD1F271E5C00313D5D /* ShareManager.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				0D0ECBA31F18A2ED005699FC /* Helper.swift in Sources */,
 				0DBEB4681F1CFCD200A03809 /* DetailedNewsViewController.swift in Sources */,
 				0DBEB4661F1CC8F100A03809 /* News.swift in Sources */,
+				0D4B86FE1F271E5D00313D5D /* ShareManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

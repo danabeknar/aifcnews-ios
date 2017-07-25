@@ -24,14 +24,12 @@ class BookmarkViewController: UIViewController {
 
     lazy var lowerBar: UIView = {
         let view = UIView()
-        view.alpha = 0
         view.backgroundColor = .barGrey
         return view
     }()
     
     lazy var line: UIView = {
         let view = UIView()
-        view.alpha = 0
         view.backgroundColor = .lineGrey
         return view
     }()
@@ -51,6 +49,15 @@ class BookmarkViewController: UIViewController {
         setupConstraints()
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UIApplication.shared.isStatusBarHidden = true
+        setNeedsStatusBarAppearanceUpdate()
+    }
     
     func setupViews(){
         view.addSubviews(tableView, line, lowerBar)
