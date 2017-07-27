@@ -8,7 +8,6 @@
 
 import UIKit
 import EasyPeasy
-import TabPageViewController
 
 struct SettingsItem {
     var image: UIImage?

@@ -120,7 +120,7 @@ class DetailedNewsViewController: UIViewController {
         ]
         
         bookmarkButton <- [
-            Right(Helper.shared.constrain(with: .width, num: 15)).to(shareButton),
+            Right(Helper.shared.constrain(with: .width, num: 20)).to(shareButton),
             Top(Helper.shared.constrain(with: .height, num: 17)),
             Bottom(Helper.shared.constrain(with: .height, num: 13)),
             Width(Helper.shared.constrain(with: .width, num: 15))

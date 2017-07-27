@@ -11,16 +11,15 @@
 		0D0ECBA31F18A2ED005699FC /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0ECBA21F18A2ED005699FC /* Helper.swift */; };
 		0D0ECBA51F18B099005699FC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0ECBA41F18B099005699FC /* Extensions.swift */; };
 		0D0ECBAB1F18B338005699FC /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAA1F18B338005699FC /* FeedTableViewCell.swift */; };
-		0D0ECBB01F18B664005699FC /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAC1F18B664005699FC /* OpenSans-Bold.ttf */; };
-		0D0ECBB11F18B664005699FC /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAD1F18B664005699FC /* OpenSans-Light.ttf */; };
-		0D0ECBB21F18B664005699FC /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAE1F18B664005699FC /* OpenSans-Regular.ttf */; };
-		0D0ECBB31F18B664005699FC /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAF1F18B664005699FC /* OpenSans-SemiBold.ttf */; };
 		0D30DCD31F220E4100FBDE99 /* DetailedNewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D30DCD21F220E4100FBDE99 /* DetailedNewsTableViewCell.swift */; };
+		0D3987851F28A51B00CDBDC9 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D3987811F28A51B00CDBDC9 /* OpenSans-Bold.ttf */; };
+		0D3987861F28A51B00CDBDC9 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D3987821F28A51B00CDBDC9 /* OpenSans-Light.ttf */; };
+		0D3987871F28A51B00CDBDC9 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D3987831F28A51B00CDBDC9 /* OpenSans-Regular.ttf */; };
+		0D3987881F28A51B00CDBDC9 /* OpenSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D3987841F28A51B00CDBDC9 /* OpenSans-SemiBold.ttf */; };
 		0D47D7721F248B1F00092C0D /* BookmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D47D7711F248B1F00092C0D /* BookmarkViewController.swift */; };
 		0D4B86FE1F271E5D00313D5D /* ShareManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4B86FD1F271E5C00313D5D /* ShareManager.swift */; };
 		0DBEB4661F1CC8F100A03809 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4651F1CC8F100A03809 /* News.swift */; };
 		0DBEB4681F1CFCD200A03809 /* DetailedNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */; };
-		0DBEB46D1F1D082C00A03809 /* STHeiti Light.ttc in Resources */ = {isa = PBXBuildFile; fileRef = 0DBEB46C1F1D082C00A03809 /* STHeiti Light.ttc */; };
 		0DBEB4731F1E1CB200A03809 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4721F1E1CB200A03809 /* SettingsViewController.swift */; };
 		0DBEB4751F1E1FC800A03809 /* TagsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4741F1E1FC800A03809 /* TagsTableViewCell.swift */; };
 		0DBEB4771F1E2A2600A03809 /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4761F1E2A2600A03809 /* TagsViewController.swift */; };
@@ -39,16 +38,15 @@
 		0D0ECBA21F18A2ED005699FC /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		0D0ECBA41F18B099005699FC /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		0D0ECBAA1F18B338005699FC /* FeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
-		0D0ECBAC1F18B664005699FC /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
-		0D0ECBAD1F18B664005699FC /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
-		0D0ECBAE1F18B664005699FC /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
-		0D0ECBAF1F18B664005699FC /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		0D30DCD21F220E4100FBDE99 /* DetailedNewsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedNewsTableViewCell.swift; sourceTree = "<group>"; };
+		0D3987811F28A51B00CDBDC9 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		0D3987821F28A51B00CDBDC9 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
+		0D3987831F28A51B00CDBDC9 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		0D3987841F28A51B00CDBDC9 /* OpenSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-SemiBold.ttf"; sourceTree = "<group>"; };
 		0D47D7711F248B1F00092C0D /* BookmarkViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BookmarkViewController.swift; sourceTree = "<group>"; };
 		0D4B86FD1F271E5C00313D5D /* ShareManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareManager.swift; sourceTree = "<group>"; };
 		0DBEB4651F1CC8F100A03809 /* News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedNewsViewController.swift; sourceTree = "<group>"; };
-		0DBEB46C1F1D082C00A03809 /* STHeiti Light.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = "STHeiti Light.ttc"; sourceTree = "<group>"; };
 		0DBEB4721F1E1CB200A03809 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		0DBEB4741F1E1FC800A03809 /* TagsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewCell.swift; sourceTree = "<group>"; };
 		0DBEB4761F1E2A2600A03809 /* TagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
@@ -128,11 +126,10 @@
 		0D0ECBB41F18B66B005699FC /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				0DBEB46C1F1D082C00A03809 /* STHeiti Light.ttc */,
-				0D0ECBAC1F18B664005699FC /* OpenSans-Bold.ttf */,
-				0D0ECBAD1F18B664005699FC /* OpenSans-Light.ttf */,
-				0D0ECBAE1F18B664005699FC /* OpenSans-Regular.ttf */,
-				0D0ECBAF1F18B664005699FC /* OpenSans-SemiBold.ttf */,
+				0D3987811F28A51B00CDBDC9 /* OpenSans-Bold.ttf */,
+				0D3987821F28A51B00CDBDC9 /* OpenSans-Light.ttf */,
+				0D3987831F28A51B00CDBDC9 /* OpenSans-Regular.ttf */,
+				0D3987841F28A51B00CDBDC9 /* OpenSans-SemiBold.ttf */,
 			);
 			name = Fonts;
 			sourceTree = "<group>";
@@ -248,13 +245,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0D0ECBB21F18B664005699FC /* OpenSans-Regular.ttf in Resources */,
+				0D3987871F28A51B00CDBDC9 /* OpenSans-Regular.ttf in Resources */,
 				0DC71A5A1F1795D200225263 /* LaunchScreen.storyboard in Resources */,
 				0DC71A571F1795D200225263 /* Assets.xcassets in Resources */,
-				0DBEB46D1F1D082C00A03809 /* STHeiti Light.ttc in Resources */,
-				0D0ECBB11F18B664005699FC /* OpenSans-Light.ttf in Resources */,
-				0D0ECBB31F18B664005699FC /* OpenSans-SemiBold.ttf in Resources */,
-				0D0ECBB01F18B664005699FC /* OpenSans-Bold.ttf in Resources */,
+				0D3987861F28A51B00CDBDC9 /* OpenSans-Light.ttf in Resources */,
+				0D3987881F28A51B00CDBDC9 /* OpenSans-SemiBold.ttf in Resources */,
+				0D3987851F28A51B00CDBDC9 /* OpenSans-Bold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
