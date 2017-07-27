@@ -8,7 +8,6 @@
 
 import UIKit
 import EasyPeasy
-import TabPageViewController
 
 struct SettingsItem {
     var image: UIImage?
@@ -18,10 +17,6 @@ struct SettingsItem {
 
 class SettingsViewController: UIViewController {
 
-    
-    override var prefersStatusBarHidden: Bool {
-        return false
-    }
     
     var sectionItems = [
         [SettingsItem(image: UIImage(named: "Star")!, title: "Rate Us", color: "007AFF".hexColor),
@@ -89,17 +84,15 @@ class SettingsViewController: UIViewController {
         navBar.barStyle = .default
         self.view.addSubview(navBar)
     }
-
+    
+    override var prefersStatusBarHidden: Bool {
+        return false
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
-        
-//        self.option.fontSize = 14
-//        self.option.isTranslucent = false
-//        self.option.currentColor = .mainBlue
-//        self.option.defaultColor = .textGrey
-//        self.option.tabHeight = 40
-//        self.option.tabBackgroundColor = .white
-//        self.option.highlightFontName = "OpenSans-Semibold"
-//        self.option.unHighlightFontName = "OpenSans-Semibold"
+        super.viewWillAppear(animated)
+        UIApplication.shared.isStatusBarHidden = false
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     func setupViews() {
@@ -170,6 +163,17 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             return "Support Us"
         }
         return "Notifications"
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        switch (indexPath.section, indexPath.row) {
+        case (0, 0): ShareManager.shared.appStoreRate()
+        case (0, 1): ShareManager.shared.share(at: self)
+        case (0, 2): ShareManager.shared.mailFeedback(at: self)
+//        case (1, 0): ShareManager.shared.facebookShare(at: self)
+        default: break
+        }
     }
 
 }
