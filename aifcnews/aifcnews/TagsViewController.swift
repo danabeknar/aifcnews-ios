@@ -56,8 +56,14 @@ class TagsViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    override var prefersStatusBarHidden: Bool{
+    override var prefersStatusBarHidden: Bool {
         return false
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UIApplication.shared.isStatusBarHidden = false
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     func setupNavigationBar() {

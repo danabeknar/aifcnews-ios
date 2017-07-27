@@ -11,8 +11,9 @@ import EasyPeasy
 import ExpandingMenu
 import Sugar
 import TabPageViewController
+import PageMenu
 
-class FeedViewController: TabPageViewController {
+class FeedViewController: UIViewController {
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -23,7 +24,7 @@ class FeedViewController: TabPageViewController {
         return tableView
     }()
     
-
+    
     lazy var arrowButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "UpArrow")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -35,26 +36,9 @@ class FeedViewController: TabPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let vc1 = FeedViewController()
-        let vc2 = FeedViewController()
-        
-        self.tabItems = [(vc1, "First"), (vc2, "Second")]
-        
-        self.option.fontSize = 10
-        self.option.hidesTopViewOnSwipeType = .tabBar
-        self.option.isTranslucent = false
-        self.option.currentColor = .white
-        self.option.defaultColor = .textGrey
-        self.option.tabHeight = 40
-        self.option.tabBackgroundColor = .mainBlue
-        self.option.highlightFontName = "OpenSans-Semibold"
-        self.option.unHighlightFontName = "OpenSans-Semibold"
-        self.displayControllerWithIndex(0, direction: .forward, animated: true)
-        
+        view.backgroundColor = .backgroundGrey
         setupViews()
         setupConstraints()
-        self.modalPresentationCapturesStatusBarAppearance = true
     }
     
     
@@ -62,21 +46,20 @@ class FeedViewController: TabPageViewController {
         [tableView, arrowButton].forEach {
             view.addSubview($0)
         }
-        
-        let menuButtonSize: CGSize = CGSize(width: 54.0, height: 54.0)
+        let menuButtonSize: CGSize = CGSize(width: 64.0, height: 64.0)
         let menuButton = ExpandingMenuButton(frame: CGRect(origin: CGPoint.zero, size: menuButtonSize), centerImage: UIImage(named: "Menu")!, centerHighlightedImage: UIImage(named: "Menu")!)
-        menuButton.center = CGPoint(x: self.view.bounds.width - Helper.shared.constrain(with: .width, num: 50), y: self.view.bounds.height - Helper.shared.constrain(with: .height, num: 50))
+        menuButton.center = CGPoint(x: ScreenSize.width - 50, y: ScreenSize.height - 80)
         view.addSubview(menuButton)
         
-        let item1 = ExpandingMenuItem(size: menuButtonSize, title: "Settings", image: UIImage(named: "settingsMenu")!, highlightedImage: UIImage(named: "settingsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
+        let item1 = ExpandingMenuItem(size: menuButtonSize, title: "Settings", image: UIImage(named: "SettingsMenu")!, highlightedImage: UIImage(named: "SettingsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
             self.present(SettingsViewController(), animated: true, completion: nil)
         }
         
-        let item2 = ExpandingMenuItem(size: menuButtonSize, title: "Tags", image: UIImage(named: "tagsMenu")!, highlightedImage: UIImage(named: "tagsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
+        let item2 = ExpandingMenuItem(size: menuButtonSize, title: "Tags", image: UIImage(named: "TagsMenu")!, highlightedImage: UIImage(named: "TagsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
             self.present(TagsViewController(), animated: true, completion: nil)
         }
         
-        let item3 = ExpandingMenuItem(size: menuButtonSize, title: "Bookmarks", image: UIImage(named: "bookmarkMenu")!, highlightedImage: UIImage(named: "bookmarkMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
+        let item3 = ExpandingMenuItem(size: menuButtonSize, title: "Bookmarks", image: UIImage(named: "BookmarkMenu")!, highlightedImage: UIImage(named: "BookmarkMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
             self.present(BookmarkViewController(), animated: true, completion: nil)
         }
         
@@ -87,20 +70,20 @@ class FeedViewController: TabPageViewController {
         menuButton.addMenuItems([item1, item2, item3])
     }
     
-    func setupConstraints() {        
+    func setupConstraints() {
         tableView <- [
-            Top(Helper.shared.constrain(with: .width, num: 40)),
+            Top(0),
             Width(ScreenSize.width),
-            Height(Helper.shared.constrain(with: .height, num: 627))
+            Bottom(0)
         ]
         
         arrowButton <- [
-            Bottom(Helper.shared.constrain(with: .height, num: 20)),
-            Left(Helper.shared.constrain(with: .width, num: 15)),
-            Width(Helper.shared.constrain(with: .width, num: 52)),
-            Height(Helper.shared.constrain(with: .height, num: 52))
+            Bottom(Helper.shared.constrain(with: .height, num: 12)),
+            Left(Helper.shared.constrain(with: .width, num: 20)),
+            Width(Helper.shared.constrain(with: .width, num: 62)),
+            Height(Helper.shared.constrain(with: .height, num: 64))
         ]
-
+        
     }
     
     func arrowButtonPressed() {
@@ -110,30 +93,25 @@ class FeedViewController: TabPageViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         UIApplication.shared.isStatusBarHidden = true
         setNeedsStatusBarAppearanceUpdate()
     }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIApplication.shared.isStatusBarHidden = false
-        setNeedsStatusBarAppearanceUpdate()
-    }
     
-//    override open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.arrowButton.alpha = 0
-//            })
-//        }
-//        else{
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.arrowButton.alpha = 1
-//            })
-//        }
-//    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
+            UIView.animate(withDuration: 0.3, animations: {
+                self.arrowButton.alpha = 0
+            })
+        }
+        else{
+            UIView.animate(withDuration: 0.3, animations: {
+                self.arrowButton.alpha = 1
+            })
+        }
+    }
 }
 
 // MARK: UITableViewDataSource, UITableViewDelegate
@@ -147,9 +125,9 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! FeedTableViewCell
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tableView.height / 3
+        return (tableView.height - 20) / 3
     }
     
     
@@ -158,3 +136,14 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
+
+//self.option.fontSize = 10
+//self.option.hidesTopViewOnSwipeType = .tabBar
+//self.option.isTranslucent = false
+//self.option.currentColor = .white
+//self.option.defaultColor = .textGrey
+//self.option.tabHeight = 40
+//self.option.tabBackgroundColor = .mainBlue
+//self.option.highlightFontName = "OpenSans-Semibold"
+//self.option.unHighlightFontName = "OpenSans-Semibold"
+//self.displayControllerWithIndex(1, direction: .forward, animated: true)
