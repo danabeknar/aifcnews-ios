@@ -124,6 +124,8 @@ class FeedTableViewCell: UITableViewCell {
             if let imageURL = newsObject.imageURL {
                 let url = URL(string: imageURL)
                 backgroundImageView.kf.setImage(with: url)
+            } else {
+                backgroundImageView.image = UIImage(named: "not-available")?.withRenderingMode(.alwaysOriginal)
             }
         }
     }

@@ -25,7 +25,7 @@ class BaseViewController: UIViewController, CAPSPageMenuDelegate {
         controller2.title = "Economy"
         
         let controller3 : UIViewController = FeedViewController()
-        controller3.title = "BitcoinBitcoinBitcoin"
+        controller3.title = "Bitcoin"
         
         controllerArray.append(contentsOf: [controller, controller2, controller3])
         

@@ -49,6 +49,7 @@ class DetailedNewsTableViewCell: UITableViewCell {
         let bodyLabel = UILabel()
         bodyLabel.font = UIFont(name: "OpenSans-Regular", size: 16)
         bodyLabel.numberOfLines = 0
+        bodyLabel.sizeToFit()
         bodyLabel.textColor = .textBlack
         bodyLabel.textAlignment = .left
         return bodyLabel
@@ -102,20 +103,7 @@ class DetailedNewsTableViewCell: UITableViewCell {
             Top(Helper.shared.constrain(with: .height, num: 10))
         ]
         
-        titleLabel <- [
-            Top(Helper.shared.constrain(with: .height, num: 10)).to(sourceLabel),
-            Left(Helper.shared.constrain(with: .width, num: 20)),
-            Right(Helper.shared.constrain(with: .width, num: 20)),
-            Height(Helper.shared.constrain(with: .height, num: 100))
-        ]
-        
-        bodyLabel <- [
-            Top(Helper.shared.constrain(with: .height, num: 5)).to(titleLabel),
-            Width(ScreenSize.width - Helper.shared.constrain(with: .width, num: 40)),
-            Left(Helper.shared.constrain(with: .width, num: 20)),
-            Right(Helper.shared.constrain(with: .width, num: 20)),
-            Bottom(0)
-        ]
+
 
     }
     
@@ -125,6 +113,32 @@ class DetailedNewsTableViewCell: UITableViewCell {
             dateLabel.text = newsObject.date
             titleLabel.text = newsObject.title
             bodyLabel.text = newsObject.body
+    
+            titleLabel <- [
+                Top(Helper.shared.constrain(with: .height, num: 10)).to(sourceLabel),
+                Left(Helper.shared.constrain(with: .width, num: 20)),
+                Right(Helper.shared.constrain(with: .width, num: 20)),
+                Height(heightForView(text: titleLabel.text!, font: UIFont(name: "OpenSans-Semibold", size: 20)!, width: ScreenSize.width - 40))
+            ]
+            
+            bodyLabel <- [
+                Top(Helper.shared.constrain(with: .height, num: 5)).to(titleLabel),
+                Width(ScreenSize.width - Helper.shared.constrain(with: .width, num: 40)),
+                Left(Helper.shared.constrain(with: .width, num: 20)),
+                Right(Helper.shared.constrain(with: .width, num: 20)),
+                Bottom(10)
+            ]
+            
         }
+    }
+    
+    func heightForView(text:String, font:UIFont, width:CGFloat) -> CGFloat{
+        let label:UILabel = UILabel(frame: CGRect(x: 0, y: 0, width: width, height: CGFloat.greatestFiniteMagnitude))
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byWordWrapping
+        label.font = font
+        label.text = text
+        label.sizeToFit()
+        return label.frame.height
     }
 }

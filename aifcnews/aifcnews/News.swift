@@ -45,6 +45,8 @@ extension News: Mappable {
         mutating func mapping(map: Map) {
             title <- map["title"]
             date <- map["published_at"]
+//            var str = "Hello, playground"
+//            str.substringWithRange(Range<String.Index>(start: str.startIndex.advancedBy(2), end: str.endIndex.advancedBy(-1))) //"llo, playgroun"
             imageURL <- map["media.0.url"]
             body <- map["body"]
             source <- map["source.title"]
