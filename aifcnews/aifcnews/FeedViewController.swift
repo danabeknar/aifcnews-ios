@@ -31,10 +31,10 @@ class FeedViewController: UIViewController {
         let button = UIButton()
         button.setImage(UIImage(named: "UpArrow")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.alpha = 0
+        button.isHidden = true
         button.addTarget(self, action: #selector(arrowButtonPressed), for: .touchUpInside)
         return button
     }()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

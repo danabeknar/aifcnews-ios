@@ -198,6 +198,7 @@
 				0DC71A4A1F1795D200225263 /* Resources */,
 				F89B4B2B54089466A4257A24 /* [CP] Embed Pods Frameworks */,
 				0E65126C21F80D1269783A2D /* [CP] Copy Pods Resources */,
+				0DB9EB2D1F2B664A008FCFAA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -220,8 +221,7 @@
 				TargetAttributes = {
 					0DC71A4B1F1795D200225263 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = JS7SZYV8ND;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -260,6 +260,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0DB9EB2D1F2B664A008FCFAA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 7460fa1c0aaa9cd0846a0ef1f886868a4b5c40a0 ed30342fa1d13e20228a9be0a6c6ed518e1c2a14cbcdf4ae8c3a2c98fec230d7";
+		};
 		0E65126C21F80D1269783A2D /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -446,7 +459,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = JS7SZYV8ND;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = aifcnews/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = n17r.aifcnews;
@@ -462,7 +475,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = JS7SZYV8ND;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = aifcnews/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = n17r.aifcnews;

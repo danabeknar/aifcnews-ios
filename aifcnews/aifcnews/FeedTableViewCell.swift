@@ -10,6 +10,7 @@ import UIKit
 import EasyPeasy
 import Sugar
 import Kingfisher
+import AFDateHelper
 
 class FeedTableViewCell: UITableViewCell {
     
@@ -91,9 +92,9 @@ class FeedTableViewCell: UITableViewCell {
 
         timeImageView <- [
             Left(Helper.shared.constrain(with: .width, num: 10)),
-            Bottom(Helper.shared.constrain(with: .height, num: 9)),
-            Width(Helper.shared.constrain(with: .width, num: 10)),
-            Height(Helper.shared.constrain(with: .height, num: 10))
+            Bottom(Helper.shared.constrain(with: .height, num: 11)),
+            Width(Helper.shared.constrain(with: .width, num: 8)),
+            Height(Helper.shared.constrain(with: .height, num: 8))
         ]
         
         infoLabel <- [
@@ -120,7 +121,11 @@ class FeedTableViewCell: UITableViewCell {
                 }
             
             titleLabel.text = title
-            infoLabel.text = "\(date) | \(source)"
+            
+            let index = date.index(date.startIndex, offsetBy: 10)
+            var clearDate = date.substring(to: index)
+            
+            infoLabel.text = "\(clearDate) | \(source)"
             if let imageURL = newsObject.imageURL {
                 let url = URL(string: imageURL)
                 backgroundImageView.kf.setImage(with: url)

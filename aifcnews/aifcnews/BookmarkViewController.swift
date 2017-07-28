@@ -18,10 +18,12 @@ class BookmarkViewController: UIViewController {
         tableView.dataSource = self
         tableView.backgroundColor = .clear
         tableView.layer.borderWidth = 0
+        tableView.separatorStyle = .none
         tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
 
+    
     lazy var lowerBar: UIView = {
         let view = UIView()
         view.backgroundColor = .barGrey
@@ -117,7 +119,7 @@ class BookmarkViewController: UIViewController {
 
 extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return 5
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{

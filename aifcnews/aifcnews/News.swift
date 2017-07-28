@@ -45,48 +45,8 @@ extension News: Mappable {
         mutating func mapping(map: Map) {
             title <- map["title"]
             date <- map["published_at"]
-//            var str = "Hello, playground"
-//            str.substringWithRange(Range<String.Index>(start: str.startIndex.advancedBy(2), end: str.endIndex.advancedBy(-1))) //"llo, playgroun"
             imageURL <- map["media.0.url"]
             body <- map["body"]
             source <- map["source.title"]
         }
     }
-    
-    
-    
-//    static func fetchNews(callback: @escaping ([String:Any]?, Error?) -> Void) {
-//        let headers = ["X-AYLIEN-NewsAPI-Application-ID": "a0207811", "X-AYLIEN-NewsAPI-Application-Key": "d9d55eb1c3bc25fa06fc0b63918d9dde"]
-//        let parameters = ["title": "Kazakhstan", "language": "en"]
-//        Alamofire.request("https://api.newsapi.aylien.com/api/v1/stories?", method: HTTPMethod.get, parameters: parameters,headers: headers).responseJSON { (response) in
-//            
-//            guard let json = response.result.value as? [String:Any]
-//                else {
-//                    callback(nil, response.result.error)
-//                    return
-//            }
-//            
-//            callback(json, nil)
-//        }
-//    }
-
-
-
-//static func fetchFeed(category: Category, callback: @escaping ([Feed]?, Error?) -> Void ){
-//
-//    Alamofire.request(category.rawValue).responseJSON { response in
-//
-//        guard let json = response.result.value as? [String: Any],
-//            let feed = json["feed"] as? [String: Any],
-//            let entries = feed["entry"] else {
-//                callback(nil, response.result.error)
-//                return
-//        }
-//
-//        let feeds = Mapper<Feed>().mapArray(JSONObject: entries)
-//
-//        callback(feeds, nil)
-//    }
-//    
-//}
-//}
