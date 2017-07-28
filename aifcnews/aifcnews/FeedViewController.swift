@@ -15,15 +15,17 @@ import PageMenu
 
 class FeedViewController: UIViewController {
     
+    var news = [News]()
+    
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
         tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
-    
     
     lazy var arrowButton: UIButton = {
         let button = UIButton()
@@ -39,6 +41,7 @@ class FeedViewController: UIViewController {
         view.backgroundColor = .backgroundGrey
         setupViews()
         setupConstraints()
+        fetchData()
     }
     
     
@@ -86,6 +89,19 @@ class FeedViewController: UIViewController {
         
     }
     
+    func fetchData() {
+        News.fetchNews { (data, error) in
+            if let data = data{
+                self.news = data
+                DispatchQueue.main.async{
+                    self.tableView.reloadData()
+                }
+            } else {
+                print(error?.localizedDescription)
+            }
+        }
+    }
+    
     func arrowButtonPressed() {
         tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: UITableViewScrollPosition.top)
     }
@@ -98,6 +114,7 @@ class FeedViewController: UIViewController {
         super.viewWillAppear(animated)
         UIApplication.shared.isStatusBarHidden = true
         setNeedsStatusBarAppearanceUpdate()
+        arrowButton.alpha = 0
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -118,32 +135,27 @@ class FeedViewController: UIViewController {
 
 extension FeedViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return 5
+        return news.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! FeedTableViewCell
+        cell.newsObject = news[indexPath.row] as News
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (tableView.height - 20) / 3
+        return 210
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.present(DetailedNewsViewController(), animated: true, completion: nil)
+        let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
+        let image = cell.backgroundImageView.image
+        let vc = DetailedNewsViewController()
+        vc.image = image
+        vc.newsObject = news[(tableView.indexPathForSelectedRow?.row)!]
+        self.present(vc, animated: true, completion: nil)
     }
     
 }
-
-//self.option.fontSize = 10
-//self.option.hidesTopViewOnSwipeType = .tabBar
-//self.option.isTranslucent = false
-//self.option.currentColor = .white
-//self.option.defaultColor = .textGrey
-//self.option.tabHeight = 40
-//self.option.tabBackgroundColor = .mainBlue
-//self.option.highlightFontName = "OpenSans-Semibold"
-//self.option.unHighlightFontName = "OpenSans-Semibold"
-//self.displayControllerWithIndex(1, direction: .forward, animated: true)

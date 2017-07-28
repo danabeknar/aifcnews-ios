@@ -11,9 +11,15 @@ import EasyPeasy
 
 class DetailedNewsTableViewCell: UITableViewCell {
 
+    
+    var newsObject: News? {
+        didSet {
+            self.configureView()
+        }
+    }
+    
     lazy var sourceLabel: UILabel = {
         let label = UILabel()
-        label.text = "BLOOMBERG"
         label.font = UIFont(name: "STHeitiTC-Light", size: 11)
         label.backgroundColor = .textAqua
         label.textColor = .white
@@ -23,7 +29,6 @@ class DetailedNewsTableViewCell: UITableViewCell {
     
     lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.text = "Today, 12:21"
         label.font = UIFont(name: "OpenSans-Light", size: 13)
         label.textColor = .textBlack
         label.textAlignment = .left
@@ -32,21 +37,21 @@ class DetailedNewsTableViewCell: UITableViewCell {
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "OpenSans-Semibold", size: 22)
-        label.text = "Central Asia: Stans undelivered"
+        label.font = UIFont(name: "OpenSans-Semibold", size: 20)
         label.textColor = .textBlack
+        label.sizeToFit()
+        label.numberOfLines = 0
         label.textAlignment = .left
         return label
     }()
     
-    lazy var textView: UITextView = {
-        let textView = UITextView()
-        textView.text = "TAJIKISTAN has the vainest ruler in Central Asia. Emomali Rahmon flies what may be the world’s largest flag atop what used to be the world’s tallest flagpole. His capital boasts that it will soon host the region’s biggest mosque, mainly paid for by Qatar. \n \n It already has the world’s largest teahouse, mainly Chinese-financed and mostly emptyand an immense national library—sadly devoid of books, according to whispering sceptics. It already has the world’s largest teahouse.TAJIKISTAN has the vainest ruler in Central Asia. Emomali Rahmon flies what may be the world’s largest flag atop what used to be the world’s tallest flagpole. His capital boasts that it will soon host the region’s biggest mosque, mainly paid for by Qatar. \n \n It already has the world’s largest teahouse, mainly Chinese-financed and mostly emptyand an immense national library—sadly devoid of books, according to whispering sceptics. It already has the world’s largest teahouse."
-        textView.font = UIFont(name: "OpenSans-Regular", size: 15)
-        textView.textColor = .textBlack
-        textView.textAlignment = .left
-        textView.isEditable = false
-        return textView
+    lazy var bodyLabel: UILabel = {
+        let bodyLabel = UILabel()
+        bodyLabel.font = UIFont(name: "OpenSans-Regular", size: 16)
+        bodyLabel.numberOfLines = 0
+        bodyLabel.textColor = .textBlack
+        bodyLabel.textAlignment = .left
+        return bodyLabel
     }()
     
     lazy var circleView: UIView = {
@@ -69,7 +74,7 @@ class DetailedNewsTableViewCell: UITableViewCell {
     // MARK: Configure Views
     
     func setupViews() {
-        contentView.addSubviews(sourceLabel, dateLabel, titleLabel, circleView, textView, circleView)
+        contentView.addSubviews(sourceLabel, dateLabel, titleLabel, circleView, bodyLabel, circleView)
     }
     
     // MARK: Configure Constraints
@@ -101,11 +106,11 @@ class DetailedNewsTableViewCell: UITableViewCell {
             Top(Helper.shared.constrain(with: .height, num: 10)).to(sourceLabel),
             Left(Helper.shared.constrain(with: .width, num: 20)),
             Right(Helper.shared.constrain(with: .width, num: 20)),
-            Height(Helper.shared.constrain(with: .height, num: 20))
+            Height(Helper.shared.constrain(with: .height, num: 100))
         ]
         
-        textView <- [
-            Top(Helper.shared.constrain(with: .height, num: 10)).to(titleLabel),
+        bodyLabel <- [
+            Top(Helper.shared.constrain(with: .height, num: 5)).to(titleLabel),
             Width(ScreenSize.width - Helper.shared.constrain(with: .width, num: 40)),
             Left(Helper.shared.constrain(with: .width, num: 20)),
             Right(Helper.shared.constrain(with: .width, num: 20)),
@@ -113,6 +118,13 @@ class DetailedNewsTableViewCell: UITableViewCell {
         ]
 
     }
-
-
+    
+    func configureView() {
+        if let newsObject = newsObject{
+            sourceLabel.text = newsObject.source?.uppercased()
+            dateLabel.text = newsObject.date
+            titleLabel.text = newsObject.title
+            bodyLabel.text = newsObject.body
+        }
+    }
 }

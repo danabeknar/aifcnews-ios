@@ -13,10 +13,22 @@ import MXParallaxHeader
 
 class DetailedNewsViewController: UIViewController {
     
+    var image: UIImage? {
+        didSet {
+            newsImageView.image = image
+        }
+    }
+    
+    var newsObject: News? {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
     lazy var newsImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "bg")?.original
         imageView.contentMode = .scaleAspectFill
+        imageView.kf.indicatorType = .activity
         return imageView
     }()
     
@@ -175,6 +187,7 @@ extension DetailedNewsViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! DetailedNewsTableViewCell
+        cell.newsObject = newsObject
         return cell
     }
     

@@ -9,15 +9,23 @@
 import UIKit
 import EasyPeasy
 import Sugar
+import Kingfisher
 
 class FeedTableViewCell: UITableViewCell {
     
     // MARK: Properties
     
-    lazy var backgroundImageView: UIImageView = {
-        return UIImageView().then {
-            $0.image = UIImage(named: "bg")!.original
+    var newsObject: News? {
+        didSet {
+            self.configureView()
         }
+    }
+    
+    lazy var backgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.kf.indicatorType = .activity
+        return imageView
     }()
     
     lazy var grView: UIView = {
@@ -46,7 +54,7 @@ class FeedTableViewCell: UITableViewCell {
             $0.textColor = .textGrey
             $0.textAlignment = .left
             $0.text = "10 minutes ago | Reuters.com"
-            $0.font = UIFont(name: "OpenSans-Light", size: Helper.shared.constrain(with: .height, num: 14))
+            $0.font = UIFont(name: "OpenSans-Light", size: Helper.shared.constrain(with: .height, num: 11))
             $0.numberOfLines = 0
         }
     }()
@@ -83,7 +91,7 @@ class FeedTableViewCell: UITableViewCell {
 
         timeImageView <- [
             Left(Helper.shared.constrain(with: .width, num: 10)),
-            Bottom(Helper.shared.constrain(with: .height, num: 13)),
+            Bottom(Helper.shared.constrain(with: .height, num: 9)),
             Width(Helper.shared.constrain(with: .width, num: 10)),
             Height(Helper.shared.constrain(with: .height, num: 10))
         ]
@@ -91,7 +99,7 @@ class FeedTableViewCell: UITableViewCell {
         infoLabel <- [
             Left(Helper.shared.constrain(with: .width, num: 5)).to(timeImageView),
             Bottom(Helper.shared.constrain(with: .height, num: 8)),
-            Width(Helper.shared.constrain(with: .width, num: 200))
+            Right(Helper.shared.constrain(with: .width, num: 5))
         ]
         
         titleLabel <- [
@@ -101,4 +109,23 @@ class FeedTableViewCell: UITableViewCell {
             Bottom(Helper.shared.constrain(with: .height, num: 10)).to(infoLabel)
         ]
     }
+    
+    func configureView() {
+        if let newsObject = newsObject{
+            guard let title = newsObject.title,
+                  let date = newsObject.date,
+                  let source = newsObject.source
+                else {
+                    return
+                }
+            
+            titleLabel.text = title
+            infoLabel.text = "\(date) | \(source)"
+            if let imageURL = newsObject.imageURL {
+                let url = URL(string: imageURL)
+                backgroundImageView.kf.setImage(with: url)
+            }
+        }
+    }
+    
 }

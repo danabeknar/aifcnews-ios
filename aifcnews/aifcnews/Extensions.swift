@@ -90,3 +90,14 @@ extension UIImage {
         return coloredImage!
     }
 }
+
+extension UIImage {
+    func fetchImage(_ imageURL: String) -> UIImage{
+    if let url = NSURL(string: imageURL) {
+        if let data = NSData(contentsOf: url as URL) {
+            return UIImage(data: data as Data)!
+            }
+        }
+        return UIImage(named: "bg")!
+    }
+}
