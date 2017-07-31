@@ -13,6 +13,8 @@ class TagsViewController: UIViewController {
 
     var selectedCells = [UITableViewCell]()
     var tags = [Tag]()
+    var tagsDictionary = [String: [String]]()
+    
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -64,6 +66,11 @@ class TagsViewController: UIViewController {
         super.viewWillAppear(animated)
         UIApplication.shared.isStatusBarHidden = false
         setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        UserDefaults.standard.set(tagsDictionary, forKey: "tags")
     }
     
     func setupNavigationBar() {
@@ -165,6 +172,7 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TagsTableViewCell
         cell.selectionStyle = .none
         cell.subtag = tags[indexPath.section].subtags[indexPath.row]
+        cell.cellTag = tags[indexPath.section].tag
         cell.circleView.backgroundColor = tags[indexPath.section].color
         
         if cell.isSelected{
@@ -189,6 +197,10 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! TagsTableViewCell
+        if let tag = cell.cellTag, let subtag = cell.subtag?.subtag{
+            tagsDictionary[tag]?.append(subtag)
+        }
+    
         cell.isSelected(true)
     }
     

@@ -49,3 +49,26 @@ class Subtag {
         self.subtag = subtag
     }
 }
+
+class TagsToFetch: NSObject, NSCoding {
+    
+    var tag: String
+    var subtag: String
+    
+    init(_ tag: String, _ subtag: String) {
+        self.tag = tag
+        self.subtag = subtag
+    }
+    
+    required convenience init(coder aDecoder: NSCoder) {
+        let tag = aDecoder.decodeObject(forKey: "tag") as! String
+        let subtag = aDecoder.decodeObject(forKey: "subtag") as! String
+        self.init(tag, subtag)
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(tag, forKey: "tag")
+        aCoder.encode(subtag, forKey: "subtag")
+    }
+    
+}

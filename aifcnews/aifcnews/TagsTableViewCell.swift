@@ -20,6 +20,8 @@ class TagsTableViewCell: UITableViewCell {
             self.configureView()
         }
     }
+    
+    var cellTag: String?
 
     
     lazy var circleView: UIView = {
@@ -86,6 +88,10 @@ class TagsTableViewCell: UITableViewCell {
             Width(Helper.shared.constrain(with: .width, num: 15)),
             CenterY()
         ]
+    }
+    
+    override func prepareForReuse() {
+        checkmarkView.alpha = 1
     }
     
     func configureView() {
