@@ -10,12 +10,12 @@ import UIKit
 import EasyPeasy
 import ExpandingMenu
 import Sugar
-import TabPageViewController
 import PageMenu
 
 class FeedViewController: UIViewController {
     
     var news = [News]()
+    var pageMenu : CAPSPageMenu?
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -39,38 +39,39 @@ class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .backgroundGrey
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         setupViews()
         setupConstraints()
         fetchData()
     }
-    
+ 
     
     func setupViews(){
         [tableView, arrowButton].forEach {
             view.addSubview($0)
         }
-        let menuButtonSize: CGSize = CGSize(width: 64.0, height: 64.0)
-        let menuButton = ExpandingMenuButton(frame: CGRect(origin: CGPoint.zero, size: menuButtonSize), centerImage: UIImage(named: "Menu")!, centerHighlightedImage: UIImage(named: "Menu")!)
-        menuButton.center = CGPoint(x: ScreenSize.width - 50, y: ScreenSize.height - 80)
-        view.addSubview(menuButton)
-        
-        let item1 = ExpandingMenuItem(size: menuButtonSize, title: "Settings", image: UIImage(named: "SettingsMenu")!, highlightedImage: UIImage(named: "SettingsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
-            self.present(SettingsViewController(), animated: true, completion: nil)
-        }
-        
-        let item2 = ExpandingMenuItem(size: menuButtonSize, title: "Tags", image: UIImage(named: "TagsMenu")!, highlightedImage: UIImage(named: "TagsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
-            self.present(TagsViewController(), animated: true, completion: nil)
-        }
-        
-        let item3 = ExpandingMenuItem(size: menuButtonSize, title: "Bookmarks", image: UIImage(named: "BookmarkMenu")!, highlightedImage: UIImage(named: "BookmarkMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
-            self.present(BookmarkViewController(), animated: true, completion: nil)
-        }
-        
-        menuButton.enabledFoldingAnimations  = [.MenuItemFade, .MenuItemMoving]
-        menuButton.allowSounds = false
-        menuButton.menuItemMargin = 15
-        menuButton.bottomViewAlpha = 0.7
-        menuButton.addMenuItems([item1, item2, item3])
+//        let menuButtonSize: CGSize = CGSize(width: 64.0, height: 64.0)
+//        let menuButton = ExpandingMenuButton(frame: CGRect(origin: CGPoint.zero, size: menuButtonSize), centerImage: UIImage(named: "Menu")!, centerHighlightedImage: UIImage(named: "Menu")!)
+//        menuButton.center = CGPoint(x: ScreenSize.width - 50, y: ScreenSize.height - 80)
+//        view.addSubview(menuButton)
+//        
+//        let item1 = ExpandingMenuItem(size: menuButtonSize, title: "Settings", image: UIImage(named: "SettingsMenu")!, highlightedImage: UIImage(named: "SettingsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
+//            self.present(SettingsViewController(), animated: true, completion: nil)
+//        }
+//        
+//        let item2 = ExpandingMenuItem(size: menuButtonSize, title: "Tags", image: UIImage(named: "TagsMenu")!, highlightedImage: UIImage(named: "TagsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
+//            self.navigationController?.pushViewController(TagsViewController(), animated: true)
+//        }
+//        
+//        let item3 = ExpandingMenuItem(size: menuButtonSize, title: "Bookmarks", image: UIImage(named: "BookmarkMenu")!, highlightedImage: UIImage(named: "BookmarkMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
+//            self.present(BookmarkViewController(), animated: true, completion: nil)
+//        }
+//        
+//        menuButton.enabledFoldingAnimations  = [.MenuItemFade, .MenuItemMoving]
+//        menuButton.allowSounds = false
+//        menuButton.menuItemMargin = 15
+//        menuButton.bottomViewAlpha = 0.7
+//        menuButton.addMenuItems([item1, item2, item3])
     }
     
     func setupConstraints() {
@@ -155,7 +156,8 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource {
         let vc = DetailedNewsViewController()
         vc.image = image
         vc.newsObject = news[(tableView.indexPathForSelectedRow?.row)!]
-        self.present(vc, animated: true, completion: nil)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
+    
     
 }

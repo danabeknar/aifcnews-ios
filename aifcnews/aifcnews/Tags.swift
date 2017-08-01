@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Tag {
+class Tag: NSObject, NSCoding {
 
     let tag: String
     let color: UIColor
@@ -20,6 +20,17 @@ class Tag {
         self.color = color
         self.subtags = subtags
         self.collapsed = collapsed
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        let tag = aDecoder.decodeObject(forKey: "tag") as! String
+        let subtags = aDecoder.decodeObject(forKey: "subtags") as! [Subtag]
+        self.init(tag, .gray, subtags)
+    }
+
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(tag, forKey: "tag")
+        aCoder.encode(subtags, forKey: "subtags")
     }
     
     static func fetchTags() -> [Tag] {
@@ -42,32 +53,20 @@ class Tag {
     }
 }
 
-class Subtag {
-    var subtag = String()
+class Subtag: NSObject, NSCoding {
+    
+    var subtag: String!
     
     init(_ subtag: String){
         self.subtag = subtag
     }
-}
-
-class TagsToFetch: NSObject, NSCoding {
     
-    var tag: String
-    var subtag: String
-    
-    init(_ tag: String, _ subtag: String) {
-        self.tag = tag
-        self.subtag = subtag
-    }
-    
-    required convenience init(coder aDecoder: NSCoder) {
-        let tag = aDecoder.decodeObject(forKey: "tag") as! String
+    required convenience init?(coder aDecoder: NSCoder) {
         let subtag = aDecoder.decodeObject(forKey: "subtag") as! String
-        self.init(tag, subtag)
+        self.init(subtag)
     }
     
     func encode(with aCoder: NSCoder) {
-        aCoder.encode(tag, forKey: "tag")
         aCoder.encode(subtag, forKey: "subtag")
     }
     

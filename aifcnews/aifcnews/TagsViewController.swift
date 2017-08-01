@@ -10,11 +10,10 @@ import UIKit
 import EasyPeasy
 
 class TagsViewController: UIViewController {
-
+    
     var selectedCells = [UITableViewCell]()
     var tags = [Tag]()
-    var tagsDictionary = [String: [String]]()
-    
+    var selectedSubtags = [Subtag]()
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -22,12 +21,11 @@ class TagsViewController: UIViewController {
         tableView.dataSource = self
         tableView.isScrollEnabled = true
         tableView.backgroundColor = .clear
-        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.allowsMultipleSelection = true
         tableView.register(TagsTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
-
+    
     lazy var lowerBar: UIView = {
         let view = UIView()
         view.backgroundColor = .barGrey
@@ -55,6 +53,7 @@ class TagsViewController: UIViewController {
         setupViews()
         setupConstraints()
         fetchTags()
+        fetchSelectedTags()
         // Do any additional setup after loading the view.
     }
     
@@ -70,7 +69,10 @@ class TagsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        UserDefaults.standard.set(tagsDictionary, forKey: "tags")
+        
+        var selectedTags = AppDelegate.transform(selectedSubtags: selectedSubtags)
+        print(selectedTags)
+        (UIApplication.shared.delegate as! AppDelegate).reloadPageMenu(with: selectedTags)
     }
     
     func setupNavigationBar() {
@@ -82,7 +84,7 @@ class TagsViewController: UIViewController {
         navBar.barStyle = .default
         self.view.addSubview(navBar)
     }
-
+    
     func setupViews(){
         [tableView, lowerBar, line].forEach {
             view.addSubview($0)
@@ -105,7 +107,7 @@ class TagsViewController: UIViewController {
         ]
         
         lowerBar <- [
-            Bottom(0),
+            Bottom(50),
             Height(Helper.shared.constrain(with: .height, num: 50)),
             Width(ScreenSize.width)
         ]
@@ -120,12 +122,23 @@ class TagsViewController: UIViewController {
     
     func fetchTags() {
         tags = Tag.fetchTags()
+    }
+    
+    func fetchSelectedTags() {
+        if let data = UserDefaults.standard.object(forKey: "tags") as? Data,
+            let subtags = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Subtag] {
+            self.selectedSubtags = subtags
+        }
         tableView.reloadData()
     }
-
+    
+    func saveSelectedTags() {
+        let encodedData: Data = NSKeyedArchiver.archivedData(withRootObject: selectedSubtags)
+        UserDefaults.standard.set(encodedData, forKey: "tags")
+    }
     
     func dismissButtonPressed() {
-        dismiss(animated: true, completion: nil)
+        dismiss(animated: true)
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -142,7 +155,7 @@ class TagsViewController: UIViewController {
             })
         }
     }
-
+    
 }
 
 
@@ -154,18 +167,15 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return tags[section].collapsed ? 0 : tags[section].subtags.count
+        return tags[section].subtags.count
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CollapsibleTableViewHeader ?? CollapsibleTableViewHeader(reuseIdentifier: "header")
-        
-        header.tagObject = tags[section]
-        header.setCollapsed(tags[section].collapsed)
-        
-        header.section = section
-        header.delegate = self
-        return header
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return tags[section].tag
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
@@ -175,50 +185,33 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         cell.cellTag = tags[indexPath.section].tag
         cell.circleView.backgroundColor = tags[indexPath.section].color
         
-        if cell.isSelected{
-            cell.isSelected(true)
-        } else {
-            cell.isSelected(false)
+        let selectedSubtagsTexts = selectedSubtags.flatMap{ $0.subtag }
+        
+        if !selectedSubtags.isEmpty {
+            cell.isChosen = selectedSubtagsTexts.contains(tags[indexPath.section].subtags[indexPath.row].subtag)
         }
         return cell
     }
     
-      func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return tags[(indexPath as NSIndexPath).section].collapsed ? 0 : UITableViewAutomaticDimension
-    }
-    
-     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 45.0
-    }
-    
-     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 1.0
-    }
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! TagsTableViewCell
-        if let tag = cell.cellTag, let subtag = cell.subtag?.subtag{
-            tagsDictionary[tag]?.append(subtag)
+        if cell.isChosen {
+            for i in 0..<selectedSubtags.count {
+                if selectedSubtags[i].subtag == tags[indexPath.section].subtags[indexPath.row].subtag {
+                    selectedSubtags.remove(at: i)
+                    break
+                }
+            }
+        } else {
+            selectedSubtags.append(tags[indexPath.section].subtags[indexPath.row])
         }
-    
-        cell.isSelected(true)
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! TagsTableViewCell
-         cell.isSelected(false)
-    }
-}
-
-extension TagsViewController: CollapsibleTableViewHeaderDelegate {
-    func toggleSection(_ header: CollapsibleTableViewHeader, section: Int) {
-        let collapsed = !tags[section].collapsed
         
-        // Toggle collapse
-        tags[section].collapsed = collapsed
-        header.setCollapsed(collapsed)
+        if selectedSubtags.isEmpty { cell.isChosen = false }
         
-        // Reload the whole section
-        tableView.reloadSections(NSIndexSet(index: section) as IndexSet, with: .automatic)
+        saveSelectedTags()
+        
+        print(selectedSubtags)
+        tableView.reloadData()
     }
+    
 }

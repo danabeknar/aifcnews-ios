@@ -82,6 +82,8 @@ class DetailedNewsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = .white
         setupViews()
         setupConstraints()
@@ -141,7 +143,7 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func backPressed() {
-        dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func bookmarkPressed() {

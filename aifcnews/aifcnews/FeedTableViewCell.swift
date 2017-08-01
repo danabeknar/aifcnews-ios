@@ -123,7 +123,7 @@ class FeedTableViewCell: UITableViewCell {
             titleLabel.text = title
             
             let index = date.index(date.startIndex, offsetBy: 10)
-            var clearDate = date.substring(to: index)
+            let clearDate = date.substring(to: index)
             
             infoLabel.text = "\(clearDate) | \(source)"
             if let imageURL = newsObject.imageURL {

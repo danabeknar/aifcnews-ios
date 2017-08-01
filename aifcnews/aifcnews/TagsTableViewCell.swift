@@ -15,6 +15,12 @@ class TagsTableViewCell: UITableViewCell {
     
     // MARK: Properties
     
+    var isChosen = false {
+        didSet {
+            choose(isChosen)
+        }
+    }
+    
     var subtag: Subtag? {
         didSet {
             self.configureView()
@@ -90,9 +96,6 @@ class TagsTableViewCell: UITableViewCell {
         ]
     }
     
-    override func prepareForReuse() {
-        checkmarkView.alpha = 1
-    }
     
     func configureView() {
         if let subtag = subtag?.subtag {
@@ -101,7 +104,7 @@ class TagsTableViewCell: UITableViewCell {
     }
 
     
-    func isSelected(_ bool: Bool) { 
+    func choose(_ bool: Bool) {
         checkmarkView.alpha = bool ? 1 : 0
     }
 }

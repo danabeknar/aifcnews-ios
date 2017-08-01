@@ -26,7 +26,7 @@ struct News {
     
     static func fetchNews(callback: @escaping ([News]?, Error?) -> Void) {
         let headers = ["X-AYLIEN-NewsAPI-Application-ID": "a0207811", "X-AYLIEN-NewsAPI-Application-Key": "d9d55eb1c3bc25fa06fc0b63918d9dde"]
-        let parameters = ["title": "Kazakhstan", "language": "en"]
+        let parameters = ["title": "Kazakhstan", "language": "en", "source.name": "Bloomberg"]
         Alamofire.request("https://api.newsapi.aylien.com/api/v1/stories?", method: HTTPMethod.get, parameters: parameters,headers: headers).responseJSON { (response) in
             guard let json = response.result.value as? [String:Any],
                 let stories = json["stories"] as? [Any]
