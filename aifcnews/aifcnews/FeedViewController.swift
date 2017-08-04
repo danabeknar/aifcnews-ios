@@ -10,19 +10,69 @@ import UIKit
 import EasyPeasy
 import ExpandingMenu
 import Sugar
-import PageMenu
+import RealmSwift
+import BTNavigationDropdownMenu
 
-class FeedViewController: UIViewController {
+protocol Communicatable {
+    func fetch(with array: [Tag])
+}
+
+
+class FeedViewController: UIViewController, Communicatable {
     
     var news = [News]()
-    var pageMenu : CAPSPageMenu?
+    
+    var tags: [Tag] = [] {
+        didSet{
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
+                self.updateMenuView(with: self.tags)
+            })
+        }
+    }
+    
+    var currentTag: Tag? {
+        didSet {
+            if let subtags = currentTag?.subtags{
+                fetchData(with: subtags)
+            }
+        }
+    }
+    
+    var initialTag: Tag? {
+        didSet{
+            if let subtags = initialTag?.subtags{
+                fetchData(with: subtags)
+            }
+        }
+    }
+    
+    lazy var menuView: BTNavigationDropdownMenu = {
+        let menuView = BTNavigationDropdownMenu(title: "Menu", items: [])
+        menuView.cellHeight = 40
+        menuView.cellBackgroundColor = self.navigationController?.navigationBar.barTintColor
+        menuView.cellSelectionColor = .mainBlue
+        menuView.shouldKeepSelectedCellColor = true
+        menuView.cellTextLabelColor = UIColor.white
+        menuView.cellTextLabelFont = UIFont(name: "OpenSans-Semibold", size: 13)
+        menuView.navigationBarTitleFont = UIFont(name: "OpenSans-Semibold", size: 15)
+        menuView.cellTextLabelAlignment = .center // .Center // .Right // .Left
+        menuView.arrowPadding = 15
+        menuView.animationDuration = 0.5
+        menuView.maskBackgroundColor = UIColor.black
+        menuView.maskBackgroundOpacity = 0.3
+        menuView.didSelectItemAtIndexHandler = {(indexPath: Int) -> Void in
+            self.tagPressed(with: indexPath)
+        }
+        return menuView
+    }()
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.backgroundColor = .clear
+        tableView.backgroundColor = .white
         tableView.separatorStyle = .none
+        tableView.rowHeight = 210
         tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
@@ -39,47 +89,57 @@ class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .backgroundGrey
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.barTintColor = .mainBlue
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         setupViews()
+        setupExpandingMenuButton()
         setupConstraints()
-        fetchData()
+        self.navigationItem.titleView = menuView
     }
- 
     
     func setupViews(){
-        [tableView, arrowButton].forEach {
-            view.addSubview($0)
-        }
-//        let menuButtonSize: CGSize = CGSize(width: 64.0, height: 64.0)
-//        let menuButton = ExpandingMenuButton(frame: CGRect(origin: CGPoint.zero, size: menuButtonSize), centerImage: UIImage(named: "Menu")!, centerHighlightedImage: UIImage(named: "Menu")!)
-//        menuButton.center = CGPoint(x: ScreenSize.width - 50, y: ScreenSize.height - 80)
-//        view.addSubview(menuButton)
-//        
-//        let item1 = ExpandingMenuItem(size: menuButtonSize, title: "Settings", image: UIImage(named: "SettingsMenu")!, highlightedImage: UIImage(named: "SettingsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
-//            self.present(SettingsViewController(), animated: true, completion: nil)
-//        }
-//        
-//        let item2 = ExpandingMenuItem(size: menuButtonSize, title: "Tags", image: UIImage(named: "TagsMenu")!, highlightedImage: UIImage(named: "TagsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
-//            self.navigationController?.pushViewController(TagsViewController(), animated: true)
-//        }
-//        
-//        let item3 = ExpandingMenuItem(size: menuButtonSize, title: "Bookmarks", image: UIImage(named: "BookmarkMenu")!, highlightedImage: UIImage(named: "BookmarkMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
-//            self.present(BookmarkViewController(), animated: true, completion: nil)
-//        }
-//        
-//        menuButton.enabledFoldingAnimations  = [.MenuItemFade, .MenuItemMoving]
-//        menuButton.allowSounds = false
-//        menuButton.menuItemMargin = 15
-//        menuButton.bottomViewAlpha = 0.7
-//        menuButton.addMenuItems([item1, item2, item3])
+        view.addSubviews(tableView, arrowButton)
     }
     
+    func setupExpandingMenuButton() {
+        let menuButtonSize: CGSize = CGSize(width: 64.0, height: 64.0)
+        let menuButton = ExpandingMenuButton(frame: CGRect(origin: CGPoint.zero, size: menuButtonSize), centerImage: UIImage(named: "Menu")!, centerHighlightedImage: UIImage(named: "Menu")!)
+        menuButton.center = CGPoint(x: ScreenSize.width - 50, y: ScreenSize.height - 100)
+        
+        let item1 = ExpandingMenuItem(size: menuButtonSize, title: "Settings", image: UIImage(named: "SettingsMenu")!, highlightedImage: UIImage(named: "SettingsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
+            self.present(SettingsViewController(), animated: true, completion: nil)
+        }
+        
+        let item2 = ExpandingMenuItem(size: menuButtonSize, title: "Tags", image: UIImage(named: "TagsMenu")!, highlightedImage: UIImage(named: "TagsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
+            let vc = TagsViewController()
+            vc.delegate = self
+            self.view.window?.rootViewController?.present(vc, animated: true, completion: nil)
+        }
+        
+        let item3 = ExpandingMenuItem(size: menuButtonSize, title: "Bookmarks", image: UIImage(named: "BookmarkMenu")!, highlightedImage: UIImage(named: "BookmarkMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
+            self.present(BookmarkViewController(), animated: true, completion: nil)
+        }
+        
+        menuButton.enabledFoldingAnimations  = [.MenuItemFade, .MenuItemMoving]
+        menuButton.allowSounds = false
+        menuButton.menuItemMargin = 15
+        menuButton.bottomViewAlpha = 0.7
+        menuButton.addMenuItems([item1, item2, item3])
+        view.addSubview(menuButton)
+    }
+    
+    func updateMenuView(with tags: [Tag]){
+        var items = [String]()
+        for tag in tags{
+            items.append(tag.tag)
+        }
+        menuView.updateItems(items)
+    }
+    
+    
     func setupConstraints() {
-        tableView <- [
-            Top(0),
-            Width(ScreenSize.width),
-            Bottom(0)
-        ]
+        tableView <- Edges()
         
         arrowButton <- [
             Bottom(Helper.shared.constrain(with: .height, num: 12)),
@@ -90,9 +150,13 @@ class FeedViewController: UIViewController {
         
     }
     
-    func fetchData() {
-        News.fetchNews { (data, error) in
-            if let data = data{
+    func fetch(with array: [Tag]) {
+        updateMenuView(with: array)
+    }
+    
+    func fetchData(with subtags: [Subtag]) {
+        News.fetchNews(with: subtags) { (data, error) in
+            if let data = data {
                 self.news = data
                 DispatchQueue.main.async{
                     self.tableView.reloadData()
@@ -103,6 +167,10 @@ class FeedViewController: UIViewController {
         }
     }
     
+    func tagPressed(with index: Int) {
+        currentTag = tags[index]
+    }
+    
     func arrowButtonPressed() {
         tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: UITableViewScrollPosition.top)
     }
@@ -110,6 +178,7 @@ class FeedViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -135,20 +204,17 @@ class FeedViewController: UIViewController {
 // MARK: UITableViewDataSource, UITableViewDelegate
 
 extension FeedViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return news.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! FeedTableViewCell
-        cell.newsObject = news[indexPath.row] as News
+        cell.selectionStyle = .none
+        cell.newsObject = news[indexPath.row]
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 210
-    }
-    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
@@ -156,8 +222,6 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource {
         let vc = DetailedNewsViewController()
         vc.image = image
         vc.newsObject = news[(tableView.indexPathForSelectedRow?.row)!]
-        self.navigationController?.pushViewController(vc, animated: true)
+        present(vc, animated: true, completion: nil)
     }
-    
-    
 }

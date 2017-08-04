@@ -14,6 +14,7 @@ class TagsViewController: UIViewController {
     var selectedCells = [UITableViewCell]()
     var tags = [Tag]()
     var selectedSubtags = [Subtag]()
+    var delegate: Communicatable?
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -70,9 +71,8 @@ class TagsViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         
-        var selectedTags = AppDelegate.transform(selectedSubtags: selectedSubtags)
-        print(selectedTags)
-        (UIApplication.shared.delegate as! AppDelegate).reloadPageMenu(with: selectedTags)
+        let selectedTags = AppDelegate.transform(selectedSubtags: selectedSubtags)
+        self.delegate?.fetch(with: selectedTags)
     }
     
     func setupNavigationBar() {
@@ -205,12 +205,8 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             selectedSubtags.append(tags[indexPath.section].subtags[indexPath.row])
         }
-        
         if selectedSubtags.isEmpty { cell.isChosen = false }
-        
         saveSelectedTags()
-        
-        print(selectedSubtags)
         tableView.reloadData()
     }
     

@@ -25,6 +25,7 @@ class FeedTableViewCell: UITableViewCell {
     lazy var backgroundImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
         imageView.kf.indicatorType = .activity
         return imageView
     }()
@@ -119,7 +120,6 @@ class FeedTableViewCell: UITableViewCell {
                 else {
                     return
                 }
-            
             titleLabel.text = title
             
             let index = date.index(date.startIndex, offsetBy: 10)

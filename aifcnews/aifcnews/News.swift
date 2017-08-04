@@ -11,6 +11,7 @@ import UIKit
 import Alamofire
 import ObjectMapper
 
+
 struct News {
     
     var title: String?
@@ -18,35 +19,52 @@ struct News {
     var source: String?
     var imageURL: String?
     var body: String?
+    var image: UIImage?
     
     init?(map: Map) {
         
     }
     
     
-    static func fetchNews(callback: @escaping ([News]?, Error?) -> Void) {
+    static func fetchNews(with subtags: [Subtag], callback: @escaping ([News]?, Error?) -> Void) {
+        var allNews = [News]()
+        allNews.removeAll()
         let headers = ["X-AYLIEN-NewsAPI-Application-ID": "a0207811", "X-AYLIEN-NewsAPI-Application-Key": "d9d55eb1c3bc25fa06fc0b63918d9dde"]
-        let parameters = ["title": "Kazakhstan", "language": "en", "source.name": "Bloomberg"]
-        Alamofire.request("https://api.newsapi.aylien.com/api/v1/stories?", method: HTTPMethod.get, parameters: parameters,headers: headers).responseJSON { (response) in
-            guard let json = response.result.value as? [String:Any],
-                let stories = json["stories"] as? [Any]
-            else {
-                callback(nil, response.result.error)
-                return
+        var counter = 0
+        for subtag in subtags {
+            let parameters = ["title": "\(subtag.subtag)", "language": "en", "source.name": "Bloomberg"]
+            Alamofire.request("https://api.newsapi.aylien.com/api/v1/stories?", method: HTTPMethod.get, parameters: parameters,headers: headers).responseJSON { (response) in
+                guard let json = response.result.value as? [String:Any],
+                    let stories = json["stories"] as? [Any]
+                    else {
+                        callback(nil, response.result.error)
+                        return
+                }
+                let optionalNews = Mapper<News>().mapArray(JSONObject: stories)
+                
+                if let news = optionalNews {
+                    allNews += news
+                }
+        
+                counter += 1
+                if counter == subtags.count {
+                    callback(allNews, nil)
+                }
             }
-            let news = Mapper<News>().mapArray(JSONObject: stories)
-            callback(news, nil)
         }
     }
-
 }
 
+
+
+
+
 extension News: Mappable {
-        mutating func mapping(map: Map) {
-            title <- map["title"]
-            date <- map["published_at"]
-            imageURL <- map["media.0.url"]
-            body <- map["body"]
-            source <- map["source.title"]
-        }
+    mutating func mapping(map: Map) {
+        title <- map["title"]
+        date <- map["published_at"]
+        imageURL <- map["media.0.url"]
+        body <- map["body"]
+        source <- map["source.title"]
     }
+}

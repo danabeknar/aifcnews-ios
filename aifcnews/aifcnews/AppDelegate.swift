@@ -9,6 +9,9 @@
 import UIKit
 import Fabric
 import Crashlytics
+import RealmSwift
+
+let realm = try! Realm()
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func setupWindow() {
         Fabric.with([Crashlytics.self])
         window = UIWindow(frame: UIScreen.main.bounds)
-        let mainView = BaseViewController() //ViewController = Name of your controller
+        let mainView = FeedViewController()
         
         var tags = [Tag]()
         if let data = UserDefaults.standard.object(forKey: "tags") as? Data,
@@ -33,7 +36,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if tags.isEmpty { tags = Tag.fetchTags() }
         
         mainView.tags = tags
-        self.window!.rootViewController = mainView
+        mainView.initialTag = tags[0]
+        self.window!.rootViewController = UINavigationController(rootViewController: mainView)
         self.window?.makeKeyAndVisible()
     }
     
@@ -42,7 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tags = Tag.fetchTags()
         let selectedSubtagsTexts = selectedSubtags.flatMap{ $0.subtag }
 
-        
         for tag in tags {
             var subtags = [Subtag]()
             for subtag in tag.subtags {
@@ -62,11 +65,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func reloadPageMenu(with data: [Tag]) {
-        let mainView = BaseViewController() //ViewController = Name of your controller
+        let mainView = FeedViewController()
         mainView.tags = data
         window?.rootViewController = mainView
         window?.makeKeyAndVisible()
     }
-    
 }
 

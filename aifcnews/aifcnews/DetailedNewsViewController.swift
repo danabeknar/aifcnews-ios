@@ -10,6 +10,7 @@ import UIKit
 import Sugar
 import EasyPeasy
 import MXParallaxHeader
+import RealmSwift
 
 class DetailedNewsViewController: UIViewController {
     
@@ -67,7 +68,7 @@ class DetailedNewsViewController: UIViewController {
     
     lazy var bookmarkButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "Bookmark")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(UIImage(named: "Bookmark"), for: .normal)
         button.imageView?.tintColor = .mainBlue
         button.addTarget(self, action: #selector(bookmarkPressed), for: .touchUpInside)
         return button
@@ -143,17 +144,42 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func backPressed() {
-        self.navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
     }
     
     func bookmarkPressed() {
-        bookmarkButton.imageView?.image = bookmarkButton.imageView?.image?.maskWithColor(color: .mainBlue)
+        
+        if bookmarkButton.imageView?.image == UIImage(named: "Bookmark"){
+            bookmarkButton.setImage(UIImage(named: "FilledBookmark"), for: .normal)
+            DispatchQueue.main.async{
+                self.saveBookmark()
+            }
+        } else {
+            bookmarkButton.setImage(UIImage(named: "Bookmark"), for: .normal)
+        }
     }
     
     func sharePressed() {
         print("pressed")
     }
+    
+    func saveBookmark(){
+        let newsToSave = RealmNews()
+        let data = UIImagePNGRepresentation((newsObject?.image)!) as NSData?
+        newsToSave.body = (newsObject?.body!)!
+        newsToSave.date = (newsObject?.date)!
+        newsToSave.isFavourite = true
+        newsToSave.source = (newsObject?.source!)!
+        newsToSave.title = (newsObject?.title!)!
+        newsToSave.image = data!
         
+        try! realm.write {
+            realm.add(newsToSave)
+            print("REALM FILE PATH", Realm.Configuration.defaultConfiguration.fileURL)
+        }
+        
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
             UIView.animate(withDuration: 0.5, animations: { 

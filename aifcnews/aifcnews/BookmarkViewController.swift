@@ -11,6 +11,7 @@ import EasyPeasy
 
 class BookmarkViewController: UIViewController {
 
+    var news = [News]()
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -49,6 +50,7 @@ class BookmarkViewController: UIViewController {
         view.backgroundColor = .backgroundGrey
         setupViews()
         setupConstraints()
+//        fetchRealmNews()
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -112,6 +114,18 @@ class BookmarkViewController: UIViewController {
         }
     }
 
+    func fetchRealmNews(){
+        Database.shared.fetchRealmNews { (news) in
+            if news != nil {
+                self.news = news!
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            } else {
+                print("News are empty")
+            }
+        }
+    }
 
 }
 
@@ -119,11 +133,12 @@ class BookmarkViewController: UIViewController {
 
 extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return 0
+        return news.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! FeedTableViewCell
+        cell.newsObject = news[indexPath.row] as News
         return cell
     }
     
@@ -133,7 +148,12 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.present(DetailedNewsViewController(), animated: true, completion: nil)
+        let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
+        let image = cell.backgroundImageView.image
+        let vc = DetailedNewsViewController()
+        vc.image = image
+        vc.newsObject = news[(tableView.indexPathForSelectedRow?.row)!]
+        present(vc, animated: true, completion: nil)
     }
     
 }

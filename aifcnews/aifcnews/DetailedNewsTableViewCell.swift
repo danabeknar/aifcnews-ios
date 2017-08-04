@@ -110,14 +110,13 @@ class DetailedNewsTableViewCell: UITableViewCell {
     func configureView() {
         if let newsObject = newsObject{
             sourceLabel.text = newsObject.source?.uppercased()
+            titleLabel.text = newsObject.title
+            bodyLabel.text = newsObject.body
             if let date = newsObject.date{
                 let index = date.index((date.startIndex), offsetBy: 10)
                 let clearDate = date.substring(to: index)
                 dateLabel.text = clearDate
             }
-            
-            titleLabel.text = newsObject.title
-            bodyLabel.text = newsObject.body
     
             titleLabel <- [
                 Top(Helper.shared.constrain(with: .height, num: 10)).to(sourceLabel),
