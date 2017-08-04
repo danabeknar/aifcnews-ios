@@ -10,7 +10,6 @@ import UIKit
 import EasyPeasy
 import Sugar
 import Kingfisher
-import AFDateHelper
 
 class FeedTableViewCell: UITableViewCell {
     

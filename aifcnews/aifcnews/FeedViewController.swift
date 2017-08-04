@@ -9,9 +9,10 @@
 import UIKit
 import EasyPeasy
 import ExpandingMenu
-import Sugar
 import RealmSwift
 import BTNavigationDropdownMenu
+import SVProgressHUD
+
 
 protocol Communicatable {
     func fetch(with array: [Tag])
@@ -85,16 +86,29 @@ class FeedViewController: UIViewController, Communicatable {
         button.addTarget(self, action: #selector(arrowButtonPressed), for: .touchUpInside)
         return button
     }()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .backgroundGrey
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barTintColor = .mainBlue
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        setupProgressView()
+        setupNavigationController()
         setupViews()
         setupExpandingMenuButton()
         setupConstraints()
+    }
+    
+    func setupProgressView(){
+        SVProgressHUD.setContainerView(tableView)
+        SVProgressHUD.setDefaultStyle(.dark)
+        SVProgressHUD.setBackgroundLayerColor(.clear)
+        SVProgressHUD.show()
+    }
+    
+    func setupNavigationController(){
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.barTintColor = .mainBlue
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         self.navigationItem.titleView = menuView
     }
     
@@ -151,6 +165,7 @@ class FeedViewController: UIViewController, Communicatable {
     }
     
     func fetch(with array: [Tag]) {
+        tags = array
         updateMenuView(with: array)
     }
     
@@ -160,6 +175,7 @@ class FeedViewController: UIViewController, Communicatable {
                 self.news = data
                 DispatchQueue.main.async{
                     self.tableView.reloadData()
+                    SVProgressHUD.dismiss()
                 }
             } else {
                 print(error?.localizedDescription)

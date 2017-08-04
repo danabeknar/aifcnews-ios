@@ -107,7 +107,7 @@ class TagsViewController: UIViewController {
         ]
         
         lowerBar <- [
-            Bottom(50),
+            Bottom(0),
             Height(Helper.shared.constrain(with: .height, num: 50)),
             Width(ScreenSize.width)
         ]
