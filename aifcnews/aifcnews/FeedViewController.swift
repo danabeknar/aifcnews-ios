@@ -22,6 +22,7 @@ protocol Communicatable {
 class FeedViewController: UIViewController, Communicatable {
     
     var news = [News]()
+    var lastSelectedIndex = 0
     
     var tags: [Tag] = [] {
         didSet{
@@ -46,6 +47,12 @@ class FeedViewController: UIViewController, Communicatable {
             }
         }
     }
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControlEvents.valueChanged)
+        return refreshControl
+    }()
     
     lazy var menuView: BTNavigationDropdownMenu = {
         let menuView = BTNavigationDropdownMenu(title: "Menu", items: [])
@@ -109,11 +116,12 @@ class FeedViewController: UIViewController, Communicatable {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.barTintColor = .mainBlue
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-        self.navigationItem.titleView = menuView
     }
     
     func setupViews(){
         view.addSubviews(tableView, arrowButton)
+        tableView.addSubview(refreshControl)
+        navigationItem.titleView = menuView
     }
     
     func setupExpandingMenuButton() {
@@ -174,8 +182,9 @@ class FeedViewController: UIViewController, Communicatable {
             if let data = data {
                 self.news = data
                 DispatchQueue.main.async{
-                    self.tableView.reloadData()
+                    self.refreshControl.endRefreshing()
                     SVProgressHUD.dismiss()
+                    self.tableView.reloadData()
                 }
             } else {
                 print(error?.localizedDescription)
@@ -183,7 +192,12 @@ class FeedViewController: UIViewController, Communicatable {
         }
     }
     
+    func handleRefresh(_ refreshControl: UIRefreshControl) {
+            fetchData(with: tags[lastSelectedIndex].subtags)
+    }
+    
     func tagPressed(with index: Int) {
+        lastSelectedIndex = index
         currentTag = tags[index]
     }
     
