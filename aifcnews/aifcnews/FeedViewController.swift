@@ -11,7 +11,6 @@ import EasyPeasy
 import ExpandingMenu
 import RealmSwift
 import BTNavigationDropdownMenu
-import SVProgressHUD
 
 
 protocol Communicatable {
@@ -98,18 +97,10 @@ class FeedViewController: UIViewController, Communicatable {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .backgroundGrey
-        setupProgressView()
         setupNavigationController()
         setupViews()
         setupExpandingMenuButton()
         setupConstraints()
-    }
-    
-    func setupProgressView(){
-        SVProgressHUD.setContainerView(tableView)
-        SVProgressHUD.setDefaultStyle(.dark)
-        SVProgressHUD.setBackgroundLayerColor(.clear)
-        SVProgressHUD.show()
     }
     
     func setupNavigationController(){
@@ -183,7 +174,6 @@ class FeedViewController: UIViewController, Communicatable {
                 self.news = data
                 DispatchQueue.main.async{
                     self.refreshControl.endRefreshing()
-                    SVProgressHUD.dismiss()
                     self.tableView.reloadData()
                 }
             } else {

@@ -14,6 +14,10 @@ import RealmSwift
 
 class DetailedNewsViewController: UIViewController {
     
+    var newsTitles = Set<String>()
+    var preCheck = 0
+    var postCheck = 0
+    
     var image: UIImage? {
         didSet {
             newsImageView.image = image
@@ -83,11 +87,45 @@ class DetailedNewsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let newsTitlesObject = UserDefaults.standard.value(forKey: "newsTitles") as? NSData {
+            self.newsTitles = NSKeyedUnarchiver.unarchiveObject(with: newsTitlesObject as Data) as! Set<String>
+            checkForBookmark(newsTitles)
+        }
         self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = .white
         setupViews()
         setupConstraints()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        UIApplication.shared.isStatusBarHidden = true
+        setNeedsStatusBarAppearanceUpdate()
+    }
+
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.shared.isStatusBarHidden = false
+        if preCheck == 0 && postCheck == 1{
+            saveBookmark()
+        } else if preCheck ==  1 && postCheck == 0{
+            removeBookmark()
+        }
+        UserDefaults.standard.set(NSKeyedArchiver.archivedData(withRootObject: newsTitles), forKey: "newsTitles")
+    }
+
+    func checkForBookmark(_ newsTitles: Set<String>) {
+        if let title = newsObject?.title{
+            if newsTitles.contains(title){
+                bookmarkButton.setImage(UIImage(named: "FilledBookmark"), for: .normal)
+                preCheck = 1
+                postCheck = 1
+            } else {
+                bookmarkButton.setImage(UIImage(named: "Bookmark"), for: .normal)
+            }
+        }
     }
     
     func setupViews(){
@@ -148,14 +186,18 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func bookmarkPressed() {
-        
         if bookmarkButton.imageView?.image == UIImage(named: "Bookmark"){
             bookmarkButton.setImage(UIImage(named: "FilledBookmark"), for: .normal)
-            DispatchQueue.main.async{
-                self.saveBookmark()
+            if let title = newsObject?.title{
+                newsTitles.insert(title)
+                postCheck = 1
             }
         } else {
             bookmarkButton.setImage(UIImage(named: "Bookmark"), for: .normal)
+            if let title = newsObject?.title{
+                newsTitles.remove(title)
+                postCheck = 0
+            }
         }
     }
     
@@ -165,7 +207,7 @@ class DetailedNewsViewController: UIViewController {
     
     func saveBookmark(){
         let newsToSave = RealmNews()
-        let data = UIImagePNGRepresentation((newsObject?.image)!) as NSData?
+        let data = UIImagePNGRepresentation(self.image!) as NSData?
         newsToSave.body = (newsObject?.body!)!
         newsToSave.date = (newsObject?.date)!
         newsToSave.isFavourite = true
@@ -175,9 +217,35 @@ class DetailedNewsViewController: UIViewController {
         
         try! realm.write {
             realm.add(newsToSave)
-            print("REALM FILE PATH", Realm.Configuration.defaultConfiguration.fileURL)
         }
-        
+    }
+    
+    func removeBookmark() {
+        try! realm.write {
+            if let title = newsObject?.title {
+                guard let object = realm.objects(RealmNews.self).filter("title = %@", title).first?.title else {
+                     return
+                }
+                realm.delete(realm.objects(RealmNews.self).filter("title = %@", object).first!)
+            }
+        }
+    }
+    
+    func addSingleQuotes(to string: String) -> String {
+        var modifiedString = ""
+        var counter = 0
+        for char in modifiedString.characters{
+            if char == "'" {
+                modifiedString.append("\'")
+            } else {
+                modifiedString.append(char)
+            }
+            counter += 1
+            if counter == modifiedString.characters.count{
+                return modifiedString
+            }
+        }
+        return modifiedString
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -199,15 +267,6 @@ class DetailedNewsViewController: UIViewController {
         return true
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        UIApplication.shared.isStatusBarHidden = true
-        setNeedsStatusBarAppearanceUpdate()
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        UIApplication.shared.isStatusBarHidden = false
-    }
 
 }
 

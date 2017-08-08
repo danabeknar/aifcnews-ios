@@ -47,11 +47,13 @@ class BookmarkViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(realm.configuration.fileURL)
         view.backgroundColor = .backgroundGrey
         setupViews()
         setupConstraints()
-//        fetchRealmNews()
+        fetchRealmNews()
     }
+    
     
     override var prefersStatusBarHidden: Bool {
         return true
@@ -61,6 +63,7 @@ class BookmarkViewController: UIViewController {
         super.viewWillAppear(animated)
         UIApplication.shared.isStatusBarHidden = true
         setNeedsStatusBarAppearanceUpdate()
+        fetchRealmNews()
     }
     
     func setupViews(){
@@ -115,6 +118,7 @@ class BookmarkViewController: UIViewController {
     }
 
     func fetchRealmNews(){
+        self.news.removeAll()
         Database.shared.fetchRealmNews { (news) in
             if news != nil {
                 self.news = news!
@@ -122,6 +126,9 @@ class BookmarkViewController: UIViewController {
                     self.tableView.reloadData()
                 }
             } else {
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
                 print("News are empty")
             }
         }
@@ -139,6 +146,7 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! FeedTableViewCell
         cell.newsObject = news[indexPath.row] as News
+        cell.backgroundImageView.image = news[indexPath.row].image
         return cell
     }
     

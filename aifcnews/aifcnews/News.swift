@@ -25,27 +25,37 @@ struct News {
         
     }
     
+    init(_ title: String, _ date: String, _ source: String, _ image: UIImage, _ body: String) {
+        self.title = title
+        self.date = date
+        self.source = source
+        self.image = image
+        self.body = body
+    }
     
     static func fetchNews(with subtags: [Subtag], callback: @escaping ([News]?, Error?) -> Void) {
         var allNews = [News]()
         allNews.removeAll()
-        let headers = ["X-AYLIEN-NewsAPI-Application-ID": "a0207811", "X-AYLIEN-NewsAPI-Application-Key": "d9d55eb1c3bc25fa06fc0b63918d9dde"]
+        let headers = ["X-AYLIEN-NewsAPI-Application-ID": "37d14b97", "X-AYLIEN-NewsAPI-Application-Key": "bec89198da15903343bd84878d67f9f5"]
         var counter = 0
         for subtag in subtags {
-            let parameters = ["title": "\(subtag.subtag)", "language": "en", "source.name": "Bloomberg"]
+            let parameters = ["title": "\(subtag.subtag)", "language": "en"]
             Alamofire.request("https://api.newsapi.aylien.com/api/v1/stories?", method: HTTPMethod.get, parameters: parameters,headers: headers).responseJSON { (response) in
-                guard let json = response.result.value as? [String:Any],
-                    let stories = json["stories"] as? [Any]
+                guard let json = response.result.value as? [String:Any] else {
+                    callback(nil, response.result.error)
+                    return
+                }
+                   guard let stories = json["stories"] as? [Any]
                     else {
                         callback(nil, response.result.error)
                         return
                 }
-                let optionalNews = Mapper<News>().mapArray(JSONObject: stories)
                 
+                let optionalNews = Mapper<News>().mapArray(JSONObject: stories)
+
                 if let news = optionalNews {
                     allNews += news
                 }
-        
                 counter += 1
                 if counter == subtags.count {
                     callback(allNews, nil)
