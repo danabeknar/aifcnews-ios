@@ -20,6 +20,7 @@ struct News {
     var imageURL: String?
     var body: String?
     var image: UIImage?
+    var link: String?
     
     init?(map: Map) {
         
@@ -51,8 +52,11 @@ struct News {
                         return
                 }
                 
+                print(stories.last)
+                
                 let optionalNews = Mapper<News>().mapArray(JSONObject: stories)
-
+                
+                
                 if let news = optionalNews {
                     allNews += news
                 }
@@ -76,5 +80,6 @@ extension News: Mappable {
         imageURL <- map["media.0.url"]
         body <- map["body"]
         source <- map["source.title"]
+        link <- map["links.permalink"]
     }
 }

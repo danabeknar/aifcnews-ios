@@ -202,9 +202,9 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func sharePressed() {
-        if let body = newsObject?.body, let title = newsObject?.title, let image = self.newsImageView.image{
-            let text = fetchFirstSentence(from: body)
-            let activityVC = UIActivityViewController(activityItems: [title, text, image], applicationActivities: nil)
+        if let link = newsObject?.link
+        {
+            let activityVC = UIActivityViewController(activityItems: [link], applicationActivities: nil)
             activityVC.excludedActivityTypes = [.airDrop,
                                                 UIActivityType(rawValue: "com.google.GooglePlus.ShareExtension"),
                                                 UIActivityType(rawValue: "com.apple.reminders.RemindersEditorExtension")]
@@ -224,10 +224,10 @@ class DetailedNewsViewController: UIViewController {
         let data = UIImagePNGRepresentation(self.image!) as NSData?
         newsToSave.body = (newsObject?.body!)!
         newsToSave.date = (newsObject?.date)!
-        newsToSave.isFavourite = true
         newsToSave.source = (newsObject?.source!)!
         newsToSave.title = (newsObject?.title!)!
         newsToSave.image = data!
+        newsToSave.link = (newsObject?.link)!
         
         try! realm.write {
             realm.add(newsToSave)

@@ -24,6 +24,6 @@ class RealmNews: Object {
     dynamic var date: String = ""
     dynamic var image: NSData = NSData()
     dynamic var body: String = ""
-    dynamic var isFavourite: Bool = true
+    dynamic var link: String = ""
     
 }
