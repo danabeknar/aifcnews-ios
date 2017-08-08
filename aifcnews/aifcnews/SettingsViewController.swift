@@ -171,7 +171,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         case (0, 0): ShareManager.shared.appStoreRate()
         case (0, 1): ShareManager.shared.share(at: self)
         case (0, 2): ShareManager.shared.mailFeedback(at: self)
-//        case (1, 0): ShareManager.shared.facebookShare(at: self)
+                     tableView.cellForRow(at: indexPath)?.isUserInteractionEnabled = false
         default: break
         }
     }

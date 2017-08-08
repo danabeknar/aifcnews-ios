@@ -187,6 +187,7 @@ class FeedViewController: UIViewController, Communicatable {
     }
     
     func tagPressed(with index: Int) {
+        refreshControl.beginRefreshing()
         lastSelectedIndex = index
         currentTag = tags[index]
     }

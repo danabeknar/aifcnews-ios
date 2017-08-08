@@ -202,9 +202,23 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func sharePressed() {
-        print("pressed")
+        if let body = newsObject?.body, let title = newsObject?.title, let image = self.newsImageView.image{
+            let text = fetchFirstSentence(from: body)
+            let activityVC = UIActivityViewController(activityItems: [title, text, image], applicationActivities: nil)
+            activityVC.excludedActivityTypes = [.airDrop,
+                                                UIActivityType(rawValue: "com.google.GooglePlus.ShareExtension"),
+                                                UIActivityType(rawValue: "com.apple.reminders.RemindersEditorExtension")]
+            activityVC.popoverPresentationController?.sourceView = UIView()
+            self.present(activityVC, animated: true, completion: nil)
+        }
     }
-    
+
+
+    func fetchFirstSentence(from text: String)-> String {
+        let textArray = text.components(separatedBy: ".")
+        return textArray[0]
+    }
+
     func saveBookmark(){
         let newsToSave = RealmNews()
         let data = UIImagePNGRepresentation(self.image!) as NSData?
