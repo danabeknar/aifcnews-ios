@@ -98,7 +98,6 @@ class SettingsViewController: UIViewController {
     func setupViews() {
         view.addSubviews(tableView, lowerBar, line)
         lowerBar.addSubview(dismissButton)
-        tableView.tableFooterView = infoLabel
         infoLabel.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50)
     }
     

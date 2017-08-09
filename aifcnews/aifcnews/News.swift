@@ -40,6 +40,7 @@ struct News {
         let headers = ["X-AYLIEN-NewsAPI-Application-ID": "37d14b97", "X-AYLIEN-NewsAPI-Application-Key": "bec89198da15903343bd84878d67f9f5"]
         var counter = 0
         for subtag in subtags {
+//            "source.name": "[Bloomberg, BBC, CNN, Reuters, Time]"
             let parameters = ["title": "\(subtag.subtag)", "language": "en"]
             Alamofire.request("https://api.newsapi.aylien.com/api/v1/stories?", method: HTTPMethod.get, parameters: parameters,headers: headers).responseJSON { (response) in
                 guard let json = response.result.value as? [String:Any] else {
@@ -51,8 +52,6 @@ struct News {
                         callback(nil, response.result.error)
                         return
                 }
-                
-                print(stories.last)
                 
                 let optionalNews = Mapper<News>().mapArray(JSONObject: stories)
                 

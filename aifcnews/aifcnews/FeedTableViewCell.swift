@@ -8,8 +8,8 @@
 
 import UIKit
 import EasyPeasy
-import Sugar
 import Kingfisher
+import Sugar
 
 class FeedTableViewCell: UITableViewCell {
     
@@ -35,29 +35,29 @@ class FeedTableViewCell: UITableViewCell {
     }()
     
     lazy var timeImageView: UIImageView = {
-        return UIImageView().then {
-            $0.image = UIImage(named: "Time")?.original
-        }
+        let imageView = UIImageView()
+            imageView.image = UIImage(named: "Time")?.original
+        return imageView
     }()
     
     lazy var titleLabel: UILabel = {
-        return UILabel().then {
-            $0.textColor = .white
-            $0.textAlignment = .left
-            $0.numberOfLines = 0
-            $0.text = "EU Report Implies Criminals are Too Stupid to Use Bitcoin"
-            $0.font = UIFont(name: "OpenSans-Regular", size: Helper.shared.constrain(with: .height, num: 18))
-        }
+        let label = UILabel()
+            label.textColor = .white
+            label.textAlignment = .left
+            label.numberOfLines = 0
+            label.text = "EU Report Implies Criminals are Too Stupid to Use Bitcoin"
+            label.font = UIFont(name: "OpenSans-Regular", size: Helper.shared.constrain(with: .height, num: 18))
+        return label
     }()
     
     lazy var infoLabel: UILabel = {
-        return UILabel().then {
-            $0.textColor = .textGrey
-            $0.textAlignment = .left
-            $0.text = "10 minutes ago | Reuters.com"
-            $0.font = UIFont(name: "OpenSans-Light", size: Helper.shared.constrain(with: .height, num: 11))
-            $0.numberOfLines = 0
-        }
+        let label = UILabel()
+            label.textColor = .textGrey
+            label.textAlignment = .left
+            label.text = "10 minutes ago | Reuters.com"
+            label.font = UIFont(name: "OpenSans-Light", size: Helper.shared.constrain(with: .height, num: 11))
+            label.numberOfLines = 0
+        return label
     }()
     
     // MARK: Initialization

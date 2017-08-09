@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Sugar
 import EasyPeasy
 import MXParallaxHeader
 import RealmSwift

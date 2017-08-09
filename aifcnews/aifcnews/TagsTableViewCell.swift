@@ -8,7 +8,7 @@
 
 import UIKit
 import EasyPeasy
-import  Sugar
+import Sugar
 
 class TagsTableViewCell: UITableViewCell {
 
@@ -38,11 +38,11 @@ class TagsTableViewCell: UITableViewCell {
     }()
     
     lazy var subtagLabel: UILabel = {
-        return UILabel().then {
-            $0.textColor = .textCellBlack
-            $0.textAlignment = .left
-            $0.font = UIFont(name: "OpenSans-Light", size: Helper.shared.constrain(with: .height, num: 15))
-        }
+        let label = UILabel()
+            label.textColor = .textCellBlack
+            label.textAlignment = .left
+            label.font = UIFont(name: "OpenSans-Light", size: Helper.shared.constrain(with: .height, num: 15))
+        return label
     }()
     
     lazy var checkmarkView: UIImageView = {

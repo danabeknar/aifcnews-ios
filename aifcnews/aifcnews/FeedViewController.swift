@@ -11,6 +11,7 @@ import EasyPeasy
 import ExpandingMenu
 import RealmSwift
 import BTNavigationDropdownMenu
+import DZNEmptyDataSet
 
 
 protocol Communicatable {
@@ -77,6 +78,8 @@ class FeedViewController: UIViewController, Communicatable {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
         tableView.backgroundColor = .white
         tableView.separatorStyle = .none
         tableView.rowHeight = 210
@@ -224,7 +227,7 @@ class FeedViewController: UIViewController, Communicatable {
 
 // MARK: UITableViewDataSource, UITableViewDelegate
 
-extension FeedViewController: UITableViewDelegate, UITableViewDataSource {
+extension FeedViewController: UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return news.count
@@ -245,4 +248,11 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource {
         vc.newsObject = news[(tableView.indexPathForSelectedRow?.row)!]
         present(vc, animated: true, completion: nil)
     }
+    
+    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString {
+        let text: String = "No Data Found"
+        let attributes: [AnyHashable: Any] = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18.0), NSForegroundColorAttributeName: UIColor.darkGray]
+        return NSAttributedString(string: text, attributes: attributes as? [String : Any] ?? [String : Any]())
+    }
+
 }

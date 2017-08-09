@@ -8,7 +8,6 @@
 
 import UIKit
 import EasyPeasy
-import Sugar
 
 class SettingsTableViewCell: UITableViewCell {
 
