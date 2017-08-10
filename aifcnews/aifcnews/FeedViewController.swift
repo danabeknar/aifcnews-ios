@@ -12,6 +12,10 @@ import ExpandingMenu
 import RealmSwift
 import BTNavigationDropdownMenu
 import DZNEmptyDataSet
+import ReachabilitySwift
+import SVProgressHUD
+import SwiftWebVC
+import XLActionController
 
 
 protocol Communicatable {
@@ -20,6 +24,8 @@ protocol Communicatable {
 
 
 class FeedViewController: UIViewController, Communicatable {
+    
+    let reachability = Reachability()!
     
     var news = [News]()
     var lastSelectedIndex = 0
@@ -34,36 +40,26 @@ class FeedViewController: UIViewController, Communicatable {
     
     var currentTag: Tag? {
         didSet {
-            if let subtags = currentTag?.subtags{
-                fetchData(with: subtags)
+            if let tag = currentTag {
+                fetchData(with: tag)
             }
         }
     }
     
-    var initialTag: Tag? {
-        didSet{
-            if let subtags = initialTag?.subtags{
-                fetchData(with: subtags)
-            }
-        }
-    }
-    
-    lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(handleRefresh(_:)), for: UIControlEvents.valueChanged)
-        return refreshControl
-    }()
+    var initialTag: Tag?
     
     lazy var menuView: BTNavigationDropdownMenu = {
-        let menuView = BTNavigationDropdownMenu(title: "Menu", items: [])
+        let menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: (self.navigationController?.view!)!, title: BTTitle.title("Menu"), items: [])
         menuView.cellHeight = 40
         menuView.cellBackgroundColor = self.navigationController?.navigationBar.barTintColor
-        menuView.cellSelectionColor = .mainBlue
+        menuView.cellSelectionColor = .clear
+        menuView.cellSeparatorColor = .clear
         menuView.shouldKeepSelectedCellColor = true
         menuView.cellTextLabelColor = UIColor.white
-        menuView.cellTextLabelFont = UIFont(name: "OpenSans-Semibold", size: 13)
-        menuView.navigationBarTitleFont = UIFont(name: "OpenSans-Semibold", size: 15)
-        menuView.cellTextLabelAlignment = .center // .Center // .Right // .Left
+        menuView.cellTextLabelFont = UIFont(name: "SFProDisplay-Regular", size: 18)
+        menuView.navigationBarTitleFont = UIFont(name: "SFProDisplay-Regular", size: 18)
+        menuView.selectedCellTextLabelColor = "AF3229".hexColor
+        menuView.cellTextLabelAlignment = .center
         menuView.arrowPadding = 15
         menuView.animationDuration = 0.5
         menuView.maskBackgroundColor = UIColor.black
@@ -80,9 +76,9 @@ class FeedViewController: UIViewController, Communicatable {
         tableView.dataSource = self
         tableView.emptyDataSetSource = self
         tableView.emptyDataSetDelegate = self
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = "000B17".hexColor
         tableView.separatorStyle = .none
-        tableView.rowHeight = 210
+        tableView.rowHeight = 132
         tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
@@ -99,50 +95,36 @@ class FeedViewController: UIViewController, Communicatable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .backgroundGrey
+        view.backgroundColor = "000B17".hexColor
         setupNavigationController()
         setupViews()
-        setupExpandingMenuButton()
         setupConstraints()
+        parseData()
+
+    }
+    
+    func longPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        
+        if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
+            
+            let touchPoint = longPressGestureRecognizer.location(in: self.view)
+            if tableView.indexPathForRow(at: touchPoint) != nil {
+                
+            }
+        }
     }
     
     func setupNavigationController(){
         self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barTintColor = .mainBlue
+        self.navigationController?.navigationBar.barTintColor = "0A1520".hexColor
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
     }
     
     func setupViews(){
-        view.addSubviews(tableView, arrowButton)
-        tableView.addSubview(refreshControl)
+        [tableView,arrowButton].forEach {
+            view.addSubview($0)
+        }
         navigationItem.titleView = menuView
-    }
-    
-    func setupExpandingMenuButton() {
-        let menuButtonSize: CGSize = CGSize(width: 64.0, height: 64.0)
-        let menuButton = ExpandingMenuButton(frame: CGRect(origin: CGPoint.zero, size: menuButtonSize), centerImage: UIImage(named: "Menu")!, centerHighlightedImage: UIImage(named: "Menu")!)
-        menuButton.center = CGPoint(x: ScreenSize.width - 50, y: ScreenSize.height - 100)
-        
-        let item1 = ExpandingMenuItem(size: menuButtonSize, title: "Settings", image: UIImage(named: "SettingsMenu")!, highlightedImage: UIImage(named: "SettingsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
-            self.present(SettingsViewController(), animated: true, completion: nil)
-        }
-        
-        let item2 = ExpandingMenuItem(size: menuButtonSize, title: "Tags", image: UIImage(named: "TagsMenu")!, highlightedImage: UIImage(named: "TagsMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
-            let vc = TagsViewController()
-            vc.delegate = self
-            self.view.window?.rootViewController?.present(vc, animated: true, completion: nil)
-        }
-        
-        let item3 = ExpandingMenuItem(size: menuButtonSize, title: "Bookmarks", image: UIImage(named: "BookmarkMenu")!, highlightedImage: UIImage(named: "BookmarkMenu")!, backgroundImage: nil, backgroundHighlightedImage: nil) { () -> Void in
-            self.present(BookmarkViewController(), animated: true, completion: nil)
-        }
-        
-        menuButton.enabledFoldingAnimations  = [.MenuItemFade, .MenuItemMoving]
-        menuButton.allowSounds = false
-        menuButton.menuItemMargin = 15
-        menuButton.bottomViewAlpha = 0.7
-        menuButton.addMenuItems([item1, item2, item3])
-        view.addSubview(menuButton)
     }
     
     func updateMenuView(with tags: [Tag]){
@@ -166,31 +148,47 @@ class FeedViewController: UIViewController, Communicatable {
         
     }
     
+    func parseData() {
+        NotificationCenter.default.addObserver(self, selector: #selector(self.checkConnectivity),name: ReachabilityChangedNotification,object: reachability)
+        do{
+            try reachability.startNotifier()
+        }catch{
+            print("could not start reachability notifier")
+        }
+    }
+    
+    func checkConnectivity(){
+        if (reachability.isReachable) {
+            SVProgressHUD.show(withStatus: "Подождите...")
+            if let tag = initialTag{
+                fetchData(with: tag)
+            }
+        } else {
+            print("Network not reachable")
+        }
+    }
+    
     func fetch(with array: [Tag]) {
         tags = array
         updateMenuView(with: array)
     }
     
-    func fetchData(with subtags: [Subtag]) {
-        News.fetchNews(with: subtags) { (data, error) in
+    func fetchData(with tag: Tag) {
+        News.fetchNews(with: tag) { (data, error) in
             if let data = data {
                 self.news = data
                 DispatchQueue.main.async{
-                    self.refreshControl.endRefreshing()
+                    SVProgressHUD.dismiss()
                     self.tableView.reloadData()
                 }
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription ?? "error")
             }
         }
     }
     
-    func handleRefresh(_ refreshControl: UIRefreshControl) {
-            fetchData(with: tags[lastSelectedIndex].subtags)
-    }
-    
     func tagPressed(with index: Int) {
-        refreshControl.beginRefreshing()
+        SVProgressHUD.show(withStatus: "Подождите...")
         lastSelectedIndex = index
         currentTag = tags[index]
     }
@@ -241,18 +239,30 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource, DZNEmp
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
-        let image = cell.backgroundImageView.image
-        let vc = DetailedNewsViewController()
-        vc.image = image
-        vc.newsObject = news[(tableView.indexPathForSelectedRow?.row)!]
-        present(vc, animated: true, completion: nil)
+        if let url = news[indexPath.row].link{
+            let webVC = SwiftModalWebVC(urlString: url, theme: .lightBlack, dismissButtonStyle: .arrow)
+            self.present(webVC, animated: true, completion: nil)
+        }
     }
     
-    func title(forEmptyDataSet scrollView: UIScrollView) -> NSAttributedString {
-        let text: String = "No Data Found"
-        let attributes: [AnyHashable: Any] = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 18.0), NSForegroundColorAttributeName: UIColor.darkGray]
-        return NSAttributedString(string: text, attributes: attributes as? [String : Any] ?? [String : Any]())
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: "nodata")
+    }
+    
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+        return 1
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
+        return true
+    }
+    
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        if (reachability.isReachable){
+            return false
+        } else {
+            return true
+        }
     }
 
 }

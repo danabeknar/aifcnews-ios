@@ -9,76 +9,57 @@
 import Foundation
 import UIKit
 import Alamofire
-import ObjectMapper
+import SWXMLHash
 
 
 struct News {
     
     var title: String?
     var date: String?
-    var source: String?
-    var imageURL: String?
-    var body: String?
-    var image: UIImage?
     var link: String?
     
-    init?(map: Map) {
-        
-    }
-    
-    init(_ title: String, _ date: String, _ source: String, _ image: UIImage, _ body: String) {
+    init(_ title: String, _ date: String, _ link: String) {
         self.title = title
         self.date = date
-        self.source = source
-        self.image = image
-        self.body = body
+        self.link = link
     }
-    
-    static func fetchNews(with subtags: [Subtag], callback: @escaping ([News]?, Error?) -> Void) {
-        var allNews = [News]()
-        allNews.removeAll()
-        let headers = ["X-AYLIEN-NewsAPI-Application-ID": "37d14b97", "X-AYLIEN-NewsAPI-Application-Key": "bec89198da15903343bd84878d67f9f5"]
+
+    static func fetchNews(with tag: Tag, callback: @escaping ([News]?, Error?) -> Void){
+        var news = [News]()
         var counter = 0
-        for subtag in subtags {
-//            "source.name": "[Bloomberg, BBC, CNN, Reuters, Time]"
-            let parameters = ["title": "\(subtag.subtag)", "language": "en"]
-            Alamofire.request("https://api.newsapi.aylien.com/api/v1/stories?", method: HTTPMethod.get, parameters: parameters,headers: headers).responseJSON { (response) in
-                guard let json = response.result.value as? [String:Any] else {
-                    callback(nil, response.result.error)
-                    return
+        for subtag in tag.subtags {
+            let modifiedString = addPlusses(to: subtag.subtag)
+            Alamofire.request("https://news.google.com/news?q=\(modifiedString)&output=rss", method: .get).response(completionHandler: { (data) in
+                let xml = SWXMLHash.parse(data.data!)
+                for elem in xml["rss"]["channel"]["item"].all {
+                    if let title = elem["title"].element?.text, let link = elem["link"].element?.text, let date = elem["pubDate"].element?.text{
+                        news.append(News(title, date, link))
+                    }
+                    counter += 1
+                    if counter == xml["rss"]["channel"]["item"].all.count{
+                        callback(news, nil)
+                    }
                 }
-                   guard let stories = json["stories"] as? [Any]
-                    else {
-                        callback(nil, response.result.error)
-                        return
-                }
-                
-                let optionalNews = Mapper<News>().mapArray(JSONObject: stories)
-                
-                
-                if let news = optionalNews {
-                    allNews += news
-                }
-                counter += 1
-                if counter == subtags.count {
-                    callback(allNews, nil)
-                }
-            }
+                callback(nil, data.error)
+            })
         }
     }
-}
-
-
-
-
-
-extension News: Mappable {
-    mutating func mapping(map: Map) {
-        title <- map["title"]
-        date <- map["published_at"]
-        imageURL <- map["media.0.url"]
-        body <- map["body"]
-        source <- map["source.title"]
-        link <- map["links.permalink"]
+    
+    static func addPlusses(to string: String) -> String {
+        var returningString = ""
+        var counter = 0
+        for character in string.characters{
+            if character == " "{
+                returningString.append("+")
+            } else {
+                returningString.append(character)
+            }
+            counter += 1
+            if counter == string.characters.count {
+                return returningString
+            }
+        }
+        return returningString
     }
+
 }

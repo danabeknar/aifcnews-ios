@@ -29,16 +29,16 @@ class DetailedNewsTableViewCell: UITableViewCell {
     
     lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "OpenSans-Light", size: 13)
-        label.textColor = .textBlack
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 15)
+        label.textColor = "AF3229".hexColor
         label.textAlignment = .left
         return label
     }()
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "OpenSans-Semibold", size: 20)
-        label.textColor = .textBlack
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 23)
+        label.textColor = .white
         label.sizeToFit()
         label.numberOfLines = 0
         label.textAlignment = .left
@@ -47,25 +47,19 @@ class DetailedNewsTableViewCell: UITableViewCell {
     
     lazy var bodyLabel: UILabel = {
         let bodyLabel = UILabel()
-        bodyLabel.font = UIFont(name: "OpenSans-Regular", size: 16)
+        bodyLabel.font = UIFont(name: "SFProDisplay-Regular", size: 17)
         bodyLabel.numberOfLines = 0
         bodyLabel.sizeToFit()
-        bodyLabel.textColor = .textBlack
+        bodyLabel.textColor = "989CA6".hexColor
         bodyLabel.textAlignment = .left
         return bodyLabel
     }()
     
-    lazy var circleView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        view.layer.cornerRadius = 2
-        return view
-    }()
-
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
+        contentView.backgroundColor = "000B17".hexColor
         setupViews()
-        setupConstraints()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -75,64 +69,54 @@ class DetailedNewsTableViewCell: UITableViewCell {
     // MARK: Configure Views
     
     func setupViews() {
-        contentView.addSubviews(sourceLabel, dateLabel, titleLabel, circleView, bodyLabel, circleView)
+        [sourceLabel, dateLabel, titleLabel, bodyLabel].forEach {
+            contentView.addSubview($0)
+        }
     }
     
     // MARK: Configure Constraints
     
     func setupConstraints() {
         
-        sourceLabel <- [
-            Width(Helper.shared.constrain(with: .width, num: 100)),
-            Height(Helper.shared.constrain(with: .height, num: 15)),
-            Left(Helper.shared.constrain(with: .width, num: 10)),
-            Top(Helper.shared.constrain(with: .height, num: 10))
-        ]
-        
-        circleView <- [
-            Width(Helper.shared.constrain(with: .width, num: 3)),
-            Height(Helper.shared.constrain(with: .height, num: 3)),
-            Left(Helper.shared.constrain(with: .width, num: 10)).to(sourceLabel),
-            Top(Helper.shared.constrain(with: .height, num: 16))
-        ]
+//        sourceLabel <- [
+//            Width(Helper.shared.constrain(with: .width, num: 100)),
+//            Height(Helper.shared.constrain(with: .height, num: 15)),
+//            Left(Helper.shared.constrain(with: .width, num: 10)),
+//            Top(Helper.shared.constrain(with: .height, num: 10))
+//        ]
         
         dateLabel <- [
             Width(Helper.shared.constrain(with: .width, num: 120)),
             Height(Helper.shared.constrain(with: .height, num: 15)),
-            Left(Helper.shared.constrain(with: .width, num: 10)).to(circleView),
-            Top(Helper.shared.constrain(with: .height, num: 10))
+            Left(Helper.shared.constrain(with: .width, num: 20)),
+            Top(Helper.shared.constrain(with: .height, num: 13)).to(titleLabel)
+        ]
+
+        titleLabel <- [
+            Top(Helper.shared.constrain(with: .height, num: 15)),
+            Left(Helper.shared.constrain(with: .width, num: 20)),
+            Right(Helper.shared.constrain(with: .width, num: 20)),
+            Height(heightForView(text: titleLabel.text!, font: UIFont(name: "SFProDisplay-Regular", size: 23)!, width: ScreenSize.width - 40))
         ]
         
-
-
+        bodyLabel <- [
+            Top(Helper.shared.constrain(with: .height, num: 11)).to(dateLabel),
+            Left(Helper.shared.constrain(with: .width, num: 20)),
+            Right(Helper.shared.constrain(with: .width, num: 20)),
+            Bottom(10)
+        ]
     }
     
     func configureView() {
         if let newsObject = newsObject{
-            sourceLabel.text = newsObject.source?.uppercased()
+//            sourceLabel.text = newsObject.source?.uppercased()
             titleLabel.text = newsObject.title
-            bodyLabel.text = newsObject.body
             if let date = newsObject.date{
                 let index = date.index((date.startIndex), offsetBy: 10)
                 let clearDate = date.substring(to: index)
-                dateLabel.text = clearDate
+                dateLabel.text = clearDate.uppercased()
             }
-    
-            titleLabel <- [
-                Top(Helper.shared.constrain(with: .height, num: 10)).to(sourceLabel),
-                Left(Helper.shared.constrain(with: .width, num: 20)),
-                Right(Helper.shared.constrain(with: .width, num: 20)),
-                Height(heightForView(text: titleLabel.text!, font: UIFont(name: "OpenSans-Semibold", size: 20)!, width: ScreenSize.width - 40))
-            ]
-            
-            bodyLabel <- [
-                Top(Helper.shared.constrain(with: .height, num: 5)).to(titleLabel),
-                Width(ScreenSize.width - Helper.shared.constrain(with: .width, num: 40)),
-                Left(Helper.shared.constrain(with: .width, num: 20)),
-                Right(Helper.shared.constrain(with: .width, num: 20)),
-                Bottom(10)
-            ]
-            
+            setupConstraints()
         }
     }
     

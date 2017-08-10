@@ -7,16 +7,19 @@ target 'aifcnews' do
 
   # Pods for aifcnews
   pod 'EasyPeasy'
-  pod 'Sugar'
+  pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
   pod 'ReachabilitySwift', '~> 3'
   pod 'MXParallaxHeader'
   pod 'BTNavigationDropdownMenu', :git =>'https://github.com/PhamBaTho/BTNavigationDropdownMenu.git'
   pod 'Alamofire', '~> 4.4'
-  pod 'ObjectMapper', '~> 2.2'
   pod 'Kingfisher', '~> 3.0'
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'RealmSwift'
   pod 'DZNEmptyDataSet'
-  pod 'ExpandingMenu' 
+  pod 'ExpandingMenu'
+  pod 'SideMenuController'
+  pod 'SWXMLHash', '~> 4.0.0'
+  pod 'SwiftWebVC'
+  pod 'XLActionController'
 end

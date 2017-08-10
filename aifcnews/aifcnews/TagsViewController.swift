@@ -27,26 +27,6 @@ class TagsViewController: UIViewController {
         return tableView
     }()
     
-    lazy var lowerBar: UIView = {
-        let view = UIView()
-        view.backgroundColor = .barGrey
-        return view
-    }()
-    
-    lazy var line: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lineGrey
-        return view
-    }()
-    
-    lazy var dismissButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "Cross")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(dismissButtonPressed), for: .touchUpInside)
-        return button
-    }()
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -59,64 +39,38 @@ class TagsViewController: UIViewController {
     }
     
     override var prefersStatusBarHidden: Bool {
-        return false
+        return true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        UIApplication.shared.isStatusBarHidden = false
-        setNeedsStatusBarAppearanceUpdate()
+        UIApplication.shared.isStatusBarHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        
         let selectedTags = AppDelegate.transform(selectedSubtags: selectedSubtags)
         self.delegate?.fetch(with: selectedTags)
     }
     
-    func setupNavigationBar() {
-        let screenSize: CGRect = UIScreen.main.bounds
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 65))
-        let navItem = UINavigationItem(title: "Tags");
-        navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.mainBlue]
-        navBar.setItems([navItem], animated: true)
-        navBar.barStyle = .default
-        self.view.addSubview(navBar)
+    
+    func setupNavigationBar(){
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.barTintColor = "0A1520".hexColor
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont(name: "SFProDisplay-Regular", size: 18)!]
+        self.navigationController?.navigationBar.topItem?.title = "Tags"
     }
     
     func setupViews(){
-        [tableView, lowerBar, line].forEach {
-            view.addSubview($0)
-        }
-        lowerBar.addSubview(dismissButton)
+        view.addSubview(tableView)
     }
     
     func setupConstraints() {
         
         tableView <- [
-            Top(Helper.shared.constrain(with: .height, num: 66)),
+            Top(0),
             Bottom(0),
             Width(ScreenSize.width)
-        ]
-        
-        line <- [
-            Width(ScreenSize.width),
-            Height(1),
-            Bottom(0).to(lowerBar)
-        ]
-        
-        lowerBar <- [
-            Bottom(0),
-            Height(Helper.shared.constrain(with: .height, num: 50)),
-            Width(ScreenSize.width)
-        ]
-        
-        dismissButton <- [
-            Height(Helper.shared.constrain(with: .height, num: 18)),
-            Width(Helper.shared.constrain(with: .width, num: 18)),
-            CenterY(),
-            CenterX()
         ]
     }
     
@@ -142,18 +96,18 @@ class TagsViewController: UIViewController {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
-            UIView.animate(withDuration: 0.3, animations: {
-                self.line.alpha = 0
-                self.lowerBar.alpha = 0
-            })
-        }
-        else{
-            UIView.animate(withDuration: 0.3, animations: {
-                self.line.alpha = 1
-                self.lowerBar.alpha = 1
-            })
-        }
+//        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
+//            UIView.animate(withDuration: 0.3, animations: {
+//                self.line.alpha = 0
+//                self.lowerBar.alpha = 0
+//            })
+//        }
+//        else{
+//            UIView.animate(withDuration: 0.3, animations: {
+//                self.line.alpha = 1
+//                self.lowerBar.alpha = 1
+//            })
+//        }
     }
     
 }

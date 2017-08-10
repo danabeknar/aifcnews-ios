@@ -9,7 +9,6 @@
 import UIKit
 import EasyPeasy
 import Kingfisher
-import Sugar
 
 class FeedTableViewCell: UITableViewCell {
     
@@ -21,43 +20,38 @@ class FeedTableViewCell: UITableViewCell {
         }
     }
     
-    lazy var backgroundImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.clipsToBounds = true
-        imageView.kf.indicatorType = .activity
-        return imageView
-    }()
-    
-    lazy var grView: UIView = {
-        let view = UIView()
-        return view
-    }()
-    
-    lazy var timeImageView: UIImageView = {
-        let imageView = UIImageView()
-            imageView.image = UIImage(named: "Time")?.original
-        return imageView
-    }()
+//    lazy var newsImageView: UIImageView = {
+//        let newsImageView = UIImageView()
+//        newsImageView.contentMode = .scaleAspectFill
+//        newsImageView.clipsToBounds = true
+//        newsImageView.layer.cornerRadius = 5
+//        newsImageView.kf.indicatorType = .activity
+//        return newsImageView
+//    }()
+
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
             label.textColor = .white
             label.textAlignment = .left
             label.numberOfLines = 0
-            label.text = "EU Report Implies Criminals are Too Stupid to Use Bitcoin"
-            label.font = UIFont(name: "OpenSans-Regular", size: Helper.shared.constrain(with: .height, num: 18))
+            label.font = UIFont(name: "SFProDisplay-Light", size: Helper.shared.constrain(with: .height, num: 18))
         return label
     }()
     
     lazy var infoLabel: UILabel = {
         let label = UILabel()
-            label.textColor = .textGrey
+            label.textColor = "989CA6".hexColor
             label.textAlignment = .left
-            label.text = "10 minutes ago | Reuters.com"
-            label.font = UIFont(name: "OpenSans-Light", size: Helper.shared.constrain(with: .height, num: 11))
+            label.font = UIFont(name: "SFProDisplay-Light", size: Helper.shared.constrain(with: .height, num: 12))
             label.numberOfLines = 0
         return label
+    }()
+    
+    lazy var lineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 1, alpha: 0.1)
+        return view
     }()
     
     // MARK: Initialization
@@ -66,9 +60,7 @@ class FeedTableViewCell: UITableViewCell {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         setupViews()
         setupConstraints()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
-            self.grView.setBlackGradientView()
-        })
+        contentView.backgroundColor = "000B17".hexColor
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -78,7 +70,7 @@ class FeedTableViewCell: UITableViewCell {
     // MARK: Configure Views
     
     func setupViews() {
-        [backgroundImageView, grView, titleLabel, timeImageView , infoLabel].forEach{
+        [titleLabel, infoLabel, lineView].forEach{
             contentView.addSubview($0)
         }
     }
@@ -86,51 +78,43 @@ class FeedTableViewCell: UITableViewCell {
     // MARK: Configure Constraints
     
     func setupConstraints() {
-        backgroundImageView <- Edges(0)
-        
-        grView <- Edges(0)
+//        newsImageView <- [
+//            Top(Helper.shared.constrain(with: .height, num: 20)),
+//            Bottom(Helper.shared.constrain(with: .height, num: 20)),
+//            Right(Helper.shared.constrain(with: .width, num: 14)),
+//            Width(Helper.shared.constrain(with: .width, num: 118))
+//        ]
 
-        timeImageView <- [
-            Left(Helper.shared.constrain(with: .width, num: 10)),
-            Bottom(Helper.shared.constrain(with: .height, num: 11)),
-            Width(Helper.shared.constrain(with: .width, num: 8)),
-            Height(Helper.shared.constrain(with: .height, num: 8))
-        ]
-        
         infoLabel <- [
-            Left(Helper.shared.constrain(with: .width, num: 5)).to(timeImageView),
-            Bottom(Helper.shared.constrain(with: .height, num: 8)),
-            Right(Helper.shared.constrain(with: .width, num: 5))
+            Left(Helper.shared.constrain(with: .width, num: 20)),
+            Bottom(Helper.shared.constrain(with: .height, num: 20)),
+            Right(Helper.shared.constrain(with: .width, num: 20)),
+            Height(Helper.shared.constrain(with: .height, num: 16))
         ]
         
         titleLabel <- [
-            Left(Helper.shared.constrain(with: .width, num: 10)),
-            Right(Helper.shared.constrain(with: .width, num: 10)),
-            Height(Helper.shared.constrain(with: .height, num: 50)),
+            Top(Helper.shared.constrain(with: .height, num: 20)),
+            Left(Helper.shared.constrain(with: .width, num: 17)),
+            Right(Helper.shared.constrain(with: .width, num: 20)),
             Bottom(Helper.shared.constrain(with: .height, num: 10)).to(infoLabel)
+        ]
+        
+        lineView <- [
+            Width(ScreenSize.width),
+            Height(1),
+            Bottom(0)
         ]
     }
     
     func configureView() {
         if let newsObject = newsObject{
             guard let title = newsObject.title,
-                  let date = newsObject.date,
-                  let source = newsObject.source
+                  let date = newsObject.date
                 else {
                     return
                 }
             titleLabel.text = title
-            
-            let index = date.index(date.startIndex, offsetBy: 10)
-            let clearDate = date.substring(to: index)
-            
-            infoLabel.text = "\(clearDate) | \(source)"
-            if let imageURL = newsObject.imageURL {
-                let url = URL(string: imageURL)
-                backgroundImageView.kf.setImage(with: url)
-            } else {
-                backgroundImageView.image = UIImage(named: "not-available")?.withRenderingMode(.alwaysOriginal)
-            }
+            infoLabel.text = date
         }
     }
     

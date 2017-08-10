@@ -10,7 +10,7 @@ import UIKit
 import EasyPeasy
 
 class SettingsTableViewCell: UITableViewCell {
-
+    
     // MARK: Properties
     
     var cellObject: SettingsItem? {
@@ -20,12 +20,18 @@ class SettingsTableViewCell: UITableViewCell {
     }
     
     lazy var titleLabel: UILabel = {
-        let titleLabel = UILabel()
-        titleLabel.font = UIFont(name: "OpenSans-Regular", size: 17)
-        titleLabel.textColor = "030303".hexColor
-        titleLabel.textAlignment = .left
-        titleLabel.numberOfLines = 0
-        return titleLabel
+        let versionLabel = UILabel()
+        versionLabel.textColor = .white
+        versionLabel.textAlignment = .left
+        return versionLabel
+    }()
+    
+    lazy var versionLabel: UILabel = {
+        let versionLabel = UILabel()
+        versionLabel.textColor = .white
+        versionLabel.textAlignment = .left
+        versionLabel.text = "1.0"
+        return versionLabel
     }()
     
     lazy var cellSwitch: UISwitch = {
@@ -33,41 +39,34 @@ class SettingsTableViewCell: UITableViewCell {
         return cellSwtich
     }()
     
-    lazy var cellIcon: UIImageView = {
-        let cellIcon = UIImageView()
-        return cellIcon
-    }()
-    
-    lazy var cellImageView: UIImageView = {
-        let cellImageView = UIImageView()
-        return cellImageView
-    }()
-    
     // MARK: Initialization
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: "Cell")
-        separatorInset = UIEdgeInsets(top: 0, left: 45, bottom: 0, right: 0)
-        self.addSubviews(titleLabel, cellIcon)
+        separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0)
+        setupViews()
         setupConstraints()
+    }
+    
+    func setupViews(){
+        self.addSubview(titleLabel)
+    }
+    
+    func setupConstraints() {
+        titleLabel <- [
+            Left(Helper.shared.constrain(with: .width, num: 15)),
+            CenterY()
+        ]
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Configure Consraints
-    
-    func setupConstraints() {
-        cellIcon <- [
-            Left(Helper.shared.constrain(with: .width, num: 10)),
-            Width(Helper.shared.constrain(with: .width, num: 20)),
-            Height(Helper.shared.constrain(with: .height, num: 20)),
-            CenterY()
-        ]
-        
-        titleLabel <- [
-            Left(Helper.shared.constrain(with: .width, num: 15)).to(cellIcon),
+    func addLabel() {
+        self.addSubview(versionLabel)
+        versionLabel <- [
+            Right(Helper.shared.constrain(with: .width, num: 16)),
             CenterY()
         ]
         
@@ -86,8 +85,7 @@ class SettingsTableViewCell: UITableViewCell {
     
     func configureView() {
         if let object = cellObject {
-            titleLabel.text = object.title
-            cellIcon.image = object.image
+            versionLabel.text = object.title
         }
     }
 }

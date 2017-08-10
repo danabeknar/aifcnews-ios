@@ -17,39 +17,12 @@ class DetailedNewsViewController: UIViewController {
     var preCheck = 0
     var postCheck = 0
     
-    var image: UIImage? {
-        didSet {
-            newsImageView.image = image
-        }
-    }
     
     var newsObject: News? {
         didSet {
-            tableView.reloadData()
+            configureView()
         }
     }
-    
-    lazy var newsImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.kf.indicatorType = .activity
-        return imageView
-    }()
-    
-    lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.backgroundColor = .white
-        tableView.allowsSelection = false
-        tableView.register(DetailedNewsTableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.parallaxHeader.height = Helper.shared.constrain(with: .height, num: 280)
-        tableView.parallaxHeader.mode = .fill
-        tableView.separatorStyle = .none
-        return tableView
-    }()
-    
-    
     lazy var lowerBar: UIView = {
         let view = UIView()
         view.backgroundColor = .barGrey
@@ -92,17 +65,10 @@ class DetailedNewsViewController: UIViewController {
         }
         self.navigationController?.isNavigationBarHidden = true
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        view.backgroundColor = .white
+        view.backgroundColor = "000B17".hexColor
         setupViews()
         setupConstraints()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        UIApplication.shared.isStatusBarHidden = true
-        setNeedsStatusBarAppearanceUpdate()
-    }
-
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -128,8 +94,7 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func setupViews(){
-        tableView.parallaxHeader.view = newsImageView
-        [tableView, lowerBar, line].forEach {
+        [lowerBar, line].forEach {
             view.addSubview($0)
         }
         [backButton, bookmarkButton, shareButton].forEach{
@@ -138,12 +103,6 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func setupConstraints() {
-        
-        tableView <- [
-            Width(ScreenSize.width),
-            Top(0),
-            Bottom(0)
-        ]
         
         line <- [
             Width(ScreenSize.width),
@@ -220,12 +179,8 @@ class DetailedNewsViewController: UIViewController {
 
     func saveBookmark(){
         let newsToSave = RealmNews()
-        let data = UIImagePNGRepresentation(self.image!) as NSData?
-        newsToSave.body = (newsObject?.body!)!
         newsToSave.date = (newsObject?.date)!
-        newsToSave.source = (newsObject?.source!)!
         newsToSave.title = (newsObject?.title!)!
-        newsToSave.image = data!
         newsToSave.link = (newsObject?.link)!
         
         try! realm.write {
@@ -280,6 +235,9 @@ class DetailedNewsViewController: UIViewController {
         return true
     }
     
+    func configureView() {
+        
+    }
 
 }
 

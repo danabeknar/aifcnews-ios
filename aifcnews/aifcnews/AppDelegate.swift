@@ -10,35 +10,67 @@ import UIKit
 import Fabric
 import Crashlytics
 import RealmSwift
+import SideMenuController
+import SVProgressHUD
 
 let realm = try! Realm()
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, SideMenuControllerDelegate {
 
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        UserDefaults.standard.set(0, forKey: "lastPressedCell")
+        Fabric.with([Crashlytics.self])
+        setupSideMenu()
         setupWindow()
         return true
     }
 
-    func setupWindow() {
-        Fabric.with([Crashlytics.self])
-        window = UIWindow(frame: UIScreen.main.bounds)
-        let mainView = FeedViewController()
+    func setupSideMenu(){
+        SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menuRed")
+        SideMenuController.preferences.drawing.sidePanelPosition = .underCenterPanelLeft
+        SideMenuController.preferences.drawing.sidePanelWidth = Helper.shared.constrain(with: .width, num: 247)
+        SideMenuController.preferences.drawing.centerPanelShadow = true
+        SideMenuController.preferences.animating.statusBarBehaviour = .showUnderlay
+    }
+    
+    func setupWindow(){
+        UIApplication.shared.isStatusBarHidden = true
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = getRootViewController()
+        self.window?.makeKeyAndVisible()
+    }
+    
+    func getRootViewController() -> SideMenuController {
+        let sideMenuViewController = SideMenuController()
+        sideMenuViewController.delegate = self
+        let vc1 = FeedViewController()
+        let tags = fetchTags()
+        vc1.tags = tags
+        vc1.initialTag = tags[0]
+        let nc1 = UINavigationController(rootViewController: vc1)
         
+        let sideController = MenuViewController()
+        sideController.tags = tags
+        sideController.initialTag = tags[0]
+        sideMenuViewController.embed(sideViewController: sideController)
+        sideMenuViewController.embed(centerViewController: nc1)
+        [nc1].forEach({ controller in
+            controller.addSideMenuButton()
+        })
+        return sideMenuViewController
+    }
+    
+    func fetchTags() -> [Tag] {
         var tags = [Tag]()
         if let data = UserDefaults.standard.object(forKey: "tags") as? Data,
             let subtags = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Subtag] {
             tags = AppDelegate.transform(selectedSubtags: subtags)
         }
         if tags.isEmpty { tags = Tag.fetchTags() }
-        
-        mainView.tags = tags
-        mainView.initialTag = tags[0]
-        self.window!.rootViewController = UINavigationController(rootViewController: mainView)
-        self.window?.makeKeyAndVisible()
+        return tags
     }
     
     static func transform(selectedSubtags: [Subtag]) -> [Tag] {
@@ -63,12 +95,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if selectedTags.isEmpty { selectedTags = tags }
         return selectedTags
     }
-    
-    func reloadPageMenu(with data: [Tag]) {
-        let mainView = FeedViewController()
-        mainView.tags = data
-        window?.rootViewController = mainView
-        window?.makeKeyAndVisible()
+
+    func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
+        SVProgressHUD.dismiss()
     }
+    
+    func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
+        print("hide")
+    }
+    
 }
 

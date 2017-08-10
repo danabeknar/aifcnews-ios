@@ -8,7 +8,6 @@
 
 import UIKit
 import EasyPeasy
-import Sugar
 
 class TagsTableViewCell: UITableViewCell {
 
@@ -47,7 +46,7 @@ class TagsTableViewCell: UITableViewCell {
     
     lazy var checkmarkView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "Tick")?.original
+        view.image = UIImage(named: "Tick")?.withRenderingMode(.alwaysOriginal)
         view.alpha = 0
         return view
     }()

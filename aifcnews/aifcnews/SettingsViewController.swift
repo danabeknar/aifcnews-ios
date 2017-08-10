@@ -8,21 +8,23 @@
 
 import UIKit
 import EasyPeasy
+import SwiftWebVC
+
+struct Settings{
+    var title: String
+    var items: [SettingsItem]
+}
 
 struct SettingsItem {
-    var image: UIImage?
-    var title: String?
-    var color: UIColor?
+    var title: String
 }
 
 class SettingsViewController: UIViewController {
 
-    
     var sectionItems = [
-        [SettingsItem(image: UIImage(named: "Star")!, title: "Rate Us", color: "007AFF".hexColor),
-         SettingsItem(image: UIImage(named: "Share")!, title: "Share With Friends", color: "FF9500".hexColor),
-         SettingsItem(image: UIImage(named: "Message")!, title: "Contact Us", color: "4CD964".hexColor)],
-        [SettingsItem(image: UIImage(named: "Ring")!, title: "Enable Notifications", color: "5856D6".hexColor) ]
+        Settings(title: "SUPPORT US", items: [SettingsItem(title: "Rate Us"),SettingsItem(title: "Share With Friends"), SettingsItem(title: "Contact Us")]),
+        Settings(title: "ABOUT APPLICATION", items: [SettingsItem(title: "Version"), SettingsItem(title: "Visit AIFC Website")]),
+        Settings(title: "NOTIFICATIONS", items: [SettingsItem(title: "Enable Notifications")])
     ]
     
     
@@ -31,105 +33,38 @@ class SettingsViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isScrollEnabled = false
-        tableView.backgroundColor = .clear
+        tableView.backgroundColor = "000B17".hexColor
         tableView.rowHeight = Helper.shared.constrain(with: .height, num: 45)
         tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
     
-    lazy var infoLabel: UILabel = {
-        let label = UILabel()
-            label.textColor = "9B9B9B".hexColor
-            label.textAlignment = .center
-            label.numberOfLines = 0
-            label.text = "Made with ❤️ \n Version 1.0"
-            label.font = UIFont(name: "OpenSans-Light", size: Helper.shared.constrain(with: .height, num: 15))
-        return label
-    }()
-    
-    
-    lazy var lowerBar: UIView = {
-        let view = UIView()
-        view.backgroundColor = .barGrey
-        return view
-    }()
-    
-    lazy var line: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lineGrey
-        return view
-    }()
-    
-    lazy var dismissButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "Cross")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(dismissButtonPressed), for: .touchUpInside)
-        return button
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = "000B17".hexColor
         setupViews()
         setupConstraints()
-        setNavigationBar()
+        setupNavigationBar()
     }
     
-    func setNavigationBar() {
-        let screenSize: CGRect = UIScreen.main.bounds
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 65))
-        let navItem = UINavigationItem(title: "Settings");
-        navBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.mainBlue]
-        navBar.setItems([navItem], animated: true)
-        navBar.barStyle = .default
-        self.view.addSubview(navBar)
+    func setupNavigationBar(){
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.barTintColor = "0A1520".hexColor
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont(name: "SFProDisplay-Regular", size: 18)!]
+        self.navigationController?.navigationBar.topItem?.title = "Settings"
     }
-    
-    override var prefersStatusBarHidden: Bool {
-        return false
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        UIApplication.shared.isStatusBarHidden = false
-        setNeedsStatusBarAppearanceUpdate()
-    }
+
     
     func setupViews() {
-        view.addSubviews(tableView, lowerBar, line)
-        lowerBar.addSubview(dismissButton)
-        infoLabel.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50)
+        view.addSubview(tableView)
     }
     
     func setupConstraints() {
         tableView <- [
-            Top(Helper.shared.constrain(with: .height, num: 50)),
+            Top(0),
             Width(ScreenSize.width),
-            Bottom(0).to(line)
+            Bottom(0)
         ]
-        
-        line <- [
-            Width(ScreenSize.width),
-            Height(1),
-            Bottom(0).to(lowerBar)
-        ]
-        
-        lowerBar <- [
-            Bottom(0),
-            Height(Helper.shared.constrain(with: .height, num: 50)),
-            Width(ScreenSize.width)
-        ]
-        
-        dismissButton <- [
-            Height(Helper.shared.constrain(with: .height, num: 18)),
-            Width(Helper.shared.constrain(with: .width, num: 18)),
-            CenterY(),
-            CenterX()
-        ]
-    }
-    
-    func dismissButtonPressed() {
-        dismiss(animated: true, completion: nil)
     }
     
 }
@@ -142,26 +77,26 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sectionItems[section].count
+        return sectionItems[section].items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SettingsTableViewCell
-        let section = sectionItems[indexPath.section][indexPath.row]
-        cell.cellObject = section
-        
-        if indexPath.section == 1 && indexPath.row == 0{
-            cell.addSwitch()
+        cell.backgroundColor = "000B17".hexColor
+        cell.titleLabel.text = sectionItems[indexPath.section].items[indexPath.row].title
+        switch (indexPath.section, indexPath.row){
+        case (0, 0...2): cell.accessoryType = .disclosureIndicator
+        case (1, 0): cell.addLabel()
+        case (1, 1): cell.accessoryType = .disclosureIndicator
+        case (2, 0): cell.addSwitch()
+        default: break
         }
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 1 {
-            return "Support Us"
-        }
-        return "Notifications"
+        return sectionItems[section].title
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -170,7 +105,8 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         case (0, 0): ShareManager.shared.appStoreRate()
         case (0, 1): ShareManager.shared.share(at: self)
         case (0, 2): ShareManager.shared.mailFeedback(at: self)
-                     tableView.cellForRow(at: indexPath)?.isUserInteractionEnabled = false
+        case (1, 1): let webVC = SwiftModalWebVC(urlString: "http://www.aifc.kz", theme: .lightBlack, dismissButtonStyle: .arrow)
+                     self.present(webVC, animated: true, completion: nil)
         default: break
         }
     }

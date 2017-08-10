@@ -20,9 +20,9 @@ class Database {
         if news.count > 0 {
             print(news.count)
             for newsObject in news{
-                if let image = UIImage(data: (newsObject.image) as Data) {
-                    returningNews.append(News(newsObject.title, newsObject.date, newsObject.source, image, newsObject.body))
-                }
+                
+                    returningNews.append(News(newsObject.title, newsObject.date, newsObject.link))
+                
                 counter += 1
                 if counter == news.count{
                     callback(returningNews)

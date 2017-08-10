@@ -25,32 +25,12 @@ class BookmarkViewController: UIViewController {
     }()
 
     
-    lazy var lowerBar: UIView = {
-        let view = UIView()
-        view.backgroundColor = .barGrey
-        return view
-    }()
-    
-    lazy var line: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lineGrey
-        return view
-    }()
-    
-    lazy var dismissButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "Cross")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.addTarget(self, action: #selector(dismissButtonPressed), for: .touchUpInside)
-        return button
-    }()
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(realm.configuration.fileURL)
-        view.backgroundColor = .backgroundGrey
+        view.backgroundColor = "000B17".hexColor
         setupViews()
         setupConstraints()
+        setupNavigationBar()
         fetchRealmNews()
     }
     
@@ -61,14 +41,11 @@ class BookmarkViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        UIApplication.shared.isStatusBarHidden = true
-        setNeedsStatusBarAppearanceUpdate()
         fetchRealmNews()
     }
     
     func setupViews(){
-        view.addSubviews(tableView, line, lowerBar)
-        lowerBar.addSubview(dismissButton)
+        view.addSubview(tableView)
     }
     
     func setupConstraints() {
@@ -77,43 +54,28 @@ class BookmarkViewController: UIViewController {
             Width(ScreenSize.width),
             Bottom(0)
         ]
-        
-        line <- [
-            Width(ScreenSize.width),
-            Height(1),
-            Bottom(0).to(lowerBar)
-        ]
-        
-        lowerBar <- [
-            Bottom(0),
-            Height(Helper.shared.constrain(with: .height, num: 50)),
-            Width(ScreenSize.width)
-        ]
-        
-        dismissButton <- [
-            Height(Helper.shared.constrain(with: .height, num: 18)),
-            Width(Helper.shared.constrain(with: .width, num: 18)),
-            CenterY(),
-            CenterX()
-        ]
     }
 
-    func dismissButtonPressed() {
-        dismiss(animated: true, completion: nil)
+    func setupNavigationBar(){
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.barTintColor = "0A1520".hexColor
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont(name: "SFProDisplay-Regular", size: 18)!]
+        self.navigationController?.navigationBar.topItem?.title = "Bookmarks"
     }
-
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
-            UIView.animate(withDuration: 0.3, animations: {
-                self.line.alpha = 0
-                self.lowerBar.alpha = 0
-            })
-        }
-        else{
-            UIView.animate(withDuration: 0.3, animations: {
-                self.line.alpha = 1
-                self.lowerBar.alpha = 1
-            })
+//            UIView.animate(withDuration: 0.3, animations: {
+//                self.line.alpha = 0
+//                self.lowerBar.alpha = 0
+//            })
+//        }
+//        else{
+//            UIView.animate(withDuration: 0.3, animations: {
+//                self.line.alpha = 1
+//                self.lowerBar.alpha = 1
+//            })
+//        }
         }
     }
 
@@ -146,7 +108,6 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! FeedTableViewCell
         cell.newsObject = news[indexPath.row] as News
-        cell.backgroundImageView.image = news[indexPath.row].image
         return cell
     }
     
@@ -156,12 +117,12 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
-        let image = cell.backgroundImageView.image
-        let vc = DetailedNewsViewController()
-        vc.image = image
-        vc.newsObject = news[(tableView.indexPathForSelectedRow?.row)!]
-        present(vc, animated: true, completion: nil)
+//        let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
+//        let image = cell.newsImageView.image
+//        let vc = DetailedNewsViewController()
+//        vc.image = image
+//        vc.newsObject = news[(tableView.indexPathForSelectedRow?.row)!]
+//        present(vc, animated: true, completion: nil)
     }
     
 }
