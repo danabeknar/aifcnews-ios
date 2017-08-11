@@ -52,8 +52,8 @@ class MenuViewController: UIViewController {
         tableView <- [
             CenterX(),
             CenterY(),
-            Height(200),
-            Width(110)
+            Height(Helper.shared.constrain(with: .height, num: 250)),
+            Width(ScreenSize.width)
         ]
     }
 }
@@ -61,7 +61,7 @@ class MenuViewController: UIViewController {
 extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 50
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return menu.count

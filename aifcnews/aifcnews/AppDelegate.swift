@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SideMenuControllerDelegat
     func setupSideMenu(){
         SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menuRed")
         SideMenuController.preferences.drawing.sidePanelPosition = .underCenterPanelLeft
-        SideMenuController.preferences.drawing.sidePanelWidth = Helper.shared.constrain(with: .width, num: 247)
+        SideMenuController.preferences.drawing.sidePanelWidth = 300
         SideMenuController.preferences.drawing.centerPanelShadow = true
         SideMenuController.preferences.animating.statusBarBehaviour = .showUnderlay
     }
@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SideMenuControllerDelegat
         let sideMenuViewController = SideMenuController()
         sideMenuViewController.delegate = self
         let vc1 = FeedViewController()
-        let tags = fetchTags()
+        let tags = AppDelegate.fetchTags()
         vc1.tags = tags
         vc1.initialTag = tags[0]
         let nc1 = UINavigationController(rootViewController: vc1)
@@ -63,46 +63,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SideMenuControllerDelegat
         return sideMenuViewController
     }
     
-    func fetchTags() -> [Tag] {
+    static func fetchTags() -> [Tag] {
         var tags = [Tag]()
         if let data = UserDefaults.standard.object(forKey: "tags") as? Data,
-            let subtags = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Subtag] {
-            tags = AppDelegate.transform(selectedSubtags: subtags)
+               let tagsArray = NSKeyedUnarchiver.unarchiveObject(with: data) as? [[Tag]] {
+            tags = tagsArray[0]
         }
         if tags.isEmpty { tags = Tag.fetchTags() }
         return tags
-    }
-    
-    static func transform(selectedSubtags: [Subtag]) -> [Tag] {
-        var selectedTags = [Tag]()
-        let tags = Tag.fetchTags()
-        let selectedSubtagsTexts = selectedSubtags.flatMap{ $0.subtag }
-
-        for tag in tags {
-            var subtags = [Subtag]()
-            for subtag in tag.subtags {
-                if selectedSubtagsTexts.contains(subtag.subtag) {
-                    subtags.append(subtag)
-                    
-                }
-            }
-            if !subtags.isEmpty {
-                let newTag = Tag(tag.tag, tag.color, subtags, tag.collapsed)
-                selectedTags.append(newTag)
-            }
-        }
-        
-        if selectedTags.isEmpty { selectedTags = tags }
-        return selectedTags
     }
 
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
         SVProgressHUD.dismiss()
     }
     
-    func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
-        print("hide")
-    }
-    
+    func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {}
+
 }
 

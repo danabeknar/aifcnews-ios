@@ -47,9 +47,9 @@ class MenuTableViewCell: UITableViewCell {
     func setupConstraints() {
 
         titleLabel <- [
-            Center(),
-            Width(110),
-            Height(30)
+            CenterX(),
+            Width(Helper.shared.constrain(with: .width, num: 120)),
+            Height(Helper.shared.constrain(with: .height, num: 30))
         ]
 
     }

@@ -13,44 +13,33 @@ class TagsViewController: UIViewController {
     
     var selectedCells = [UITableViewCell]()
     var tags = [Tag]()
-    var selectedSubtags = [Subtag]()
-    var delegate: Communicatable?
+    var tagsArray: [[Tag]] = []
+    var sections = ["Tags Included", "Tags Not Included"]
     
     lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isScrollEnabled = true
-        tableView.backgroundColor = .clear
+        tableView.backgroundColor = "000B17".hexColor
         tableView.allowsMultipleSelection = true
+        tableView.separatorColor = UIColor(white: 1.0, alpha: 0.1)
         tableView.register(TagsTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = "000B17".hexColor
         setupNavigationBar()
         setupViews()
         setupConstraints()
-        fetchTags()
         fetchSelectedTags()
-        // Do any additional setup after loading the view.
-    }
-    
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        UIApplication.shared.isStatusBarHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        let selectedTags = AppDelegate.transform(selectedSubtags: selectedSubtags)
-        self.delegate?.fetch(with: selectedTags)
+        saveSelectedTags()
     }
     
     
@@ -66,7 +55,6 @@ class TagsViewController: UIViewController {
     }
     
     func setupConstraints() {
-        
         tableView <- [
             Top(0),
             Bottom(0),
@@ -74,42 +62,23 @@ class TagsViewController: UIViewController {
         ]
     }
     
-    func fetchTags() {
-        tags = Tag.fetchTags()
-    }
-    
     func fetchSelectedTags() {
         if let data = UserDefaults.standard.object(forKey: "tags") as? Data,
-            let subtags = NSKeyedUnarchiver.unarchiveObject(with: data) as? [Subtag] {
-            self.selectedSubtags = subtags
+            let tags = NSKeyedUnarchiver.unarchiveObject(with: data) as? [[Tag]] {
+            print(tagsArray.count)
+            self.tagsArray = tags
+        } else {
+            tags = Tag.fetchTags()
+            self.tagsArray.append(tags)
+            self.tagsArray.append([])
         }
         tableView.reloadData()
     }
     
     func saveSelectedTags() {
-        let encodedData: Data = NSKeyedArchiver.archivedData(withRootObject: selectedSubtags)
+        let encodedData: Data = NSKeyedArchiver.archivedData(withRootObject: tagsArray)
         UserDefaults.standard.set(encodedData, forKey: "tags")
     }
-    
-    func dismissButtonPressed() {
-        dismiss(animated: true)
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.line.alpha = 0
-//                self.lowerBar.alpha = 0
-//            })
-//        }
-//        else{
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.line.alpha = 1
-//                self.lowerBar.alpha = 1
-//            })
-//        }
-    }
-    
 }
 
 
@@ -117,51 +86,51 @@ class TagsViewController: UIViewController {
 extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return tags.count
+        return 2
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        return tags[section].subtags.count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tagsArray[section].count
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
+    {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = UIFont(name: "SFProDisplay-Regular", size: 18)
+        header.textLabel?.textColor = "989CA6".hexColor
+        let tableViewHeaderFooterView: UITableViewHeaderFooterView? = header
+        tableViewHeaderFooterView?.textLabel?.text = tableViewHeaderFooterView?.textLabel?.text?.capitalized
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return tags[section].tag
+        return sections[section]
     }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TagsTableViewCell
+        cell.backgroundColor = "000B17".hexColor
         cell.selectionStyle = .none
-        cell.subtag = tags[indexPath.section].subtags[indexPath.row]
-        cell.cellTag = tags[indexPath.section].tag
-        cell.circleView.backgroundColor = tags[indexPath.section].color
+        cell.tagObject = tagsArray[indexPath.section][indexPath.row] 
         
-        let selectedSubtagsTexts = selectedSubtags.flatMap{ $0.subtag }
-        
-        if !selectedSubtags.isEmpty {
-            cell.isChosen = selectedSubtagsTexts.contains(tags[indexPath.section].subtags[indexPath.row].subtag)
+        cell.tagAction = { currentCell in
+            if indexPath.section == 0{
+                let removedItem = self.tagsArray[indexPath.section].remove(at: indexPath.row)
+                self.tagsArray[indexPath.section + 1].append(removedItem)
+            } else {
+                let removedItem = self.tagsArray[indexPath.section].remove(at: indexPath.row)
+                self.tagsArray[indexPath.section - 1].append(removedItem)
+            }
+            tableView.reloadData()
         }
+        
+        if indexPath.section == 0{
+            cell.signButton.setImage(UIImage(named: "minusSign"), for: .normal)
+        } else if indexPath.section == 1 {
+            cell.signButton.setImage(UIImage(named: "plusSign"), for: .normal)
+        }
+
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = tableView.cellForRow(at: indexPath) as! TagsTableViewCell
-        if cell.isChosen {
-            for i in 0..<selectedSubtags.count {
-                if selectedSubtags[i].subtag == tags[indexPath.section].subtags[indexPath.row].subtag {
-                    selectedSubtags.remove(at: i)
-                    break
-                }
-            }
-        } else {
-            selectedSubtags.append(tags[indexPath.section].subtags[indexPath.row])
-        }
-        if selectedSubtags.isEmpty { cell.isChosen = false }
-        saveSelectedTags()
-        tableView.reloadData()
-    }
-    
 }
+

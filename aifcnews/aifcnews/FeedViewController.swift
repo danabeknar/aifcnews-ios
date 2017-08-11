@@ -18,12 +18,8 @@ import SwiftWebVC
 import XLActionController
 
 
-protocol Communicatable {
-    func fetch(with array: [Tag])
-}
 
-
-class FeedViewController: UIViewController, Communicatable {
+class FeedViewController: UIViewController {
     
     let reachability = Reachability()!
     
@@ -100,8 +96,17 @@ class FeedViewController: UIViewController, Communicatable {
         setupViews()
         setupConstraints()
         parseData()
-
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let tags = AppDelegate.fetchTags()
+        self.tags = tags
+        initialTag = tags[0]
+        updateMenuView(with: tags)
+    }
+    
+
     
     func longPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
         
@@ -168,11 +173,6 @@ class FeedViewController: UIViewController, Communicatable {
         }
     }
     
-    func fetch(with array: [Tag]) {
-        tags = array
-        updateMenuView(with: array)
-    }
-    
     func fetchData(with tag: Tag) {
         News.fetchNews(with: tag) { (data, error) in
             if let data = data {
@@ -199,14 +199,6 @@ class FeedViewController: UIViewController, Communicatable {
     
     override var prefersStatusBarHidden: Bool {
         return true
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        UIApplication.shared.isStatusBarHidden = true
-        setNeedsStatusBarAppearanceUpdate()
-        arrowButton.alpha = 0
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

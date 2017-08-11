@@ -35,6 +35,7 @@ class SettingsViewController: UIViewController {
         tableView.isScrollEnabled = false
         tableView.backgroundColor = "000B17".hexColor
         tableView.rowHeight = Helper.shared.constrain(with: .height, num: 45)
+        tableView.separatorColor = UIColor(white: 1.0, alpha: 0.1)
         tableView.register(SettingsTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
@@ -80,6 +81,11 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         return sectionItems[section].items.count
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionItems[section].title
+    }
+    
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SettingsTableViewCell
         cell.backgroundColor = "000B17".hexColor
@@ -91,14 +97,9 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         case (2, 0): cell.addSwitch()
         default: break
         }
-        
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sectionItems[section].title
-    }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         switch (indexPath.section, indexPath.row) {

@@ -16,55 +16,45 @@ class TagsTableViewCell: UITableViewCell {
     
     var isChosen = false {
         didSet {
-            choose(isChosen)
+//            choose(isChosen)
         }
     }
     
-    var subtag: Subtag? {
+    var tagObject: Tag? {
         didSet {
             self.configureView()
         }
     }
     
-    var cellTag: String?
-
+    var tagAction: (TagsTableViewCell) -> Void = { cell in }
     
-    lazy var circleView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 6
-        view.backgroundColor = .mainBlue
-        return view
-    }()
-    
-    lazy var subtagLabel: UILabel = {
+    lazy var tagLabel: UILabel = {
         let label = UILabel()
-            label.textColor = .textCellBlack
+            label.textColor = .white
             label.textAlignment = .left
-            label.font = UIFont(name: "OpenSans-Light", size: Helper.shared.constrain(with: .height, num: 15))
+            label.font = UIFont(name: "SFProDisplay-Light", size: Helper.shared.constrain(with: .height, num: 18))
         return label
     }()
     
-    lazy var checkmarkView: UIImageView = {
-        let view = UIImageView()
-        view.image = UIImage(named: "Tick")?.withRenderingMode(.alwaysOriginal)
-        view.alpha = 0
-        return view
+    lazy var signButton: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(signDidPress), for: .touchUpInside)
+        return button
     }()
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
+        self.textLabel?.textColor = .white
         setupViews()
         setupConstraints()
     }
-    
-    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func setupViews() {
-        [circleView, subtagLabel, checkmarkView].forEach{
+        [tagLabel, signButton].forEach{
             contentView.addSubview($0)
         }
     }
@@ -73,37 +63,31 @@ class TagsTableViewCell: UITableViewCell {
     
     func setupConstraints() {
   
-        circleView <- [
-            Left(Helper.shared.constrain(with: .width, num: 60)),
-            Height(Helper.shared.constrain(with: .height, num: 12)),
-            Width(Helper.shared.constrain(with: .width, num: 12)),
-            CenterY()
-        ]
-        
-        subtagLabel <- [
-            Left(Helper.shared.constrain(with: .width, num: 15)).to(circleView),
+        tagLabel <- [
+            Left(Helper.shared.constrain(with: .width, num: 15)),
             Height(Helper.shared.constrain(with: .height, num: 27)),
             Right(Helper.shared.constrain(with: .width, num: 40)),
             CenterY()
         ]
         
-        checkmarkView <- [
-            Right(Helper.shared.constrain(with: .width, num: 20)),
-            Height(Helper.shared.constrain(with: .height, num: 15)),
-            Width(Helper.shared.constrain(with: .width, num: 15)),
+        signButton <- [
+            Right(Helper.shared.constrain(with: .width, num: 24)),
             CenterY()
         ]
     }
     
     
     func configureView() {
-        if let subtag = subtag?.subtag {
-            subtagLabel.text = subtag
+        if let tag = tagObject?.tag {
+            tagLabel.text = tag
         }
     }
 
-    
-    func choose(_ bool: Bool) {
-        checkmarkView.alpha = bool ? 1 : 0
+    func signDidPress(sender: UIButton) {
+        tagAction(self)
     }
+    
+//    func choose(_ bool: Bool) {
+//        signButton.alpha = bool ? 1 : 0
+//    }
 }
