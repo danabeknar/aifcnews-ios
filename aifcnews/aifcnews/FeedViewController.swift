@@ -8,7 +8,6 @@
 
 import UIKit
 import EasyPeasy
-import ExpandingMenu
 import RealmSwift
 import BTNavigationDropdownMenu
 import DZNEmptyDataSet
@@ -16,8 +15,6 @@ import ReachabilitySwift
 import SVProgressHUD
 import SwiftWebVC
 import XLActionController
-
-
 
 class FeedViewController: UIViewController {
     
@@ -91,6 +88,8 @@ class FeedViewController: UIViewController {
         setupConstraints()
         reloadTags()
         parseData()
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPress))
+        self.view.addGestureRecognizer(longPressRecognizer)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,16 +106,33 @@ class FeedViewController: UIViewController {
 
     
     func longPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
-        
         if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
-            
             let touchPoint = longPressGestureRecognizer.location(in: self.view)
-            if tableView.indexPathForRow(at: touchPoint) != nil {
-                
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
+                    self.presentActionController(with: cell.titleLabel.text!)
+                }
             }
         }
+        
+    func presentActionController(with message: String){
+            let optionMenu = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+            let saveAction = UIAlertAction(title: "Add Bookmark", style: .default, handler: {
+                (alert: UIAlertAction!) -> Void in
+                print("add")
+            })
+            let deleteAction = UIAlertAction(title: "Hide", style: .destructive, handler: {
+                (alert: UIAlertAction!) -> Void in
+                print("hide")
+            })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: {
+                (alert: UIAlertAction!) -> Void in })
+            optionMenu.addAction(deleteAction)
+            optionMenu.addAction(saveAction)
+            optionMenu.addAction(cancelAction)
+            self.present(optionMenu, animated: true, completion: nil)
     }
-    
+
     func setupNavigationController(){
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.barTintColor = "0A1520".hexColor
@@ -194,23 +210,7 @@ class FeedViewController: UIViewController {
     func arrowButtonPressed() {
         tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: UITableViewScrollPosition.top)
     }
-    
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
-            UIView.animate(withDuration: 0.3, animations: {
-                self.arrowButton.alpha = 0
-            })
-        }
-        else{
-            UIView.animate(withDuration: 0.3, animations: {
-                self.arrowButton.alpha = 1
-            })
-        }
-    }
+
 }
 
 // MARK: UITableViewDataSource, UITableViewDelegate
@@ -254,5 +254,21 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource, DZNEmp
             return true
         }
     }
-
 }
+
+
+
+//            let actionController = TweetbotActionController()
+//
+//            actionController.settings.behavior.hideOnScrollDown = true
+//            actionController.settings.behavior.hideOnTap = true
+//            actionController.settings.animation.scale = CGSize(width:0.99,height: 0.99)
+//
+//            actionController.addAction(Action("Hide", style: .cancel, handler: { action in
+//            }))
+//            actionController.addAction(Action("Add Bookmark", style: .default, handler: { action in
+//            }))
+//            actionController.addSection(Section())
+//            actionController.addAction(Action("Cancel", style: .cancel, handler:nil))
+//
+//            present(actionController, animated: true, completion: nil)

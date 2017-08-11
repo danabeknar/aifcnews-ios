@@ -8,7 +8,6 @@
 
 import UIKit
 import EasyPeasy
-import Kingfisher
 
 class FeedTableViewCell: UITableViewCell {
     

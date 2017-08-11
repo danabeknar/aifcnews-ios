@@ -8,7 +8,6 @@
 
 import UIKit
 import EasyPeasy
-import MXParallaxHeader
 import RealmSwift
 
 class DetailedNewsViewController: UIViewController {
