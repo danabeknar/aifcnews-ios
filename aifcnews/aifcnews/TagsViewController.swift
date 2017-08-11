@@ -65,7 +65,6 @@ class TagsViewController: UIViewController {
     func fetchSelectedTags() {
         if let data = UserDefaults.standard.object(forKey: "tags") as? Data,
             let tags = NSKeyedUnarchiver.unarchiveObject(with: data) as? [[Tag]] {
-            print(tagsArray.count)
             self.tagsArray = tags
         } else {
             tags = Tag.fetchTags()
@@ -120,6 +119,7 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
                 let removedItem = self.tagsArray[indexPath.section].remove(at: indexPath.row)
                 self.tagsArray[indexPath.section - 1].append(removedItem)
             }
+            self.saveSelectedTags()
             tableView.reloadData()
         }
         

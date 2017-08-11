@@ -26,13 +26,7 @@ class FeedViewController: UIViewController {
     var news = [News]()
     var lastSelectedIndex = 0
     
-    var tags: [Tag] = [] {
-        didSet{
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
-                self.updateMenuView(with: self.tags)
-            })
-        }
-    }
+    var tags: [Tag] = []
     
     var currentTag: Tag? {
         didSet {
@@ -95,17 +89,21 @@ class FeedViewController: UIViewController {
         setupNavigationController()
         setupViews()
         setupConstraints()
+        reloadTags()
         parseData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let tags = AppDelegate.fetchTags()
-        self.tags = tags
-        initialTag = tags[0]
-        updateMenuView(with: tags)
+        reloadTags()
+        parseData()
     }
     
+    func reloadTags() {
+        tags = AppDelegate.fetchTags()
+        initialTag = tags.first!
+        updateMenuView(with: tags)
+    }
 
     
     func longPress(longPressGestureRecognizer: UILongPressGestureRecognizer) {
