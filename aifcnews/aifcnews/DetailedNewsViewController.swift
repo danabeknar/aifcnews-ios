@@ -46,6 +46,7 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
         let button = UIButton()
         button.setImage(UIImage(named: "LeftArrow")?.withRenderingMode(.alwaysOriginal), for: .normal)
         button.addTarget(self, action: #selector(backPressed), for: .touchUpInside)
+        button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         return button
     }()
     
@@ -66,12 +67,11 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchSavedTitles()
         view.backgroundColor = "000B17".hexColor
         setupNavigationController()
         setupViews()
         setupConstraints()
-        fetchSavedTitles()
-        print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
     
@@ -82,7 +82,8 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
     
     func fetchSavedTitles(){
         if let newsTitlesObject = UserDefaults.standard.value(forKey: "newsTitles") as? NSData {
-            self.newsTitles = NSKeyedUnarchiver.unarchiveObject(with: newsTitlesObject as Data) as! Set<String>
+            newsTitles = NSKeyedUnarchiver.unarchiveObject(with: newsTitlesObject as Data) as! Set<String>
+            checkForBookmark(newsTitles)
         }
     }
     
@@ -137,8 +138,8 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
         backButton <- [
             Left(Helper.shared.constrain(with: .height, num: 15)),
             CenterY(),
-            Height(Helper.shared.constrain(with: .width, num: 24)),
-            Width(Helper.shared.constrain(with: .width, num: 13))
+            Height(Helper.shared.constrain(with: .width, num: 34)),
+            Width(Helper.shared.constrain(with: .width, num: 23))
         ]
         
         shareButton <- [

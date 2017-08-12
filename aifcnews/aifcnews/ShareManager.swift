@@ -82,7 +82,7 @@ class ShareManager: NSObject, UIDocumentInteractionControllerDelegate {
     
     
     func share(at vc: UIViewController) {
-        let    message = "Мына сілтемені басып, қосымшаны жазып ал! \(Constant.appUrl)"
+        let    message = "Download this application to be aware of economic news! \(Constant.appUrl)"
         let activityVC = UIActivityViewController(activityItems: [message], applicationActivities: nil)
         activityVC.excludedActivityTypes = [.airDrop,
                                             .addToReadingList,

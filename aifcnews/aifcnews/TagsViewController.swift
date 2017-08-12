@@ -14,16 +14,16 @@ class TagsViewController: UIViewController {
     var selectedCells = [UITableViewCell]()
     var tags = [Tag]()
     var tagsArray: [[Tag]] = []
-    var sections = ["Tags Included", "Tags Not Included"]
     
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.isScrollEnabled = true
-        tableView.backgroundColor = "000B17".hexColor
+        tableView.backgroundColor = .clear
         tableView.allowsMultipleSelection = true
         tableView.separatorColor = UIColor(white: 1.0, alpha: 0.1)
+        tableView.contentInset = UIEdgeInsets(top: -35, left: 0, bottom: 0, right: 0)
         tableView.register(TagsTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
@@ -92,17 +92,18 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         return tagsArray[section].count
     }
     
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
-    {
-        let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.font = UIFont(name: "SFProDisplay-Regular", size: 18)
-        header.textLabel?.textColor = "989CA6".hexColor
-        let tableViewHeaderFooterView: UITableViewHeaderFooterView? = header
-        tableViewHeaderFooterView?.textLabel?.text = tableViewHeaderFooterView?.textLabel?.text?.capitalized
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == 0{
+            return "There must be at least 1 tag"
+        }
+        return ""
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return sections[section]
+        if section == 1{
+            return "Tags not included"
+        }
+        return ""
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
@@ -113,8 +114,10 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         
         cell.tagAction = { currentCell in
             if indexPath.section == 0{
-                let removedItem = self.tagsArray[indexPath.section].remove(at: indexPath.row)
-                self.tagsArray[indexPath.section + 1].append(removedItem)
+                if self.tagsArray[0].count != 1{
+                    let removedItem = self.tagsArray[indexPath.section].remove(at: indexPath.row)
+                    self.tagsArray[indexPath.section + 1].append(removedItem)
+                }
             } else {
                 let removedItem = self.tagsArray[indexPath.section].remove(at: indexPath.row)
                 self.tagsArray[indexPath.section - 1].append(removedItem)

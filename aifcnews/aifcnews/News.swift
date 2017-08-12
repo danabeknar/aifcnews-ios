@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Alamofire
 import SWXMLHash
+import AFDateHelper
 
 
 struct News {
@@ -34,7 +35,11 @@ struct News {
                 for elem in xml["rss"]["channel"]["item"].all {
                     if let title = elem["title"].element?.text, let link = elem["link"].element?.text, let date = elem["pubDate"].element?.text{
                         let modifiedTitle = fetchFirstSentence(from: title)
-                        news.append(News(modifiedTitle, date, link))
+                        if let modifiedDate = Date(fromString: date, format: .httpHeader)?.toStringWithRelativeTime(){
+                            news.append(News(modifiedTitle, modifiedDate, link))
+                        } else {
+                            news.append(News(modifiedTitle, date, link))
+                        }
                     }
                     counter += 1
                     if counter == xml["rss"]["channel"]["item"].all.count{

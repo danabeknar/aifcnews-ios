@@ -19,22 +19,12 @@ class FeedTableViewCell: UITableViewCell {
         }
     }
     
-//    lazy var newsImageView: UIImageView = {
-//        let newsImageView = UIImageView()
-//        newsImageView.contentMode = .scaleAspectFill
-//        newsImageView.clipsToBounds = true
-//        newsImageView.layer.cornerRadius = 5
-//        newsImageView.kf.indicatorType = .activity
-//        return newsImageView
-//    }()
-
-    
     lazy var titleLabel: UILabel = {
         let label = UILabel()
             label.textColor = .white
             label.textAlignment = .left
             label.numberOfLines = 0
-            label.font = UIFont(name: "SFProDisplay-Light", size: Helper.shared.constrain(with: .height, num: 18))
+            label.font = UIFont(name: "SFProDisplay-Light", size: Helper.shared.constrain(with: .height, num: 17))
         return label
     }()
     
@@ -42,7 +32,7 @@ class FeedTableViewCell: UITableViewCell {
         let label = UILabel()
             label.textColor = "989CA6".hexColor
             label.textAlignment = .left
-            label.font = UIFont(name: "SFProDisplay-Light", size: Helper.shared.constrain(with: .height, num: 12))
+            label.font = UIFont(name: "SFProDisplay-Light", size: 12)
             label.numberOfLines = 0
         return label
     }()
@@ -102,8 +92,8 @@ class FeedTableViewCell: UITableViewCell {
         bookmarkImageView <- [
             Bottom(Helper.shared.constrain(with: .height, num: 20)),
             Right(Helper.shared.constrain(with: .width, num: 20)),
-            Height(Helper.shared.constrain(with: .height, num: 10)),
-            Width(Helper.shared.constrain(with: .width, num: 6))
+            Height(10),
+            Width(6)
         ]
         
         lineView <- [

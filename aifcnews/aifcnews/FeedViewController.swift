@@ -13,8 +13,6 @@ import BTNavigationDropdownMenu
 import DZNEmptyDataSet
 import ReachabilitySwift
 import SVProgressHUD
-import SwiftWebVC
-import XLActionController
 
 class FeedViewController: UIViewController {
     
@@ -38,14 +36,14 @@ class FeedViewController: UIViewController {
     
     lazy var menuView: BTNavigationDropdownMenu = {
         let menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: (self.navigationController?.view!)!, title: BTTitle.title("Menu"), items: [])
-        menuView.cellHeight = 40
+        menuView.cellHeight = 35
         menuView.cellBackgroundColor = self.navigationController?.navigationBar.barTintColor
         menuView.cellSelectionColor = .clear
         menuView.cellSeparatorColor = .clear
         menuView.shouldKeepSelectedCellColor = true
         menuView.cellTextLabelColor = UIColor.white
-        menuView.cellTextLabelFont = UIFont(name: "SFProDisplay-Regular", size: 18)
-        menuView.navigationBarTitleFont = UIFont(name: "SFProDisplay-Regular", size: 18)
+        menuView.cellTextLabelFont = UIFont(name: "SFProDisplay-Regular", size: 16)
+        menuView.navigationBarTitleFont = UIFont(name: "SFProDisplay-Regular", size: 17)
         menuView.selectedCellTextLabelColor = "AF3229".hexColor
         menuView.cellTextLabelAlignment = .center
         menuView.arrowPadding = 15
