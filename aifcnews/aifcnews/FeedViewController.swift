@@ -19,6 +19,7 @@ import XLActionController
 class FeedViewController: UIViewController {
     
     let reachability = Reachability()!
+    
     var news = [News]()
     var lastSelectedIndex = 0
     var newsTitles = Set<String>()
@@ -91,12 +92,12 @@ class FeedViewController: UIViewController {
         parseData()
     }
     
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
-        UIApplication.shared.isStatusBarHidden = true
+        super.viewWillAppear(animated)
+        reloadTags()
+        fetchBookmarks()
+        parseData()
+        tableView.reloadData()
     }
     
     func reloadTags() {
@@ -169,12 +170,10 @@ class FeedViewController: UIViewController {
         News.fetchNews(with: tag) { (data, error) in
             if let data = data {
                 self.news = data
-                DispatchQueue.main.async{
-                    SVProgressHUD.dismiss()
-                    self.tableView.reloadData()
-                }
-            } else {
-                // TODO
+            }
+            DispatchQueue.main.async{
+                SVProgressHUD.dismiss()
+                self.tableView.reloadData()
             }
         }
     }

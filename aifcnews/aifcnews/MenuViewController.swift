@@ -35,15 +35,9 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIApplication.shared.isStatusBarHidden = true
-        setNeedsStatusBarAppearanceUpdate()
         setupViewStyle()
         setupViews()
         setupConstraints()
-    }
-    
-    override var prefersStatusBarHidden: Bool {
-        return true
     }
     
     func setupViewStyle(){

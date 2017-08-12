@@ -79,7 +79,6 @@ class DetailedNewsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        UIApplication.shared.isStatusBarHidden = false
         if preCheck == 0 && postCheck == 1{
             saveBookmark()
         } else if preCheck ==  1 && postCheck == 0{

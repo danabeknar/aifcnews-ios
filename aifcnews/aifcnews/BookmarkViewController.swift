@@ -8,15 +8,21 @@
 
 import UIKit
 import EasyPeasy
+import DZNEmptyDataSet
+import SVProgressHUD
+import ReachabilitySwift
 
 class BookmarkViewController: UIViewController {
 
     var news = [News]()
+    let reachability = Reachability()!
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.emptyDataSetSource = self
+        tableView.emptyDataSetDelegate = self
         tableView.backgroundColor = .clear
         tableView.layer.borderWidth = 0
         tableView.separatorStyle = .none
@@ -32,11 +38,6 @@ class BookmarkViewController: UIViewController {
         setupConstraints()
         setupNavigationBar()
         fetchRealmNews()
-    }
-    
-    
-    override var prefersStatusBarHidden: Bool {
-        return true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -75,7 +76,6 @@ class BookmarkViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-                print("News are empty")
             }
         }
     }
@@ -83,7 +83,8 @@ class BookmarkViewController: UIViewController {
 
 // MARK: UITableViewDataSource, UITableViewDelegate
 
-extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
+extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return news.count
     }
@@ -101,5 +102,21 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
         vc.newsObject = news[indexPath.row]
         self.present(vc, animated: true, completion: nil)
     }
+
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+        return UIImage(named: "notAvailable")
+    }
     
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
+        return 1
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
+        return true
+    }
+    
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
+        return true
+    }
+
 }

@@ -21,6 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SideMenuControllerDelegat
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        UserDefaults.standard.set(0, forKey: "lastPressedCell")
         Fabric.with([Crashlytics.self])
         setupSideMenu()
         setupWindow()
@@ -30,9 +31,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SideMenuControllerDelegat
     func setupSideMenu(){
         SideMenuController.preferences.drawing.menuButtonImage = UIImage(named: "menuRed")
         SideMenuController.preferences.drawing.sidePanelPosition = .underCenterPanelLeft
-        SideMenuController.preferences.drawing.sidePanelWidth = 235
-        SideMenuController.preferences.drawing.centerPanelShadow = true
-        SideMenuController.preferences.animating.statusBarBehaviour = .showUnderlay
+        SideMenuController.preferences.drawing.sidePanelWidth = 250
+        SideMenuController.preferences.animating.statusBarBehaviour = .slideAnimation
     }
     
     func setupWindow(){
