@@ -113,12 +113,12 @@
 		0D0ECBA81F18B2F4005699FC /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0D3A5E5D1F3CD4F5009C8399 /* MenuViewController.swift */,
 				0DC71A511F1795D200225263 /* FeedViewController.swift */,
 				0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */,
 				0DBEB4761F1E2A2600A03809 /* TagsViewController.swift */,
 				0DBEB4721F1E1CB200A03809 /* SettingsViewController.swift */,
 				0D47D7711F248B1F00092C0D /* BookmarkViewController.swift */,
-				0D3A5E5D1F3CD4F5009C8399 /* MenuViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

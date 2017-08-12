@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SideMenuControllerDelegat
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        UIApplication.shared.isStatusBarHidden = true
         Fabric.with([Crashlytics.self])
         setupSideMenu()
         setupWindow()
@@ -37,7 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SideMenuControllerDelegat
     }
     
     func setupWindow(){
-        UIApplication.shared.isStatusBarHidden = true
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.rootViewController = getRootViewController()
         self.window?.makeKeyAndVisible()

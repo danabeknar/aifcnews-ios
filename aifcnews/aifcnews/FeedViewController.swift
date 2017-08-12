@@ -102,7 +102,6 @@ class FeedViewController: UIViewController {
     func reloadTags() {
         tags = AppDelegate.fetchTags()
         initialTag = tags.first!
-        print(initialTag?.tag)
         updateMenuView(with: tags)
     }
 

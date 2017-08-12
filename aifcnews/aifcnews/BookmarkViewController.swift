@@ -20,12 +20,11 @@ class BookmarkViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.layer.borderWidth = 0
         tableView.separatorStyle = .none
-        tableView.rowHeight = 132
+        tableView.rowHeight = 120
         tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = "000B17".hexColor
@@ -80,7 +79,6 @@ class BookmarkViewController: UIViewController {
             }
         }
     }
-
 }
 
 // MARK: UITableViewDataSource, UITableViewDelegate
