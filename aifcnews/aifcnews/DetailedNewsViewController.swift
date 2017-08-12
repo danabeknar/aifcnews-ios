@@ -9,8 +9,9 @@
 import UIKit
 import EasyPeasy
 import RealmSwift
+import SVProgressHUD
 
-class DetailedNewsViewController: UIViewController {
+class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
     
     var newsTitles = Set<String>()
     var data: Data? = nil
@@ -65,16 +66,24 @@ class DetailedNewsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let newsTitlesObject = UserDefaults.standard.value(forKey: "newsTitles") as? NSData {
-            self.newsTitles = NSKeyedUnarchiver.unarchiveObject(with: newsTitlesObject as Data) as! Set<String>
-            checkForBookmark(newsTitles)
-        }
-        self.navigationController?.isNavigationBarHidden = true
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
         view.backgroundColor = "000B17".hexColor
+        setupNavigationController()
         setupViews()
         setupConstraints()
+        fetchSavedTitles()
         print(Realm.Configuration.defaultConfiguration.fileURL!)
+    }
+    
+    
+    func setupNavigationController() {
+        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    func fetchSavedTitles(){
+        if let newsTitlesObject = UserDefaults.standard.value(forKey: "newsTitles") as? NSData {
+            self.newsTitles = NSKeyedUnarchiver.unarchiveObject(with: newsTitlesObject as Data) as! Set<String>
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -106,6 +115,7 @@ class DetailedNewsViewController: UIViewController {
         [backButton, bookmarkButton, shareButton].forEach{
             lowerBar.addSubview($0)
         }
+        webView.delegate = self
     }
     
     func setupConstraints() {
@@ -149,6 +159,18 @@ class DetailedNewsViewController: UIViewController {
     
     func backPressed() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    func webViewDidStartLoad(_ webView: UIWebView) {
+        SVProgressHUD.show(withStatus: "Loading...")
+    }
+    
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        SVProgressHUD.dismiss()
+    }
+    
+    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+        SVProgressHUD.showError(withStatus: error.localizedDescription)
     }
     
     func bookmarkPressed() {
@@ -219,16 +241,12 @@ class DetailedNewsViewController: UIViewController {
         return modifiedString
     }
     
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
     
     func configureView() {
         if let news = newsObject{
             guard let link = news.link else {
                 return
             }
-            print(link)
             let request = URLRequest(url:  URL(string: link)!)
             self.webView.loadRequest(request)
         }

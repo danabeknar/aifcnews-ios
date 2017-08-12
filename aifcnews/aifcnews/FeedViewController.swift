@@ -157,7 +157,7 @@ class FeedViewController: UIViewController {
     
     func checkConnectivity(){
         if (reachability.isReachable) {
-            SVProgressHUD.show(withStatus: "Подождите...")
+            SVProgressHUD.show(withStatus: "Loading...")
             if let tag = initialTag{
                 fetchData(with: tag)
             }
@@ -179,7 +179,7 @@ class FeedViewController: UIViewController {
     }
     
     func tagPressed(with index: Int) {
-        SVProgressHUD.show(withStatus: "Подождите...")
+        SVProgressHUD.show(withStatus: "Loading...")
         lastSelectedIndex = index
         currentTag = tags[index]
     }
