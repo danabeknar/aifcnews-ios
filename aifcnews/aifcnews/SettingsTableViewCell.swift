@@ -33,11 +33,7 @@ class SettingsTableViewCell: UITableViewCell {
         versionLabel.text = "1.0"
         return versionLabel
     }()
-    
-    lazy var cellSwitch: UISwitch = {
-        let cellSwtich = UISwitch()
-        return cellSwtich
-    }()
+
     
     // MARK: Initialization
     
@@ -70,17 +66,6 @@ class SettingsTableViewCell: UITableViewCell {
             CenterY()
         ]
         
-    }
-    
-    func addSwitch() {
-        self.addSubview(cellSwitch)
-        
-        cellSwitch <- [
-            Right(Helper.shared.constrain(with: .width, num: 10)),
-            Width(Helper.shared.constrain(with: .width, num: 51)),
-            Height(Helper.shared.constrain(with: .height, num: 31)),
-            CenterY()
-        ]
     }
     
     func configureView() {

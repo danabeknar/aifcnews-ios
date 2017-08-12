@@ -53,6 +53,13 @@ class FeedTableViewCell: UITableViewCell {
         return view
     }()
     
+    lazy var bookmarkImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "FilledBookmark")?.withRenderingMode(.alwaysOriginal)
+        imageView.isHidden = true
+        return imageView
+    }()
+    
     // MARK: Initialization
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
@@ -69,21 +76,15 @@ class FeedTableViewCell: UITableViewCell {
     // MARK: Configure Views
     
     func setupViews() {
-        [titleLabel, infoLabel, lineView].forEach{
+        [titleLabel, infoLabel, lineView, bookmarkImageView].forEach{
             contentView.addSubview($0)
         }
+        
     }
     
     // MARK: Configure Constraints
     
     func setupConstraints() {
-//        newsImageView <- [
-//            Top(Helper.shared.constrain(with: .height, num: 20)),
-//            Bottom(Helper.shared.constrain(with: .height, num: 20)),
-//            Right(Helper.shared.constrain(with: .width, num: 14)),
-//            Width(Helper.shared.constrain(with: .width, num: 118))
-//        ]
-
         infoLabel <- [
             Left(Helper.shared.constrain(with: .width, num: 20)),
             Bottom(Helper.shared.constrain(with: .height, num: 20)),
@@ -94,8 +95,15 @@ class FeedTableViewCell: UITableViewCell {
         titleLabel <- [
             Top(Helper.shared.constrain(with: .height, num: 20)),
             Left(Helper.shared.constrain(with: .width, num: 17)),
-            Right(Helper.shared.constrain(with: .width, num: 20)),
+            Right(Helper.shared.constrain(with: .width, num: 50)),
             Bottom(Helper.shared.constrain(with: .height, num: 10)).to(infoLabel)
+        ]
+        
+        bookmarkImageView <- [
+            Bottom(Helper.shared.constrain(with: .height, num: 20)),
+            Right(Helper.shared.constrain(with: .width, num: 20)),
+            Height(Helper.shared.constrain(with: .height, num: 10)),
+            Width(Helper.shared.constrain(with: .width, num: 6))
         ]
         
         lineView <- [
@@ -103,6 +111,10 @@ class FeedTableViewCell: UITableViewCell {
             Height(1),
             Bottom(0)
         ]
+    }
+    
+    func showBookmark() {
+        bookmarkImageView.isHidden = false
     }
     
     func configureView() {
@@ -116,5 +128,9 @@ class FeedTableViewCell: UITableViewCell {
             infoLabel.text = date
         }
     }
-    
+ 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        bookmarkImageView.isHidden = true
+    }
 }

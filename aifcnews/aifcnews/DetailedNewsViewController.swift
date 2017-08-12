@@ -13,6 +13,7 @@ import RealmSwift
 class DetailedNewsViewController: UIViewController {
     
     var newsTitles = Set<String>()
+    var data: Data? = nil
     var preCheck = 0
     var postCheck = 0
     
@@ -22,9 +23,15 @@ class DetailedNewsViewController: UIViewController {
             configureView()
         }
     }
+    
+    lazy var webView: UIWebView = {
+        let webView = UIWebView()
+        return webView
+    }()
+    
     lazy var lowerBar: UIView = {
         let view = UIView()
-        view.backgroundColor = .barGrey
+        view.backgroundColor = "000B17".hexColor
         return view
     }()
     
@@ -67,6 +74,7 @@ class DetailedNewsViewController: UIViewController {
         view.backgroundColor = "000B17".hexColor
         setupViews()
         setupConstraints()
+        print(Realm.Configuration.defaultConfiguration.fileURL!)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -79,7 +87,7 @@ class DetailedNewsViewController: UIViewController {
         }
         UserDefaults.standard.set(NSKeyedArchiver.archivedData(withRootObject: newsTitles), forKey: "newsTitles")
     }
-
+    
     func checkForBookmark(_ newsTitles: Set<String>) {
         if let title = newsObject?.title{
             if newsTitles.contains(title){
@@ -93,7 +101,7 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func setupViews(){
-        [lowerBar, line].forEach {
+        [webView, lowerBar, line].forEach {
             view.addSubview($0)
         }
         [backButton, bookmarkButton, shareButton].forEach{
@@ -102,6 +110,8 @@ class DetailedNewsViewController: UIViewController {
     }
     
     func setupConstraints() {
+        
+        webView <- Edges()
         
         line <- [
             Width(ScreenSize.width),
@@ -169,19 +179,14 @@ class DetailedNewsViewController: UIViewController {
             self.present(activityVC, animated: true, completion: nil)
         }
     }
-
-
-    func fetchFirstSentence(from text: String)-> String {
-        let textArray = text.components(separatedBy: ".")
-        return textArray[0]
-    }
-
+    
     func saveBookmark(){
         let newsToSave = RealmNews()
-        newsToSave.date = (newsObject?.date)!
-        newsToSave.title = (newsObject?.title!)!
-        newsToSave.link = (newsObject?.link)!
-        
+        if let date = newsObject?.date, let title = newsObject?.title, let link = newsObject?.link{
+            newsToSave.date = date
+            newsToSave.link = link
+            newsToSave.title = title
+        }
         try! realm.write {
             realm.add(newsToSave)
         }
@@ -191,7 +196,7 @@ class DetailedNewsViewController: UIViewController {
         try! realm.write {
             if let title = newsObject?.title {
                 guard let object = realm.objects(RealmNews.self).filter("title = %@", title).first?.title else {
-                     return
+                    return
                 }
                 realm.delete(realm.objects(RealmNews.self).filter("title = %@", object).first!)
             }
@@ -215,49 +220,18 @@ class DetailedNewsViewController: UIViewController {
         return modifiedString
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
-            UIView.animate(withDuration: 0.5, animations: { 
-                self.line.alpha = 0
-                self.lowerBar.alpha = 0
-            })
-        }
-        else{
-            UIView.animate(withDuration: 0.5, animations: {
-                self.line.alpha = 1
-                self.lowerBar.alpha = 1
-            })
-        }
-    }
-    
     override var prefersStatusBarHidden: Bool {
         return true
     }
     
     func configureView() {
-        
+        if let news = newsObject{
+            guard let link = news.link else {
+                return
+            }
+            print(link)
+            let request = URLRequest(url:  URL(string: link)!)
+            self.webView.loadRequest(request)
+        }
     }
-
-}
-
-extension DetailedNewsViewController: UITableViewDelegate, UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! DetailedNewsTableViewCell
-        cell.newsObject = newsObject
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-    
 }

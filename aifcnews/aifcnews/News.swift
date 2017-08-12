@@ -28,12 +28,13 @@ struct News {
         var news = [News]()
         var counter = 0
         for subtag in tag.subtags {
-            let modifiedString = addPlusses(to: subtag.subtag)
-            Alamofire.request("https://news.google.com/news?q=\(modifiedString)&output=rss", method: .get).response(completionHandler: { (data) in
+            let url = createURL(from: tag, and: subtag)
+            Alamofire.request(url, method: .get).response(completionHandler: { (data) in
                 let xml = SWXMLHash.parse(data.data!)
                 for elem in xml["rss"]["channel"]["item"].all {
                     if let title = elem["title"].element?.text, let link = elem["link"].element?.text, let date = elem["pubDate"].element?.text{
-                        news.append(News(title, date, link))
+                        let modifiedTitle = fetchFirstSentence(from: title)
+                        news.append(News(modifiedTitle, date, link))
                     }
                     counter += 1
                     if counter == xml["rss"]["channel"]["item"].all.count{
@@ -43,6 +44,22 @@ struct News {
                 callback(nil, data.error)
             })
         }
+    }
+    
+    static func createURL(from tag: Tag, and subtag: Subtag) -> String {
+        let modifiedSubtag = addPlusses(to: subtag.subtag)
+        let modifiedTag = addPlusses(to: tag.tag)
+        switch tag.tag {
+            case "Kazakhstan", "Kazakh Tenge", "National Companies":
+                return "https://news.google.com/news?q=\(modifiedTag)&as_epq=\(modifiedSubtag)&output=rss&hl=us"
+            default:
+                return "https://news.google.com/news?q=\(modifiedSubtag)&output=rss&hl=us"
+        }
+    }
+    
+    static func fetchFirstSentence(from text: String) -> String {
+        let textArray = text.components(separatedBy: " - ")
+        return textArray[0]
     }
     
     static func addPlusses(to string: String) -> String {

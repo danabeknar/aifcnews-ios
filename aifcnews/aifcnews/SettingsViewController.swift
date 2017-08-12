@@ -23,8 +23,7 @@ class SettingsViewController: UIViewController {
 
     var sectionItems = [
         Settings(title: "SUPPORT US", items: [SettingsItem(title: "Rate Us"),SettingsItem(title: "Share With Friends"), SettingsItem(title: "Contact Us")]),
-        Settings(title: "ABOUT APPLICATION", items: [SettingsItem(title: "Version"), SettingsItem(title: "Visit AIFC Website")]),
-        Settings(title: "NOTIFICATIONS", items: [SettingsItem(title: "Enable Notifications")])
+        Settings(title: "ABOUT APPLICATION", items: [SettingsItem(title: "Version"), SettingsItem(title: "Visit AIFC Website")])
     ]
     
     
@@ -94,7 +93,6 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         case (0, 0...2): cell.accessoryType = .disclosureIndicator
         case (1, 0): cell.addLabel()
         case (1, 1): cell.accessoryType = .disclosureIndicator
-        case (2, 0): cell.addSwitch()
         default: break
         }
         return cell

@@ -40,6 +40,14 @@ class MenuViewController: UIViewController {
         setupConstraints()
     }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        UIApplication.shared.isStatusBarHidden = true
+    }
+    
     func setupViewStyle(){
         view.backgroundColor = "000B17".hexColor
     }

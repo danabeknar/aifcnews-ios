@@ -18,12 +18,7 @@ class RealmNewsList: Object {
 }
 
 class RealmNews: Object {
-    
     dynamic var title: String = ""
-    dynamic var source: String = ""
     dynamic var date: String = ""
-    dynamic var image: NSData = NSData()
-    dynamic var body: String = ""
     dynamic var link: String = ""
-    
 }

@@ -18,11 +18,8 @@ class Database {
         var returningNews = [News]()
         var counter = 0
         if news.count > 0 {
-            print(news.count)
             for newsObject in news{
-                
                     returningNews.append(News(newsObject.title, newsObject.date, newsObject.link))
-                
                 counter += 1
                 if counter == news.count{
                     callback(returningNews)

@@ -20,6 +20,7 @@ class BookmarkViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.layer.borderWidth = 0
         tableView.separatorStyle = .none
+        tableView.rowHeight = 132
         tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
@@ -62,22 +63,6 @@ class BookmarkViewController: UIViewController {
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont(name: "SFProDisplay-Regular", size: 18)!]
         self.navigationController?.navigationBar.topItem?.title = "Bookmarks"
     }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.panGestureRecognizer.translation(in: scrollView).y < 0{
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.line.alpha = 0
-//                self.lowerBar.alpha = 0
-//            })
-//        }
-//        else{
-//            UIView.animate(withDuration: 0.3, animations: {
-//                self.line.alpha = 1
-//                self.lowerBar.alpha = 1
-//            })
-//        }
-        }
-    }
 
     func fetchRealmNews(){
         self.news.removeAll()
@@ -108,21 +93,15 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! FeedTableViewCell
         cell.newsObject = news[indexPath.row] as News
+        cell.selectionStyle = .none
+        cell.showBookmark()
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 209
-    }
-    
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
-//        let image = cell.newsImageView.image
-//        let vc = DetailedNewsViewController()
-//        vc.image = image
-//        vc.newsObject = news[(tableView.indexPathForSelectedRow?.row)!]
-//        present(vc, animated: true, completion: nil)
+        let vc = DetailedNewsViewController()
+        vc.newsObject = news[indexPath.row]
+        self.present(vc, animated: true, completion: nil)
     }
     
 }
