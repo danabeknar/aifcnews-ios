@@ -111,10 +111,6 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource, DZ
         return 1
     }
     
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
-        return true
-    }
-    
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         return true
     }

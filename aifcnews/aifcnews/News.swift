@@ -47,7 +47,7 @@ struct News {
     }
     
     static func sortNews(with array: [News]) -> [News]{
-        var news = array.sorted(by: { $0.date! > $1.date! })
+        let news = array.sorted(by: { $0.date! > $1.date! })
         return news
     }
     

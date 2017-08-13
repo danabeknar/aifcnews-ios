@@ -216,15 +216,11 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource, DZNEmp
     }
     
     func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
-        return UIImage(named: "nodata")
+        return UIImage(named: "notAvailable")
     }
     
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 1
-    }
-    
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
-        return true
     }
     
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
@@ -234,4 +230,5 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource, DZNEmp
             return true
         }
     }
+    
 }
