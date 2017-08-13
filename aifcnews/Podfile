@@ -18,5 +18,5 @@ target 'aifcnews' do
   pod 'SideMenuController'
   pod 'SWXMLHash', '~> 4.0.0'
   pod 'SwiftWebVC'
-  pod 'AFDateHelper', '~> 4.2.2'
+  pod 'AFDateHelper', '~> 4.2.4'
 end

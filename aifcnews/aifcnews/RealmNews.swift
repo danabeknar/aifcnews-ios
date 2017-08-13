@@ -19,6 +19,6 @@ class RealmNewsList: Object {
 
 class RealmNews: Object {
     dynamic var title: String = ""
-    dynamic var date: String = ""
+    dynamic var date: Date = Date()
     dynamic var link: String = ""
 }

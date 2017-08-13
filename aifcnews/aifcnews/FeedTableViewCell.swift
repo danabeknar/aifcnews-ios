@@ -8,6 +8,7 @@
 
 import UIKit
 import EasyPeasy
+import AFDateHelper
 
 class FeedTableViewCell: UITableViewCell {
     
@@ -28,7 +29,7 @@ class FeedTableViewCell: UITableViewCell {
         return label
     }()
     
-    lazy var infoLabel: UILabel = {
+    lazy var dateLabel: UILabel = {
         let label = UILabel()
             label.textColor = "989CA6".hexColor
             label.textAlignment = .left
@@ -66,7 +67,7 @@ class FeedTableViewCell: UITableViewCell {
     // MARK: Configure Views
     
     func setupViews() {
-        [titleLabel, infoLabel, lineView, bookmarkImageView].forEach{
+        [titleLabel, dateLabel, lineView, bookmarkImageView].forEach{
             contentView.addSubview($0)
         }
         
@@ -75,7 +76,7 @@ class FeedTableViewCell: UITableViewCell {
     // MARK: Configure Constraints
     
     func setupConstraints() {
-        infoLabel <- [
+        dateLabel <- [
             Left(Helper.shared.constrain(with: .width, num: 20)),
             Bottom(Helper.shared.constrain(with: .height, num: 20)),
             Right(Helper.shared.constrain(with: .width, num: 20)),
@@ -86,7 +87,7 @@ class FeedTableViewCell: UITableViewCell {
             Top(Helper.shared.constrain(with: .height, num: 20)),
             Left(Helper.shared.constrain(with: .width, num: 17)),
             Right(Helper.shared.constrain(with: .width, num: 50)),
-            Bottom(Helper.shared.constrain(with: .height, num: 10)).to(infoLabel)
+            Bottom(Helper.shared.constrain(with: .height, num: 10)).to(dateLabel)
         ]
         
         bookmarkImageView <- [
@@ -115,7 +116,7 @@ class FeedTableViewCell: UITableViewCell {
                     return
                 }
             titleLabel.text = title
-            infoLabel.text = date
+            dateLabel.text = String(describing: date.toStringWithRelativeTime())
         }
     }
  
