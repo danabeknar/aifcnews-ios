@@ -41,7 +41,7 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
     
     lazy var line: UIView = {
         let view = UIView()
-        view.backgroundColor = .lineGrey
+        view.backgroundColor = "C8C7CC".hexColor
         return view
     }()
     
@@ -56,7 +56,6 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
     lazy var bookmarkButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(named: "Bookmark"), for: .normal)
-        button.imageView?.tintColor = .mainBlue
         button.addTarget(self, action: #selector(bookmarkPressed), for: .touchUpInside)
         return button
     }()
