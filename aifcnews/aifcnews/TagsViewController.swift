@@ -11,6 +11,8 @@ import EasyPeasy
 
 class TagsViewController: UIViewController {
     
+    // MARK: Properties
+    
     var selectedCells = [UITableViewCell]()
     var tags = [Tag]()
     var tagsArray: [[Tag]] = []
@@ -28,12 +30,13 @@ class TagsViewController: UIViewController {
         return tableView
     }()
     
+    // MARK: View LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = "000B17".hexColor
-        setupNavigationBar()
         setupViews()
         setupConstraints()
+        setupNavigationBar()
         fetchSelectedTags()
     }
     
@@ -42,17 +45,14 @@ class TagsViewController: UIViewController {
         saveSelectedTags()
     }
     
-    
-    func setupNavigationBar(){
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barTintColor = "0A1520".hexColor
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont(name: "SFProDisplay-Regular", size: 18)!]
-        self.navigationController?.navigationBar.topItem?.title = "Tags"
-    }
+    // MARK: Configure Views
     
     func setupViews(){
+        view.backgroundColor = "000B17".hexColor
         view.addSubview(tableView)
     }
+    
+    // MARK: Configure Constraints
     
     func setupConstraints() {
         tableView <- [
@@ -61,6 +61,17 @@ class TagsViewController: UIViewController {
             Width(ScreenSize.width)
         ]
     }
+    
+    // MARK: Configure Navigaton Bar
+    
+    func setupNavigationBar(){
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.barTintColor = "0A1520".hexColor
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont(name: "SFProDisplay-Regular", size: 18)!]
+        self.navigationController?.navigationBar.topItem?.title = "Tags"
+    }
+    
+    // MARK: Fetch Tags
     
     func fetchSelectedTags() {
         if let data = UserDefaults.standard.object(forKey: "tags") as? Data,
@@ -74,13 +85,15 @@ class TagsViewController: UIViewController {
         tableView.reloadData()
     }
     
+    // MARK: Save Selected Tags
+    
     func saveSelectedTags() {
         let encodedData: Data = NSKeyedArchiver.archivedData(withRootObject: tagsArray)
         UserDefaults.standard.set(encodedData, forKey: "tags")
     }
 }
 
-
+// MARK: UITableViewDataSource, UITableViewDelegate
 
 extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     
@@ -94,7 +107,7 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         if section == 0{
-            return "There must be at least 1 tag"
+            return "At least 1 tag must be included"
         }
         return ""
     }

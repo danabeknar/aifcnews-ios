@@ -14,6 +14,8 @@ import ReachabilitySwift
 
 class BookmarkViewController: UIViewController {
 
+    // MARK: Properties
+    
     var news = [News]()
     let reachability = Reachability()!
     
@@ -31,6 +33,8 @@ class BookmarkViewController: UIViewController {
         return tableView
     }()
 
+    // MARK: View LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = "000B17".hexColor
@@ -45,9 +49,13 @@ class BookmarkViewController: UIViewController {
         fetchRealmNews()
     }
     
+    // MARK: Configure Views
+    
     func setupViews(){
         view.addSubview(tableView)
     }
+    
+    // MARK: Configure Constraints
     
     func setupConstraints() {
         tableView <- [
@@ -56,6 +64,8 @@ class BookmarkViewController: UIViewController {
             Bottom(0)
         ]
     }
+    
+    // MARK: Configure Navigaton Bar
 
     func setupNavigationBar(){
         self.navigationController?.navigationBar.isTranslucent = false
@@ -63,6 +73,8 @@ class BookmarkViewController: UIViewController {
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont(name: "SFProDisplay-Regular", size: 18)!]
         self.navigationController?.navigationBar.topItem?.title = "Bookmarks"
     }
+    
+    // MARK: Fetch Data
 
     func fetchRealmNews(){
         self.news.removeAll()
@@ -81,7 +93,7 @@ class BookmarkViewController: UIViewController {
     }
 }
 
-// MARK: UITableViewDataSource, UITableViewDelegate
+// MARK: UITableViewDataSource, UITableViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataDelegate
 
 extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     

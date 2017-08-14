@@ -8,7 +8,7 @@
 
 import UIKit
 import EasyPeasy
-import AFDateHelper
+import SwiftDate
 
 class FeedTableViewCell: UITableViewCell {
     
@@ -110,13 +110,15 @@ class FeedTableViewCell: UITableViewCell {
     
     func configureView() {
         if let newsObject = newsObject{
-            guard let title = newsObject.title,
-                  let date = newsObject.date
+            if let title = newsObject.title, let date = newsObject.date{
+                let (colloquial,_) = try! date.colloquialSinceNow()
+                titleLabel.text = title
+                dateLabel.text = colloquial
+            }
                 else {
                     return
                 }
-            titleLabel.text = title
-            dateLabel.text = String(describing: date.toStringWithRelativeTime())
+            
         }
     }
  

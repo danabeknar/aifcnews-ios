@@ -44,9 +44,17 @@ class SettingsTableViewCell: UITableViewCell {
         setupConstraints()
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: Configure Views
+    
     func setupViews(){
         self.addSubview(titleLabel)
     }
+    
+    // MARK: Configure Constraints
     
     func setupConstraints() {
         titleLabel <- [
@@ -54,10 +62,8 @@ class SettingsTableViewCell: UITableViewCell {
             CenterY()
         ]
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
+    // MARK: Label Adding Function
     
     func addLabel() {
         self.addSubview(versionLabel)
@@ -67,6 +73,8 @@ class SettingsTableViewCell: UITableViewCell {
         ]
         
     }
+    
+    // MARK: Configure UI
     
     func configureView() {
         if let object = cellObject {

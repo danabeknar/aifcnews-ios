@@ -19,6 +19,8 @@ struct SettingsItem {
     var title: String
 }
 
+// MARK: Properties
+
 class SettingsViewController: UIViewController {
 
     var sectionItems = [
@@ -39,25 +41,23 @@ class SettingsViewController: UIViewController {
         return tableView
     }()
     
+    // MARK: View LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = "000B17".hexColor
         setupViews()
         setupConstraints()
         setupNavigationBar()
     }
     
-    func setupNavigationBar(){
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barTintColor = "0A1520".hexColor
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont(name: "SFProDisplay-Regular", size: 18)!]
-        self.navigationController?.navigationBar.topItem?.title = "Settings"
-    }
+    // MARK: Configure Views
 
-    
     func setupViews() {
+        view.backgroundColor = "000B17".hexColor
         view.addSubview(tableView)
     }
+    
+    // MARK: Configure Constraints
     
     func setupConstraints() {
         tableView <- [
@@ -67,8 +67,19 @@ class SettingsViewController: UIViewController {
         ]
     }
     
+    // MARK: Configure Navigaton Bar
+    
+    func setupNavigationBar(){
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.barTintColor = "0A1520".hexColor
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white, NSFontAttributeName: UIFont(name: "SFProDisplay-Regular", size: 18)!]
+        self.navigationController?.navigationBar.topItem?.title = "Settings"
+    }
+
+    
 }
 
+// MARK: UITableViewDataSource, UITableViewDelegate
 
 extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     

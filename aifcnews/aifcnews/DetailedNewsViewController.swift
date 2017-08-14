@@ -13,10 +13,13 @@ import SVProgressHUD
 
 class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
     
+    // MARK: Properties
+    
     var newsTitles = Set<String>()
     var data: Data? = nil
     var preCheck = 0
     var postCheck = 0
+    var isFirstLoad = true
     
     
     var newsObject: News? {
@@ -65,26 +68,16 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
         return button
     }()
     
+    // MARK: View LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchSavedTitles()
-        view.backgroundColor = "000B17".hexColor
-        setupNavigationController()
+        isHeroEnabled = true
+        heroModalAnimationType = .selectBy(presenting: .push(direction: .left), dismissing: .push(direction: .right))
+        setupNavigationBar()
         setupViews()
         setupConstraints()
-    }
-    
-    
-    func setupNavigationController() {
-        self.navigationController?.isNavigationBarHidden = true
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-    
-    func fetchSavedTitles(){
-        if let newsTitlesObject = UserDefaults.standard.value(forKey: "newsTitles") as? NSData {
-            newsTitles = NSKeyedUnarchiver.unarchiveObject(with: newsTitlesObject as Data) as! Set<String>
-            checkForBookmark(newsTitles)
-        }
+        fetchSavedTitles()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -97,19 +90,10 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
         UserDefaults.standard.set(NSKeyedArchiver.archivedData(withRootObject: newsTitles), forKey: "newsTitles")
     }
     
-    func checkForBookmark(_ newsTitles: Set<String>) {
-        if let title = newsObject?.title{
-            if newsTitles.contains(title){
-                bookmarkButton.setImage(UIImage(named: "FilledBookmark"), for: .normal)
-                preCheck = 1
-                postCheck = 1
-            } else {
-                bookmarkButton.setImage(UIImage(named: "Bookmark"), for: .normal)
-            }
-        }
-    }
+    // MARK: Configure Views
     
     func setupViews(){
+        view.backgroundColor = "000B17".hexColor
         [webView, lowerBar, line].forEach {
             view.addSubview($0)
         }
@@ -118,6 +102,10 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
         }
         webView.delegate = self
     }
+    
+    
+    // MARK: Configure Constraints
+    
     
     func setupConstraints() {
         
@@ -158,21 +146,60 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
         
     }
     
+    // MARK: Configure Navigaton Bar
+    
+    func setupNavigationBar() {
+        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    // MARK: Fetch Saved Bookmarks
+    
+    func fetchSavedTitles(){
+        if let newsTitlesObject = UserDefaults.standard.value(forKey: "newsTitles") as? NSData {
+            newsTitles = NSKeyedUnarchiver.unarchiveObject(with: newsTitlesObject as Data) as! Set<String>
+            checkForBookmark(newsTitles)
+        }
+    }
+    
+    // MARK: Initial check for saved bookmark
+    
+    func checkForBookmark(_ newsTitles: Set<String>) {
+        if let title = newsObject?.title{
+            if newsTitles.contains(title){
+                bookmarkButton.setImage(UIImage(named: "FilledBookmark"), for: .normal)
+                preCheck = 1
+                postCheck = 1
+            } else {
+                bookmarkButton.setImage(UIImage(named: "Bookmark"), for: .normal)
+            }
+        }
+    }
+
+    // MARK: Function To Go Back
+    
     func backPressed() {
         dismiss(animated: true, completion: nil)
     }
     
+    // MARK: WebView Delegate Methods
+    
     func webViewDidStartLoad(_ webView: UIWebView) {
-        SVProgressHUD.show(withStatus: "Loading...")
+        if isFirstLoad {
+            SVProgressHUD.show(withStatus: "Loading...")
+        }
     }
     
     func webViewDidFinishLoad(_ webView: UIWebView) {
+        isFirstLoad = false
         SVProgressHUD.dismiss()
     }
     
     func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
         SVProgressHUD.showError(withStatus: error.localizedDescription)
     }
+    
+    // MARK: Bookmark DidPress Function
     
     func bookmarkPressed() {
         if bookmarkButton.imageView?.image == UIImage(named: "Bookmark"){
@@ -190,17 +217,7 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
         }
     }
     
-    func sharePressed() {
-        if let link = newsObject?.link
-        {
-            let activityVC = UIActivityViewController(activityItems: [link], applicationActivities: nil)
-            activityVC.excludedActivityTypes = [.airDrop,
-                                                UIActivityType(rawValue: "com.google.GooglePlus.ShareExtension"),
-                                                UIActivityType(rawValue: "com.apple.reminders.RemindersEditorExtension")]
-            activityVC.popoverPresentationController?.sourceView = UIView()
-            self.present(activityVC, animated: true, completion: nil)
-        }
-    }
+    // MARK: Bookmark Saving Function
     
     func saveBookmark(){
         let newsToSave = RealmNews()
@@ -214,6 +231,8 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
         }
     }
     
+    // MARK: Bookmark Deleting Function
+    
     func removeBookmark() {
         try! realm.write {
             if let title = newsObject?.title {
@@ -224,6 +243,8 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
             }
         }
     }
+    
+    // MARK: Function To Add Quotes To Title
     
     func addSingleQuotes(to string: String) -> String {
         var modifiedString = ""
@@ -242,6 +263,7 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
         return modifiedString
     }
     
+    // MARK: Update UI
     
     func configureView() {
         if let news = newsObject{
@@ -250,6 +272,20 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
             }
             let request = URLRequest(url:  URL(string: link)!)
             self.webView.loadRequest(request)
+        }
+    }
+    
+    // MARK: Share Function
+    
+    func sharePressed() {
+        if let link = newsObject?.link
+        {
+            let activityVC = UIActivityViewController(activityItems: [link], applicationActivities: nil)
+            activityVC.excludedActivityTypes = [.airDrop,
+                                                UIActivityType(rawValue: "com.google.GooglePlus.ShareExtension"),
+                                                UIActivityType(rawValue: "com.apple.reminders.RemindersEditorExtension")]
+            activityVC.popoverPresentationController?.sourceView = UIView()
+            self.present(activityVC, animated: true, completion: nil)
         }
     }
 }

@@ -42,6 +42,8 @@ class TagsTableViewCell: UITableViewCell {
         return button
     }()
     
+    // MARK: Initialization
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
         self.textLabel?.textColor = .white
@@ -52,6 +54,8 @@ class TagsTableViewCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: Configure Views
     
     func setupViews() {
         [tagLabel, signButton].forEach{
@@ -76,18 +80,19 @@ class TagsTableViewCell: UITableViewCell {
         ]
     }
     
+    // MARK: Configure UI
     
     func configureView() {
         if let tag = tagObject?.tag {
             tagLabel.text = tag
         }
     }
+    
+    // MARK: Sign DidPress Function
 
     func signDidPress(sender: UIButton) {
         tagAction(self)
     }
+
     
-//    func choose(_ bool: Bool) {
-//        signButton.alpha = bool ? 1 : 0
-//    }
 }

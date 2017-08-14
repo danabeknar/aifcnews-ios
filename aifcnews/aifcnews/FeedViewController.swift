@@ -13,15 +13,16 @@ import BTNavigationDropdownMenu
 import DZNEmptyDataSet
 import ReachabilitySwift
 import SVProgressHUD
+import Hero
 
 class FeedViewController: UIViewController {
     
-    let reachability = Reachability()!
+    // MARK: Properties
     
+    let reachability = Reachability()!
     var news = [News]()
     var lastSelectedIndex = 0
     var newsTitles = Set<String>()
-    
     var tags: [Tag] = []
     
     var currentTag: Tag? {
@@ -68,21 +69,13 @@ class FeedViewController: UIViewController {
         tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
-    
-    lazy var arrowButton: UIButton = {
-        let button = UIButton()
-        button.setImage(UIImage(named: "UpArrow")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        button.alpha = 0
-        button.isHidden = true
-        button.addTarget(self, action: #selector(arrowButtonPressed), for: .touchUpInside)
-        return button
-    }()
 
+    // MARK: View LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = "000B17".hexColor
-        setupNavigationController()
+        isHeroEnabled = true
+        setupNavigationBar()
         setupViews()
         setupConstraints()
         reloadTags()
@@ -98,24 +91,37 @@ class FeedViewController: UIViewController {
         tableView.reloadData()
     }
     
-    func reloadTags() {
-        tags = AppDelegate.fetchTags()
-        initialTag = tags.first!
-        updateMenuView(with: tags)
+    // MARK: Configure Views
+    
+    func setupViews(){
+        view.backgroundColor = "000B17".hexColor
+        view.addSubview(tableView)
+        navigationItem.titleView = menuView
     }
-
-    func setupNavigationController(){
+    
+    // MARK: Configure Constraints
+    
+    func setupConstraints() {
+        tableView <- Edges()
+    }
+    
+    // MARK: Configure Navigation Bar
+    
+    func setupNavigationBar(){
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.barTintColor = "0A1520".hexColor
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
     }
     
-    func setupViews(){
-        [tableView,arrowButton].forEach {
-            view.addSubview($0)
-        }
-        navigationItem.titleView = menuView
+    // MARK: Fetch Tags and Update Items
+    
+    func reloadTags() {
+        tags = AppDelegate.fetchTags()
+        initialTag = tags.first!
+        updateMenuView(with: tags)
     }
+    
+    // MARK: Update DropDown Items
     
     func updateMenuView(with tags: [Tag]){
         var items = [String]()
@@ -125,24 +131,15 @@ class FeedViewController: UIViewController {
         menuView.updateItems(items)
     }
     
-    
-    func setupConstraints() {
-        tableView <- Edges()
-        
-        arrowButton <- [
-            Bottom(Helper.shared.constrain(with: .height, num: 12)),
-            Left(Helper.shared.constrain(with: .width, num: 20)),
-            Width(Helper.shared.constrain(with: .width, num: 62)),
-            Height(Helper.shared.constrain(with: .height, num: 64))
-        ]
-        
-    }
+    // MARK: Fetch Saved Bookmarks
     
     func fetchBookmarks(){
         if let newsTitlesObject = UserDefaults.standard.value(forKey: "newsTitles") as? NSData {
             self.newsTitles = NSKeyedUnarchiver.unarchiveObject(with: newsTitlesObject as Data) as! Set<String>
         }
     }
+    
+    // MARK: Reachibility Check
     
     func parseData() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.checkConnectivity),name: ReachabilityChangedNotification,object: reachability)
@@ -152,6 +149,8 @@ class FeedViewController: UIViewController {
             print("could not start reachability notifier")
         }
     }
+    
+    // MARK: Connectivity Checking Function
     
     func checkConnectivity(){
         if (reachability.isReachable) {
@@ -163,6 +162,8 @@ class FeedViewController: UIViewController {
             print("Network not reachable")
         }
     }
+    
+    // MARK: Fetch Data
     
     func fetchData(with tag: Tag) {
         News.fetchNews(with: tag) { (data, error) in
@@ -176,15 +177,14 @@ class FeedViewController: UIViewController {
         }
     }
     
+    // MARK: DropDown Item DidPress Function
+    
     func tagPressed(with index: Int) {
         SVProgressHUD.show(withStatus: "Loading...")
         lastSelectedIndex = index
         currentTag = tags[index]
     }
     
-    func arrowButtonPressed() {
-        tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: UITableViewScrollPosition.top)
-    }
 
 }
 
@@ -223,6 +223,10 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource, DZNEmp
         return 1
     }
     
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
+        return true
+    }
+    
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if (reachability.isReachable){
             return false
@@ -230,5 +234,4 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource, DZNEmp
             return true
         }
     }
-    
 }

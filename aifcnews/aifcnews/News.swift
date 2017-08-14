@@ -10,8 +10,7 @@ import Foundation
 import UIKit
 import Alamofire
 import SWXMLHash
-import AFDateHelper
-
+import SwiftDate
 
 struct News {
     
@@ -34,7 +33,8 @@ struct News {
                 let xml = SWXMLHash.parse(data.data!)
                 for elem in xml["rss"]["channel"]["item"].all {
                     if let title = elem["title"].element?.text, let link = elem["link"].element?.text, let dateString = elem["pubDate"].element?.text{
-                        news.append(News(fetchFirstSentence(from: title), modifyDate(with: dateString), link))
+                        
+                        news.append(News(fetchFirstSentence(from: title), createDate(dateString), link))
                     }
                     counter += 1
                     if counter == xml["rss"]["channel"]["item"].all.count{
@@ -46,17 +46,20 @@ struct News {
         }
     }
     
+    static func createDate(_ string: String) -> Date {
+        let kz = Region(tz: TimeZoneName.asiaBishkek, cal: CalendarName.gregorian, loc: LocaleName.english)
+        let date = string.date(format: .rss(alt: false), fromRegion: kz)
+        if let absoluteData = date?.absoluteDate{
+            return absoluteData
+        }
+        return Date()
+    }
+    
     static func sortNews(with array: [News]) -> [News]{
         let news = array.sorted(by: { $0.date! > $1.date! })
         return news
     }
     
-    static func modifyDate(with string: String) -> Date{
-        if let date = Date(fromString: string, format: .httpHeader){
-            return date
-        }
-        return Date()
-    }
     
     static func createURL(from tag: Tag, and subtag: Subtag) -> String {
         let modifiedSubtag = addPlusses(to: subtag.subtag)

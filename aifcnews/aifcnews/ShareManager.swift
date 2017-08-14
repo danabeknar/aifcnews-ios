@@ -69,17 +69,6 @@ class ShareManager: NSObject, UIDocumentInteractionControllerDelegate {
     
     // MARK: Social Network Sharing
     
-    func facebookShare(at vc: UIViewController) {
-        let facebookVC = SLComposeViewController(forServiceType:SLServiceTypeFacebook)
-        facebookVC?.add(URL(string: Constant.appUrl))
-        facebookVC?.add(UIImage(named: "commercial.png")!)
-        vc.present(facebookVC!, animated: true, completion: nil)
-    }
-    
-    func instagramShare(at vc: UIViewController) {
-        postImageToInstagramWithCaption(imageInstagram: UIImage(named: "commercial.png")!, instagramCaption: "some caption", view: vc.view, delegate: vc)
-    }
-    
     
     func share(at vc: UIViewController) {
         let    message = "Download this application to be aware of economic news! \(Constant.appUrl)"
@@ -95,31 +84,8 @@ class ShareManager: NSObject, UIDocumentInteractionControllerDelegate {
         vc.present(activityVC, animated: true, completion: nil)
     }
     
-    func postImageToInstagramWithCaption(imageInstagram: UIImage, instagramCaption: String, view: UIView, delegate: UIViewController) {
-        let instagramURL = NSURL(string: "instagram://app")
-        if UIApplication.shared.canOpenURL(instagramURL! as URL) {
-            let jpgPath = (NSTemporaryDirectory() as NSString).appendingPathComponent("instagram.igo")
-            
-            do {
-                try UIImageJPEGRepresentation(imageInstagram, 1.0)?.write(to: URL(fileURLWithPath: jpgPath), options: .atomic)
-            } catch {
-                print(error)
-            }
-            
-            let rect = CGRect(x: 0, y: 0, width: 612, height: 612)
-            let fileURL = NSURL.fileURL(withPath: jpgPath)
-            documentInteractionController.url = fileURL
-            documentInteractionController.delegate = delegate as? UIDocumentInteractionControllerDelegate
-            documentInteractionController.uti = "com.instagram.exclusivegram"
-            
-            // adding caption for the image
-            documentInteractionController.annotation = ["InstagramCaption": instagramCaption]
-            documentInteractionController.presentOpenInMenu(from: rect, in: view, animated: true)
-        } else {
-            /// Like: UIAlertController(title: kAlertViewTitle, message: kAlertViewMessage, preferredStyle: .alert)
-        }
-    }
 }
+
 
 // MARK: MFMailComposeViewControllerDelegate
 

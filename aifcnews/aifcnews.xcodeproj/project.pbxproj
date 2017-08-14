@@ -11,7 +11,6 @@
 		0D0ECBA31F18A2ED005699FC /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0ECBA21F18A2ED005699FC /* Helper.swift */; };
 		0D0ECBA51F18B099005699FC /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0ECBA41F18B099005699FC /* Extensions.swift */; };
 		0D0ECBAB1F18B338005699FC /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D0ECBAA1F18B338005699FC /* FeedTableViewCell.swift */; };
-		0D30DCD31F220E4100FBDE99 /* DetailedNewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D30DCD21F220E4100FBDE99 /* DetailedNewsTableViewCell.swift */; };
 		0D3987851F28A51B00CDBDC9 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D3987811F28A51B00CDBDC9 /* OpenSans-Bold.ttf */; };
 		0D3987861F28A51B00CDBDC9 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D3987821F28A51B00CDBDC9 /* OpenSans-Light.ttf */; };
 		0D3987871F28A51B00CDBDC9 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0D3987831F28A51B00CDBDC9 /* OpenSans-Regular.ttf */; };
@@ -43,7 +42,6 @@
 		0D0ECBA21F18A2ED005699FC /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		0D0ECBA41F18B099005699FC /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		0D0ECBAA1F18B338005699FC /* FeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
-		0D30DCD21F220E4100FBDE99 /* DetailedNewsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedNewsTableViewCell.swift; sourceTree = "<group>"; };
 		0D3987811F28A51B00CDBDC9 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		0D3987821F28A51B00CDBDC9 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		0D3987831F28A51B00CDBDC9 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
@@ -104,7 +102,6 @@
 				0D0ECBAA1F18B338005699FC /* FeedTableViewCell.swift */,
 				0DBEB4741F1E1FC800A03809 /* TagsTableViewCell.swift */,
 				0DE5C5A71F1F4874001A47E4 /* SettingsTableViewCell.swift */,
-				0D30DCD21F220E4100FBDE99 /* DetailedNewsTableViewCell.swift */,
 				0D3A5E5F1F3CDFE5009C8399 /* MenuTableViewCell.swift */,
 			);
 			name = Views;
@@ -328,32 +325,34 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-aifcnews/Pods-aifcnews-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFDateHelper/AFDateHelper.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/BTNavigationDropdownMenu/BTNavigationDropdownMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet/DZNEmptyDataSet.framework",
 				"${BUILT_PRODUCTS_DIR}/EasyPeasy/EasyPeasy.framework",
+				"${BUILT_PRODUCTS_DIR}/Hero/Hero.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/ReachabilitySwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SWXMLHash/SWXMLHash.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenuController/SideMenuController.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftDate/SwiftDate.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftWebVC/SwiftWebVC.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFDateHelper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BTNavigationDropdownMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EasyPeasy.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hero.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReachabilitySwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWXMLHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenuController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftDate.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftWebVC.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -373,7 +372,6 @@
 				0DBEB4751F1E1FC800A03809 /* TagsTableViewCell.swift in Sources */,
 				0DC71A521F1795D200225263 /* FeedViewController.swift in Sources */,
 				0DBEB4731F1E1CB200A03809 /* SettingsViewController.swift in Sources */,
-				0D30DCD31F220E4100FBDE99 /* DetailedNewsTableViewCell.swift in Sources */,
 				0DE5C5A41F1F1943001A47E4 /* Tags.swift in Sources */,
 				0DBEB4771F1E2A2600A03809 /* TagsViewController.swift in Sources */,
 				0DE5C5A81F1F4874001A47E4 /* SettingsTableViewCell.swift in Sources */,
@@ -452,6 +450,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -494,6 +493,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -510,6 +510,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = n17r.aifcnews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -525,6 +526,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = n17r.aifcnews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

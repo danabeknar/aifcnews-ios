@@ -13,7 +13,9 @@ import SVProgressHUD
 
 class MenuViewController: UIViewController {
     
-    let menu = ["Newsroom", "Bookmarks", "Tags", "Settings"]
+    // MARK: Properties
+    
+    let menu = ["News", "Bookmarks", "Tags", "Settings"]
     
     var tags: [Tag] = [] {
         didSet{
@@ -27,26 +29,29 @@ class MenuViewController: UIViewController {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.isScrollEnabled = false
         tableView.register(MenuTableViewCell.self, forCellReuseIdentifier: "Cell")
         tableView.backgroundColor = "000B17".hexColor
         tableView.separatorStyle = .none
         return tableView
     }()
     
+    // MARK: View LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupViewStyle()
         setupViews()
         setupConstraints()
     }
     
-    func setupViewStyle(){
-        view.backgroundColor = "000B17".hexColor
-    }
-    
+    // MARK: Configure Views
+
     func setupViews(){
+        view.backgroundColor = "000B17".hexColor
         view.addSubview(tableView)
     }
+    
+    // MARK: Configure Constraints
     
     func setupConstraints(){
         tableView <- [
@@ -57,6 +62,8 @@ class MenuViewController: UIViewController {
         ]
     }
 }
+
+// MARK: UITableViewDataSource, UITableViewDelegate
 
 extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     
