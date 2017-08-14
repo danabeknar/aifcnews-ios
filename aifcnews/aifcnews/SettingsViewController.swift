@@ -99,6 +99,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! SettingsTableViewCell
         cell.backgroundColor = "000B17".hexColor
+        cell.selectionStyle = .none
         cell.titleLabel.text = sectionItems[indexPath.section].items[indexPath.row].title
         switch (indexPath.section, indexPath.row){
         case (0, 0...2): cell.accessoryType = .disclosureIndicator
