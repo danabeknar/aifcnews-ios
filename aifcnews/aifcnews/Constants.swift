@@ -16,3 +16,12 @@ struct ScreenSize {
 }
 
 
+struct Constant {
+    
+    static let appName = "AIFC News"
+    static let appID = "id1258057171"
+    static let reviewUrl = "https://itunes.apple.com/us/app/\(Constant.appID)?ls=1&mt=8&action=write-review"
+    static let appUrl = "http://itunes.apple.com/app/\(Constant.appID)"
+    static let companyMail = "beknar.danabek@gmail.com"
+    
+}

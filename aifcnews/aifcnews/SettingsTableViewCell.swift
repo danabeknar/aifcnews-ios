@@ -42,6 +42,9 @@ class SettingsTableViewCell: UITableViewCell {
         separatorInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 0)
         setupViews()
         setupConstraints()
+        let versionNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
+        let buildNumber = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+        versionLabel.text = "\(versionNumber).\(buildNumber)"
     }
     
     required init?(coder aDecoder: NSCoder) {

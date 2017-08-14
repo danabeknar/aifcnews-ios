@@ -78,16 +78,13 @@ class BookmarkViewController: UIViewController {
 
     func fetchRealmNews(){
         self.news.removeAll()
+        self.tableView.reloadData()
         Database.shared.fetchRealmNews { (news) in
             if news != nil {
                 self.news = news!
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            } else {
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
             }
         }
     }
@@ -121,6 +118,10 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource, DZ
     
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return 1
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
+        return false
     }
     
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {

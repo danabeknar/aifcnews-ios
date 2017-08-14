@@ -224,7 +224,7 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource, DZNEmp
     }
     
     func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool {
-        return true
+        return false
     }
     
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
