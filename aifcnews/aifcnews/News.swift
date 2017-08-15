@@ -17,11 +17,13 @@ struct News {
     var title: String?
     var date: Date?
     var link: String?
+    var imageLink: String?
     
-    init(_ title: String, _ date: Date, _ link: String) {
+    init(_ title: String, _ date: Date, _ link: String, _ imageLink: String) {
         self.title = title
         self.date = date
         self.link = link
+        self.imageLink = imageLink
     }
 
     static func fetchNews(with tag: Tag, callback: @escaping ([News]?, Error?) -> Void){
@@ -32,9 +34,8 @@ struct News {
             Alamofire.request(url, method: .get).response(completionHandler: { (data) in
                 let xml = SWXMLHash.parse(data.data!)
                 for elem in xml["rss"]["channel"]["item"].all {
-                    if let title = elem["title"].element?.text, let link = elem["link"].element?.text, let dateString = elem["pubDate"].element?.text{
-                        
-                        news.append(News(fetchFirstSentence(from: title), createDate(dateString), link))
+                    if let title = elem["title"].element?.text, let link = elem["link"].element?.text, let dateString = elem["pubDate"].element?.text, let imageLink = elem["description"].element?.text{
+                        news.append(News(fetchFirstSentence(from: title), createDate(dateString), link, fetchLink(from: imageLink)))
                     }
                     counter += 1
                     if counter == xml["rss"]["channel"]["item"].all.count{
@@ -44,6 +45,16 @@ struct News {
                 callback(nil, data.error)
             })
         }
+    }
+    
+    static func fetchLink(from string: String) -> String {
+        var imageName = "notAvailable"
+        let textArray = string.components(separatedBy: "<img src=\"//")
+        if textArray.count > 1{
+            imageName = textArray[1].components(separatedBy: "\"")[0]
+            return imageName
+        }
+        return imageName
     }
     
     static func createDate(_ string: String) -> Date {
