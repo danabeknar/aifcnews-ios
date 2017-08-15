@@ -18,12 +18,14 @@ struct News {
     var date: Date?
     var link: String?
     var imageLink: String?
+    var image: UIImage?
     
-    init(_ title: String, _ date: Date, _ link: String, _ imageLink: String) {
+    init(_ title: String, _ date: Date, _ link: String, _ imageLink: String? = nil, _ image: UIImage? = nil) {
         self.title = title
         self.date = date
         self.link = link
         self.imageLink = imageLink
+        self.image = image
     }
 
     static func fetchNews(with tag: Tag, callback: @escaping ([News]?, Error?) -> Void){
@@ -35,7 +37,7 @@ struct News {
                 let xml = SWXMLHash.parse(data.data!)
                 for elem in xml["rss"]["channel"]["item"].all {
                     if let title = elem["title"].element?.text, let link = elem["link"].element?.text, let dateString = elem["pubDate"].element?.text, let imageLink = elem["description"].element?.text{
-                        news.append(News(fetchFirstSentence(from: title), createDate(dateString), link, fetchLink(from: imageLink)))
+                        news.append(News(fetchFirstSentence(from: title), createDate(dateString), link, fetchLink(from: imageLink), nil))
                     }
                     counter += 1
                     if counter == xml["rss"]["channel"]["item"].all.count{
@@ -47,14 +49,12 @@ struct News {
         }
     }
     
-    static func fetchLink(from string: String) -> String {
-        var imageName = "notAvailable"
+    static func fetchLink(from string: String) -> String? {
         let textArray = string.components(separatedBy: "<img src=\"//")
         if textArray.count > 1{
-            imageName = textArray[1].components(separatedBy: "\"")[0]
-            return imageName
+            return(textArray[1].components(separatedBy: "\"")[0])
         }
-        return imageName
+        return nil
     }
     
     static func createDate(_ string: String) -> Date {

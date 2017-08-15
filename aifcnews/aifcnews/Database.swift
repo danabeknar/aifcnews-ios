@@ -19,7 +19,9 @@ class Database {
         var counter = 0
         if news.count > 0 {
             for newsObject in news{
-                    returningNews.append(News(newsObject.title, newsObject.date, newsObject.link))
+                if let image = UIImage(data: (newsObject.image) as Data) {
+                    returningNews.append(News(newsObject.title, newsObject.date, newsObject.link, nil, image))
+                }
                 counter += 1
                 if counter == news.count{
                     callback(returningNews)

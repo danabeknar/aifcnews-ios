@@ -9,6 +9,7 @@
 import UIKit
 import EasyPeasy
 import SwiftDate
+import Kingfisher
 
 class FeedTableViewCell: UITableViewCell {
     
@@ -20,21 +21,31 @@ class FeedTableViewCell: UITableViewCell {
         }
     }
     
+    lazy var newsImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.kf.indicatorType = .activity
+        imageView.layer.cornerRadius = 3
+        return imageView
+    }()
+    
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-            label.textColor = .white
-            label.textAlignment = .left
-            label.numberOfLines = 0
-            label.font = UIFont(name: "SFProDisplay-Light", size: Helper.shared.constrain(with: .height, num: 17))
+        label.textColor = .white
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        label.font = UIFont(name: "SFProDisplay-Light", size: Helper.shared.constrain(with: .height, num: 17))
         return label
     }()
     
     lazy var dateLabel: UILabel = {
         let label = UILabel()
-            label.textColor = "989CA6".hexColor
-            label.textAlignment = .left
-            label.font = UIFont(name: "SFProDisplay-Light", size: 12)
-            label.numberOfLines = 0
+        label.textColor = "989CA6".hexColor
+        label.textAlignment = .left
+        label.sizeToFit()
+        label.font = UIFont(name: "SFProDisplay-Light", size: 12)
+        label.numberOfLines = 0
         return label
     }()
     
@@ -67,7 +78,7 @@ class FeedTableViewCell: UITableViewCell {
     // MARK: Configure Views
     
     func setupViews() {
-        [titleLabel, dateLabel, lineView, bookmarkImageView].forEach{
+        [titleLabel, dateLabel, lineView, bookmarkImageView, newsImageView].forEach{
             contentView.addSubview($0)
         }
         
@@ -79,21 +90,28 @@ class FeedTableViewCell: UITableViewCell {
         dateLabel <- [
             Left(Helper.shared.constrain(with: .width, num: 20)),
             Bottom(Helper.shared.constrain(with: .height, num: 20)),
-            Right(Helper.shared.constrain(with: .width, num: 20)),
+            Width(Helper.shared.constrain(with: .width, num: 70)),
             Height(Helper.shared.constrain(with: .height, num: 16))
+        ]
+        
+        newsImageView <- [
+            Right(Helper.shared.constrain(with: .width, num: 20)),
+            Width(Helper.shared.constrain(with: .width, num: 70)),
+            Height(Helper.shared.constrain(with: .height, num: 80)),
+            Bottom(Helper.shared.constrain(with: .height, num: 20))
         ]
         
         titleLabel <- [
             Top(Helper.shared.constrain(with: .height, num: 20)),
             Left(Helper.shared.constrain(with: .width, num: 17)),
-            Right(Helper.shared.constrain(with: .width, num: 50)),
+            Right(Helper.shared.constrain(with: .width, num: 10)).to(newsImageView),
             Bottom(Helper.shared.constrain(with: .height, num: 10)).to(dateLabel)
         ]
         
         bookmarkImageView <- [
-            Bottom(Helper.shared.constrain(with: .height, num: 20)),
-            Right(Helper.shared.constrain(with: .width, num: 20)),
-            Height(10),
+            Bottom(Helper.shared.constrain(with: .height, num: 22)),
+            Left(Helper.shared.constrain(with: .width, num: 5)).to(dateLabel),
+            Height(9),
             Width(6)
         ]
         
@@ -109,19 +127,32 @@ class FeedTableViewCell: UITableViewCell {
     }
     
     func configureView() {
+        setupImage()
         if let newsObject = newsObject{
             if let title = newsObject.title, let date = newsObject.date{
                 let (colloquial,_) = try! date.colloquialSinceNow()
                 titleLabel.text = title
                 dateLabel.text = colloquial
             }
-                else {
-                    return
-                }
+            else {
+                return
+            }
             
         }
     }
- 
+    
+    func setupImage(){
+        if let news = newsObject{
+            if let imageLink = news.imageLink {
+                if let modifiedURL = URL(string: "http:\(imageLink)"){
+                newsImageView.kf.setImage(with: modifiedURL)
+                }
+            } else {
+                newsImageView.image = UIImage(named: "notFound")
+            }
+        }
+    }
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         bookmarkImageView.isHidden = true

@@ -101,8 +101,8 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource, DZ
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! FeedTableViewCell
         cell.newsObject = news[indexPath.row] as News
+        cell.newsImageView.image = news[indexPath.row].image
         cell.selectionStyle = .none
-        cell.showBookmark()
         return cell
     }
     

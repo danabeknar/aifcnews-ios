@@ -21,6 +21,7 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
     var postCheck = 0
     var isFirstLoad = true
     
+    var image: UIImage?
     
     var newsObject: News? {
         didSet {
@@ -30,6 +31,8 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
     
     lazy var webView: UIWebView = {
         let webView = UIWebView()
+        webView.isUserInteractionEnabled = true
+        webView.scalesPageToFit = true
         return webView
     }()
     
@@ -194,10 +197,6 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
         SVProgressHUD.dismiss()
     }
     
-    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
-        SVProgressHUD.showError(withStatus: error.localizedDescription)
-    }
-    
     // MARK: Bookmark DidPress Function
     
     func bookmarkPressed() {
@@ -220,10 +219,13 @@ class DetailedNewsViewController: UIViewController, UIWebViewDelegate {
     
     func saveBookmark(){
         let newsToSave = RealmNews()
-        if let date = newsObject?.date, let title = newsObject?.title, let link = newsObject?.link{
+        if let date = newsObject?.date, let title = newsObject?.title, let link = newsObject?.link, let image = self.image {
             newsToSave.date = date
             newsToSave.link = link
             newsToSave.title = title
+            if let data = UIImagePNGRepresentation(image) as NSData? {
+                newsToSave.image = data
+            }
         }
         try! realm.write {
             realm.add(newsToSave)

@@ -210,9 +210,13 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource, DZNEmp
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            let vc = DetailedNewsViewController()
-            vc.newsObject = news[indexPath.row]
-            self.present(vc, animated: true, completion: nil)
+        let vc = DetailedNewsViewController()
+        let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
+        if let image = cell.newsImageView.image{
+            vc.image = image
+        }
+        vc.newsObject = news[indexPath.row]
+        self.present(vc, animated: true, completion: nil)
     }
     
     func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
