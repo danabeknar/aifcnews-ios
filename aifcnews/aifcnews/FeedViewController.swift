@@ -69,12 +69,13 @@ class FeedViewController: UIViewController {
         tableView.register(FeedTableViewCell.self, forCellReuseIdentifier: "Cell")
         return tableView
     }()
-
+    
     // MARK: View LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         isHeroEnabled = true
+        setupGestures()
         setupNavigationBar()
         setupViews()
         setupConstraints()
@@ -111,6 +112,11 @@ class FeedViewController: UIViewController {
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.barTintColor = "0A1520".hexColor
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+    }
+    
+    func setupGestures(){
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(sender:)))
+        tableView.addGestureRecognizer(longPress)
     }
     
     // MARK: Fetch Tags and Update Items
@@ -185,8 +191,45 @@ class FeedViewController: UIViewController {
         currentTag = tags[index]
     }
     
-
+    func handleLongPress(sender: UILongPressGestureRecognizer){
+        if sender.state == UIGestureRecognizerState.began {
+            let touchPoint = sender.location(in: tableView)
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
+                if let text = cell.titleLabel.text, let link = news[indexPath.row].link {
+                    showAlert(with: text,and: link)
+                }
+            }
+        }
+    }
+    func showAlert(with title: String, and link: String) {
+        let actionSheet = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Open in Safari", style: .default, handler: { (UIAlertAction) in
+            UIApplication.shared.openURL(URL(string: link)!)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Share", style: .default, handler: { (UIAlertAction) in
+            self.share(with: link)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Add Bookmark", style: .default, handler: nil))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(actionSheet, animated: true, completion: nil)
+        
+    }
+    
+    func share(with link: String) {
+        let activityVC = UIActivityViewController(activityItems: [link], applicationActivities: nil)
+        activityVC.excludedActivityTypes = [.airDrop,
+                                            UIActivityType(rawValue: "com.google.GooglePlus.ShareExtension"),
+                                            UIActivityType(rawValue: "com.apple.reminders.RemindersEditorExtension")]
+        activityVC.popoverPresentationController?.sourceView = UIView()
+        self.present(activityVC, animated: true, completion: nil)
+    }
+    
 }
+
+
 
 // MARK: UITableViewDataSource, UITableViewDelegate
 
@@ -207,16 +250,6 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource, DZNEmp
             }
         }
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = DetailedNewsViewController()
-        let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
-        if let image = cell.newsImageView.image{
-            vc.image = image
-        }
-        vc.newsObject = news[indexPath.row]
-        self.present(vc, animated: true, completion: nil)
     }
     
     func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
