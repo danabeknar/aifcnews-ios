@@ -33,6 +33,7 @@ struct News {
         var counter = 0
         for subtag in tag.subtags {
             let url = createURL(from: tag, and: subtag)
+            print(url)
             Alamofire.request(url, method: .get).response(completionHandler: { (data) in
                 let xml = SWXMLHash.parse(data.data!)
                 for elem in xml["rss"]["channel"]["item"].all {
@@ -77,9 +78,9 @@ struct News {
         let modifiedTag = addPlusses(to: tag.tag)
         switch tag.tag {
             case "Kazakhstan", "Kazakh Tenge", "National Companies", "Global Partners":
-                return "https://news.google.com/news?q=\(modifiedTag)+\(modifiedSubtag)&output=rss&hl=en&sort=date"
+                return "https://news.google.com/news?q=\(modifiedTag)+\(modifiedSubtag)&output=rss&hl=en&sort=date&num=20"
             default:
-                return "https://news.google.com/news?q=\(modifiedSubtag)&output=rss&hl=en&sort=date"
+                return "https://news.google.com/news?q=\(modifiedSubtag)&output=rss&hl=en&sort=date&num=20"
         }
     }
     

@@ -196,13 +196,13 @@ class FeedViewController: UIViewController {
             let touchPoint = sender.location(in: tableView)
             if let indexPath = tableView.indexPathForRow(at: touchPoint) {
                 let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
-                if let text = cell.titleLabel.text, let link = news[indexPath.row].link {
-                    showAlert(with: text,and: link)
+                if let link = news[indexPath.row].link, let title = news[indexPath.row].title {
+                    showAlert(from: cell,and: title, and: link, and: indexPath.row)
                 }
             }
         }
     }
-    func showAlert(with title: String, and link: String) {
+    func showAlert(from cell: FeedTableViewCell, and title: String, and link: String, and index: Int) {
         let actionSheet = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "Open in Safari", style: .default, handler: { (UIAlertAction) in
@@ -211,7 +211,15 @@ class FeedViewController: UIViewController {
         actionSheet.addAction(UIAlertAction(title: "Share", style: .default, handler: { (UIAlertAction) in
             self.share(with: link)
         }))
-        actionSheet.addAction(UIAlertAction(title: "Add Bookmark", style: .default, handler: nil))
+        let actionTitle = checkForBookmark(from: title)
+        actionSheet.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { (UIAlertAction) in
+            if actionTitle == "Add Bookmark"{
+                self.saveBookmark(cell, index)
+            } else {
+                self.removeBookmark(where: title)
+            }
+            
+        }))
         
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(actionSheet, animated: true, completion: nil)
@@ -227,8 +235,51 @@ class FeedViewController: UIViewController {
         self.present(activityVC, animated: true, completion: nil)
     }
     
-}
+    func checkForBookmark(from title: String) -> String{
+            if newsTitles.contains(title){
+                return "Remove Bookmark"
+            }
+        return "Add Bookmark"
+    }
+    
+    // MARK: Bookmark Saving Function
+    
+    func saveBookmark(_ cell: FeedTableViewCell, _ index: Int){
+        let newsToSave = RealmNews()
+        if let date = news[index].date, let title = news[index].title, let link = news[index].link, let image = cell.newsImageView.image {
+            newsToSave.date = date
+            newsToSave.link = link
+            newsToSave.title = title
+            if let data = UIImagePNGRepresentation(image) as NSData? {
+                newsToSave.image = data
+            }
+            newsTitles.insert(title)
+            saveBookmarkTitles()
+        }
+        try! realm.write {
+            realm.add(newsToSave)
+        }
+    }
+    
+    // MARK: Bookmark Deleting Function
+    
+    func removeBookmark(where title: String) {
+        try! realm.write {
+            guard let object = realm.objects(RealmNews.self).filter("title = %@", title).first?.title else {
+                    return
+                }
+            realm.delete(realm.objects(RealmNews.self).filter("title = %@", object).first!)
+            newsTitles.remove(title)
+            saveBookmarkTitles()
+        }
+    }
+    
+    func saveBookmarkTitles(){
+        UserDefaults.standard.set(NSKeyedArchiver.archivedData(withRootObject: newsTitles), forKey: "newsTitles")
+        tableView.reloadData()
+    }
 
+}
 
 
 // MARK: UITableViewDataSource, UITableViewDelegate
