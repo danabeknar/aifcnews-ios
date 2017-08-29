@@ -18,6 +18,7 @@ class BookmarkViewController: UIViewController {
     
     var news = [News]()
     let reachability = Reachability()!
+    var newsTitles = Set<String>()
     
     lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -42,11 +43,8 @@ class BookmarkViewController: UIViewController {
         setupConstraints()
         setupNavigationBar()
         fetchRealmNews()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        fetchRealmNews()
+        fetchBookmarks()
+        setupGestures()
     }
     
     // MARK: Configure Views
@@ -74,6 +72,78 @@ class BookmarkViewController: UIViewController {
         self.navigationController?.navigationBar.topItem?.title = "Bookmarks"
     }
     
+    // MARK: Fetch Saved Bookmarks
+    
+    func fetchBookmarks(){
+        if let newsTitlesObject = UserDefaults.standard.value(forKey: "newsTitles") as? NSData {
+            self.newsTitles = NSKeyedUnarchiver.unarchiveObject(with: newsTitlesObject as Data) as! Set<String>
+        }
+    }
+    
+    func setupGestures(){
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(sender:)))
+        tableView.addGestureRecognizer(longPress)
+    }
+    
+    func handleLongPress(sender: UILongPressGestureRecognizer){
+        if sender.state == UIGestureRecognizerState.began {
+            let touchPoint = sender.location(in: tableView)
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                if let link = news[indexPath.row].link, let title = news[indexPath.row].title {
+                    showAlert(with: title, and: link, and: indexPath.row)
+                }
+            }
+        }
+    }
+    
+    func showAlert(with title: String, and link: String, and index: Int) {
+        let actionSheet = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Open in Safari", style: .default, handler: { (UIAlertAction) in
+            UIApplication.shared.openURL(URL(string: link)!)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Share", style: .default, handler: { (UIAlertAction) in
+            self.share(with: link)
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Remove Bookmark", style: .default, handler: { (UIAlertAction) in
+            self.removeBookmark(where: title)
+            self.news.remove(at: index)
+            self.tableView.reloadData()
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        present(actionSheet, animated: true, completion: nil)
+        
+    }
+    
+    func share(with link: String) {
+        let activityVC = UIActivityViewController(activityItems: [link], applicationActivities: nil)
+        activityVC.excludedActivityTypes = [.airDrop,
+                                            UIActivityType(rawValue: "com.google.GooglePlus.ShareExtension"),
+                                            UIActivityType(rawValue: "com.apple.reminders.RemindersEditorExtension")]
+        activityVC.popoverPresentationController?.sourceView = UIView()
+        self.present(activityVC, animated: true, completion: nil)
+    }
+    
+    // MARK: Bookmark Deleting Function
+    
+    func removeBookmark(where title: String) {
+        try! realm.write {
+            guard let object = realm.objects(RealmNews.self).filter("title = %@", title).first?.title else {
+                return
+            }
+            realm.delete(realm.objects(RealmNews.self).filter("title = %@", object).first!)
+            newsTitles.remove(title)
+            saveBookmarkTitles()
+        }
+    }
+    
+    func saveBookmarkTitles(){
+        UserDefaults.standard.set(NSKeyedArchiver.archivedData(withRootObject: newsTitles), forKey: "newsTitles")
+    }
+
+    
     // MARK: Fetch Data
 
     func fetchRealmNews(){
@@ -100,16 +170,11 @@ extension BookmarkViewController: UITableViewDelegate, UITableViewDataSource, DZ
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! FeedTableViewCell
+        print("indexpath", indexPath.row)
         cell.newsObject = news[indexPath.row] as News
         cell.newsImageView.image = news[indexPath.row].image
         cell.selectionStyle = .none
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = DetailedNewsViewController()
-        vc.newsObject = news[indexPath.row]
-        self.present(vc, animated: true, completion: nil)
     }
 
     func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {

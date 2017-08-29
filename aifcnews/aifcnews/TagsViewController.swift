@@ -140,9 +140,9 @@ extension TagsViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         if indexPath.section == 0{
-            cell.signButton.setImage(UIImage(named: "minusSign"), for: .normal)
-        } else if indexPath.section == 1 {
             cell.signButton.setImage(UIImage(named: "plusSign"), for: .normal)
+        } else if indexPath.section == 1 {
+            cell.signButton.setImage(UIImage(named: "minusSign"), for: .normal)
         }
 
         return cell

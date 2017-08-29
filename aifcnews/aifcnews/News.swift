@@ -33,7 +33,6 @@ struct News {
         var counter = 0
         for subtag in tag.subtags {
             let url = createURL(from: tag, and: subtag)
-            print(url)
             Alamofire.request(url, method: .get).response(completionHandler: { (data) in
                 let xml = SWXMLHash.parse(data.data!)
                 for elem in xml["rss"]["channel"]["item"].all {

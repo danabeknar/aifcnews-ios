@@ -19,6 +19,5 @@ target 'aifcnews' do
   pod 'SWXMLHash', '~> 4.0.0'
   pod 'SwiftWebVC'
   pod 'SwiftDate', '~> 4.0'
-  pod 'Hero'
   pod 'Kingfisher', '~> 3.0'
 end

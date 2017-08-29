@@ -13,7 +13,6 @@ import BTNavigationDropdownMenu
 import DZNEmptyDataSet
 import ReachabilitySwift
 import SVProgressHUD
-import Hero
 
 class FeedViewController: UIViewController {
     
@@ -34,7 +33,7 @@ class FeedViewController: UIViewController {
     }
     
     var initialTag: Tag?
-    
+
     lazy var menuView: BTNavigationDropdownMenu = {
         let menuView = BTNavigationDropdownMenu(navigationController: self.navigationController, containerView: (self.navigationController?.view!)!, title: BTTitle.title("Menu"), items: [])
         menuView.cellHeight = 35
@@ -74,8 +73,6 @@ class FeedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        isHeroEnabled = true
-        setupGestures()
         setupNavigationBar()
         setupViews()
         setupConstraints()
@@ -113,12 +110,6 @@ class FeedViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = "0A1520".hexColor
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
     }
-    
-    func setupGestures(){
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(sender:)))
-        tableView.addGestureRecognizer(longPress)
-    }
-    
     // MARK: Fetch Tags and Update Items
     
     func reloadTags() {
@@ -190,19 +181,9 @@ class FeedViewController: UIViewController {
         lastSelectedIndex = index
         currentTag = tags[index]
     }
-    
-    func handleLongPress(sender: UILongPressGestureRecognizer){
-        if sender.state == UIGestureRecognizerState.began {
-            let touchPoint = sender.location(in: tableView)
-            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
-                let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
-                if let link = news[indexPath.row].link, let title = news[indexPath.row].title {
-                    showAlert(from: cell,and: title, and: link, and: indexPath.row)
-                }
-            }
-        }
-    }
+
     func showAlert(from cell: FeedTableViewCell, and title: String, and link: String, and index: Int) {
+        DispatchQueue.main.async {
         let actionSheet = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "Open in Safari", style: .default, handler: { (UIAlertAction) in
@@ -211,7 +192,7 @@ class FeedViewController: UIViewController {
         actionSheet.addAction(UIAlertAction(title: "Share", style: .default, handler: { (UIAlertAction) in
             self.share(with: link)
         }))
-        let actionTitle = checkForBookmark(from: title)
+        let actionTitle = self.checkForBookmark(from: title)
         actionSheet.addAction(UIAlertAction(title: actionTitle, style: .default, handler: { (UIAlertAction) in
             if actionTitle == "Add Bookmark"{
                 self.saveBookmark(cell, index)
@@ -222,8 +203,8 @@ class FeedViewController: UIViewController {
         }))
         
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        present(actionSheet, animated: true, completion: nil)
-        
+        self.present(actionSheet, animated: true, completion: nil)
+        }
     }
     
     func share(with link: String) {
@@ -301,6 +282,13 @@ extension FeedViewController: UITableViewDelegate, UITableViewDataSource, DZNEmp
             }
         }
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath) as! FeedTableViewCell
+        if let link = news[indexPath.row].link, let title = news[indexPath.row].title {
+            showAlert(from: cell, and: title, and: link, and: indexPath.row)
+        }
     }
     
     func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {

@@ -14,12 +14,6 @@ class TagsTableViewCell: UITableViewCell {
     
     // MARK: Properties
     
-    var isChosen = false {
-        didSet {
-//            choose(isChosen)
-        }
-    }
-    
     var tagObject: Tag? {
         didSet {
             self.configureView()

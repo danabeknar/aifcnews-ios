@@ -22,7 +22,6 @@
 		0D55136F1F332C5A00D0C877 /* RealmNews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D55136E1F332C5A00D0C877 /* RealmNews.swift */; };
 		0D5513711F3346BC00D0C877 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5513701F3346BC00D0C877 /* Database.swift */; };
 		0DBEB4661F1CC8F100A03809 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4651F1CC8F100A03809 /* News.swift */; };
-		0DBEB4681F1CFCD200A03809 /* DetailedNewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */; };
 		0DBEB4731F1E1CB200A03809 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4721F1E1CB200A03809 /* SettingsViewController.swift */; };
 		0DBEB4751F1E1FC800A03809 /* TagsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4741F1E1FC800A03809 /* TagsTableViewCell.swift */; };
 		0DBEB4771F1E2A2600A03809 /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBEB4761F1E2A2600A03809 /* TagsViewController.swift */; };
@@ -53,7 +52,6 @@
 		0D55136E1F332C5A00D0C877 /* RealmNews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealmNews.swift; sourceTree = "<group>"; };
 		0D5513701F3346BC00D0C877 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		0DBEB4651F1CC8F100A03809 /* News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
-		0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedNewsViewController.swift; sourceTree = "<group>"; };
 		0DBEB4721F1E1CB200A03809 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		0DBEB4741F1E1FC800A03809 /* TagsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsTableViewCell.swift; sourceTree = "<group>"; };
 		0DBEB4761F1E2A2600A03809 /* TagsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
@@ -113,7 +111,6 @@
 				0D3A5E5D1F3CD4F5009C8399 /* MenuViewController.swift */,
 				0DC71A511F1795D200225263 /* FeedViewController.swift */,
 				0D47D7711F248B1F00092C0D /* BookmarkViewController.swift */,
-				0DBEB4671F1CFCD200A03809 /* DetailedNewsViewController.swift */,
 				0DBEB4761F1E2A2600A03809 /* TagsViewController.swift */,
 				0DBEB4721F1E1CB200A03809 /* SettingsViewController.swift */,
 			);
@@ -329,7 +326,6 @@
 				"${BUILT_PRODUCTS_DIR}/BTNavigationDropdownMenu/BTNavigationDropdownMenu.framework",
 				"${BUILT_PRODUCTS_DIR}/DZNEmptyDataSet/DZNEmptyDataSet.framework",
 				"${BUILT_PRODUCTS_DIR}/EasyPeasy/EasyPeasy.framework",
-				"${BUILT_PRODUCTS_DIR}/Hero/Hero.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/ReachabilitySwift.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
@@ -346,7 +342,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BTNavigationDropdownMenu.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DZNEmptyDataSet.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EasyPeasy.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Hero.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReachabilitySwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
@@ -384,7 +379,6 @@
 				0D0ECBA31F18A2ED005699FC /* Helper.swift in Sources */,
 				0D3A5E601F3CDFE5009C8399 /* MenuTableViewCell.swift in Sources */,
 				0D3A5E5E1F3CD4F5009C8399 /* MenuViewController.swift in Sources */,
-				0DBEB4681F1CFCD200A03809 /* DetailedNewsViewController.swift in Sources */,
 				0DBEB4661F1CC8F100A03809 /* News.swift in Sources */,
 				0D5513711F3346BC00D0C877 /* Database.swift in Sources */,
 				0D4B86FE1F271E5D00313D5D /* ShareManager.swift in Sources */,
