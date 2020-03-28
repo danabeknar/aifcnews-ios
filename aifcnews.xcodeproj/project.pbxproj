@@ -120,7 +120,7 @@
 		0D0ECBA91F18B301005699FC /* Supporting FIles */ = {
 			isa = PBXGroup;
 			children = (
-				0D0ECBB41F18B66B005699FC /* Fonts */,
+				0D3779F8242F57580057EFE4 /* Fonts */,
 				0D0ECBA21F18A2ED005699FC /* Helper.swift */,
 				0D0ECBA01F18A220005699FC /* Constants.swift */,
 				0D0ECBA41F18B099005699FC /* Extensions.swift */,
@@ -131,7 +131,7 @@
 			name = "Supporting FIles";
 			sourceTree = "<group>";
 		};
-		0D0ECBB41F18B66B005699FC /* Fonts */ = {
+		0D3779F8242F57580057EFE4 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
 				0DC7A57E1F3B24850072807E /* SF-Pro-Display-Regular.otf */,
@@ -141,7 +141,7 @@
 				0D3987831F28A51B00CDBDC9 /* OpenSans-Regular.ttf */,
 				0D3987841F28A51B00CDBDC9 /* OpenSans-SemiBold.ttf */,
 			);
-			name = Fonts;
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		0DC71A431F1795D100225263 = {
